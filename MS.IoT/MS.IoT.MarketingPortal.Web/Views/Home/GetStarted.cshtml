@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "GetStarted";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="theme-showcase" role="main" ng-controller="getStartedController">
+    <div class="container">
+        <!-- Main section for a primary marketing message or call to action -->
+        <div class="section">
+            <h1>White Goods Data Designer</h1>
+            <div class="row">
+                <div class="col-md-7">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis feugiat ullamcorper tellus, eget luctus ante
+                        ultrices eu. In pharetra justo in ex mollis congue. Sed pharetra nulla non cursus gravida. Aenean lacinia
+                        viverra metus, et ultricies lacus mollis sed. Vestibulum non eros at sem hendrerit vehicula. Morbi ut blandit
+                        quam. Aliquam dictum magna nec ornare scelerisque. Nulla massa orci, dictum ut nisi eget, tempus
+                        condimentum nisi. Donec id orci faucibus, blandit enim ac, pulvinar elit. Nullam tristique erat id diam
+                        congue varius.
+                    </p>
+                    <p>
+                        Ut accumsan at urna sed fringilla. Nam placerat et urna eget rhoncus. Morbi odio urna, interdum et diam
+                        in, dictum condimentum nulla. Aliquam rhoncus pretium nisl, non bibendum sapien suscipit at. Fusce
+                        luctus justo non orci cursus gravida. Nulla feugiat neque vitae congue molestie. Vestibulum interdum leo
+                        vitae eros semper imperdiet. In elementum tempor eleifend. Duis sapien massa, aliquet eget tincidunt ut,
+                        tempus id nisi. Ut sed sodales dui, sed rhoncus felis. Aliquam vulputate a tellus eu convallis. Donec porta
+                        tortor tellus, ac commodo nulla dignissim nec.
+                    </p>
+                    <blockquote>
+                        <p>Enable the customer to design the data packet that the device would send.</p>
+                        <p>Provide standard data templates for the white goods industry.</p>
+                        <p>Enable the customer to choose from the following formats:</p>
+                        <ul class="checklist">
+                            <li>JSON (uncompressed)</li>
+                            <li>AVRO</li>
+                        </ul>
+                        <p>Enable the customer to tweak the data packet format to help understand the end state.</p>
+                    </blockquote>
+                    <p>
+                        Donec non eleifend justo, quis ullamcorper mi. Praesent eu turpis vehicula, facilisis neque vel, luctus leo.
+                        Sed accumsan sapien nisi, in elementum justo finibus vel. In cursus ex orci, eu elementum purus
+                        ullamcorper ac. Phasellus eleifend, sem sed sodales fringilla, ante nisi hendrerit ligula, a vehicula sem ante
+                        et orci. Ut eget nisi vel mauris malesuada gravida.
+                    </p>
+
+                    <p>By clicking the Deploy button you will be redirected to the Azure portal. This will take approximate 2 to 8 minutes</p>
+                    <p class="centerfordevices"><button type="button" onclick="window.location.href='@Url.Action("Deploy", "Home")'" class="btn btn-lg btn-primary IoT">Deploy</button></p>
+                </div>
+                <div class="col-md-5">
+                    <div class="image-slider">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12 center"><h3>4x4 secures device-to-cloud and device-to-device communications</h3><br /></div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div id="custom_carousel" class="carousel slide" data-ride="carousel" data-interval="5000">
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-12"><img src="~/Content/images/commercial-LT.jpg" class="img-responsive" /></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-12"><img src="~/Content/images/consumer-LT.jpg" class="img-responsive" /></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-12"><img src="~/Content/images/commercial-RT.jpg" class="img-responsive" /></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-12"><img src="~/Content/images/consumer-RT.jpg" class="img-responsive" /></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Item -->
+                                </div>
+                                <!-- End Carousel Inner -->
+                                <div class="controls">
+                                    <ul class="nav">
+                                        <li data-target="#custom_carousel" data-slide-to="0" class="active">
+                                            <a href="#"><img src="~/Content/images/commercial-LT.jpg" class="img-responsive" /><small>Commercial Latency Tolerant</small></a>
+                                        </li>
+                                        <li data-target="#custom_carousel" data-slide-to="1">
+                                            <a href="#"><img src="~/Content/images/consumer-LT.jpg" class="img-responsive" /><small>Consumer Latency Tolerant</small></a>
+                                        </li>
+                                        <li data-target="#custom_carousel" data-slide-to="2">
+                                            <a href="#"><img src="~/Content/images/commercial-RT.jpg" class="img-responsive" /><small>Commercial Real Time</small></a>
+                                        </li>
+                                        <li data-target="#custom_carousel" data-slide-to="3">
+                                            <a href="#"><img src="~/Content/images/consumer-RT.jpg" class="img-responsive" /><small>Consumer Real Time</small></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End Carousel -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

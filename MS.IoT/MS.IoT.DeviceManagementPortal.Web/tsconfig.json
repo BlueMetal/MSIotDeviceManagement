@@ -1,0 +1,16 @@
+﻿{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es5",
+    "outDir": "./Scripts",
+    "typeRoots": [
+      "./Scripts/@typings"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

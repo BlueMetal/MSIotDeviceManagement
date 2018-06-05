@@ -1,0 +1,27 @@
+﻿<div id="choosetemplate">
+    <div class="row">
+        <div><h3>Select {{vm.currentCategory}} types</h3></div>
+        <div><span>Available {{vm.currentCategory}} templates</span></div>
+    </div>
+    <div class="categories-container">
+        <div class="row">
+            <div class="subcategory-selector col-md-4">
+                <ul>
+                    <li ng-repeat="subCategory in vm.subCategories" ng-class="{ 'subcategory-selected': vm.selectedSubcategoryIndex == $index }" ng-click="vm.selectSubcategory($index)">
+                        <div class="subcategory-title lead">{{subCategory.name}}</div>
+                        <div class="count-container"><div class="subcategory-count">{{subCategory.templates.length}}</div></div>
+                        <div class="subcategory-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra.</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="commontemplate-selector col-md-8">
+                <ul>
+                    <li ng-repeat="template in vm.selectedSubcategory.templates" ui-sref="app.step.createtemplate({categoryId: template.categoryId, templateId: template.id})" ui-sref-opts="{reload: 'app.step'}" ng-class="{ 'subcategory-selected': vm.selectedSubcategoryIndex == $index }">
+                        <div class="subcategory-title lead">{{template.name}}</div>
+                        <div>{{template.description}}</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

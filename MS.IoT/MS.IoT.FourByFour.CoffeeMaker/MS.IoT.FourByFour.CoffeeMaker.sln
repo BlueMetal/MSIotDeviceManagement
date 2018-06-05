@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MS.IoT.FourByFour.CoffeeMaker", "MS.IoT.FourByFour.CoffeeMaker\MS.IoT.FourByFour.CoffeeMaker.vcxproj", "{F4C319FF-10EB-4C5F-A836-DC9AA0089F4B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4C319FF-10EB-4C5F-A836-DC9AA0089F4B}.Debug|ARM.ActiveCfg = Debug|ARM
+		{F4C319FF-10EB-4C5F-A836-DC9AA0089F4B}.Debug|ARM.Build.0 = Debug|ARM
+		{F4C319FF-10EB-4C5F-A836-DC9AA0089F4B}.Release|ARM.ActiveCfg = Release|ARM
+		{F4C319FF-10EB-4C5F-A836-DC9AA0089F4B}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B0C6602-9A5E-419B-9717-AF0F28E95E6A}
+	EndGlobalSection
+EndGlobal

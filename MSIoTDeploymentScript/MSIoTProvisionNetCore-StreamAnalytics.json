@@ -1,0 +1,102 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "iotHubName": {
+      "type": "string"
+    },
+    "cosmosDbAccountName": {
+      "type": "string"
+    },
+    "cosmosDbName": {
+      "type": "string"
+    },
+    "cosmosDBMessageCollectionName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "iotHubVersion": "2016-02-03",
+    "iotHubResourceId": "[resourceId('Microsoft.Devices/Iothubs', parameters('iotHubName'))]",
+    "iotHubKeyName": "iothubowner",
+    "iotHubKeyResource": "[resourceId('Microsoft.Devices/Iothubs/Iothubkeys', parameters('iotHubName'), variables('iotHubKeyName'))]",
+    "suiteType": "RemoteMonitoring",
+    "cosmosDBResourceId": "[resourceId('Microsoft.DocumentDb/databaseAccounts', parameters('cosmosDbAccountName'))]",
+    "streamAnalyticsjobname": "[concat(parameters('iotHubName'), '-ASAJob')]",
+    "telemetryCGName": "telemetrycg",
+    "saVersion": "2015-10-01"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('saVersion')]",
+      "type": "Microsoft.StreamAnalytics/streamingjobs",
+      "name": "[variables('streamAnalyticsjobname')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+      ],
+      "tags": {
+        "IotSuiteType": "[variables('suiteType')]"
+      },
+      "properties": {
+        "sku": {
+          "name": "standard"
+        },
+        "OutputStartMode": "JobStartTime",
+        "EventsOutOfOrderMaxDelayInSeconds": 10,
+        "EventsOutOfOrderPolicy": "adjust",
+        "Inputs": [
+          {
+            "Name": "IoTHubStream",
+            "Properties": {
+              "DataSource": {
+                "Properties": {
+                  "iotHubNamespace": "[parameters('iotHubName')]",
+                  "sharedAccessPolicyKey": "[listkeys(variables('iotHubKeyResource'), variables('iotHubVersion')).primaryKey]",
+                  "sharedAccessPolicyName": "[variables('iotHubKeyName')]"
+                },
+                "Type": "Microsoft.Devices/IotHubs"
+              },
+              "Serialization": {
+                "Properties": {
+                  "Encoding": "UTF8"
+                },
+                "Type": "Json"
+              },
+              "Type": "Stream"
+            }
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "CosmosDBOutput",
+            "Properties": {
+              "DataSource": {
+                "Properties": {
+                  "accountId": "[parameters('cosmosDbAccountName')]",
+                  "accountKey": "[listkeys(variables('cosmosDBResourceId'), '2015-04-08').primaryMasterKey]",
+                  "database": "[parameters('cosmosDbName')]",
+                  "collectionNamePattern": "[parameters('cosmosDBMessageCollectionName')]"
+                },
+                "Type": "Microsoft.Storage/DocumentDB"
+              }
+            }
+          }
+        ],
+        "Transformation": {
+          "Name": "AllToCosmosDB",
+          "Properties": {
+            "Query": "\r\n    SELECT\r\n        *\r\n INTO [CosmosDBOutput] \r\n  FROM [IoTHubStream]",
+            "StreamingUnits": 1
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "streamAnalyticsName": {
+      "type": "string",
+      "value": "[variables('streamAnalyticsjobname')]"
+    }
+  }
+}

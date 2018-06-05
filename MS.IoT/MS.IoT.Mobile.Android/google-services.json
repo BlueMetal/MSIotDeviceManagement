@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "114097432181",
+    "firebase_url": "https://msiotdev-d8133.firebaseio.com",
+    "project_id": "msiotdev-d8133",
+    "storage_bucket": "msiotdev-d8133.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114097432181:android:32dd05715f2d01bf",
+        "android_client_info": {
+          "package_name": "com.MS.IoT.Mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114097432181-c218kk9i6q4llfhpn7qgild5a20kpe9c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7105wI5XsSC4-19E2bMghBDK3nsKkZbY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

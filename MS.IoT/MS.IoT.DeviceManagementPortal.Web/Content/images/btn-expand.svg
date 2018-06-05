@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="7px" height="14px" viewBox="0 0 7 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="002-device-dashboard-grouped-by" transform="translate(-156.000000, -462.000000)" fill="#59565A">
+            <g id="Group-11" transform="translate(135.000000, 368.000000)">
+                <g id="Group-4">
+                    <g id="table" transform="translate(0.000000, 42.000000)">
+                        <g id="Group-2" transform="translate(0.000000, 40.000000)">
+                            <polygon id="Rectangle" transform="translate(21.000000, 19.000000) rotate(-45.000000) translate(-21.000000, -19.000000) " points="26 14 26 24 16 24"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

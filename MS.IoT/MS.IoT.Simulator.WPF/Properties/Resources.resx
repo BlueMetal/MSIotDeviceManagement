@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BackButton" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="ChooseTemplateDescription" xml:space="preserve">
+    <value>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</value>
+  </data>
+  <data name="ChooseTemplateSelectSaveTemplateDescription" xml:space="preserve">
+    <value>Choose from your saved templates to simulate your device data.</value>
+  </data>
+  <data name="ChooseTemplateSelectSaveTemplateTitle" xml:space="preserve">
+    <value>Your Saved Templates</value>
+  </data>
+  <data name="ChooseTemplateTitle" xml:space="preserve">
+    <value>Simulate Your Product</value>
+  </data>
+  <data name="FooterUARTConnected" xml:space="preserve">
+    <value>UART: Connected</value>
+  </data>
+  <data name="FooterUARTDisconnected" xml:space="preserve">
+    <value>UART: Disconnected</value>
+  </data>
+  <data name="FooterUSBConnected" xml:space="preserve">
+    <value>USB: Connected</value>
+  </data>
+  <data name="FooterUSBDisconnected" xml:space="preserve">
+    <value>USB: Disconnected</value>
+  </data>
+  <data name="HeaderSignOutButton" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="HeaderTitle" xml:space="preserve">
+    <value>White Goods Data Packet Simulator</value>
+  </data>
+  <data name="HomeLoginButton" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="HomeProductDescription" xml:space="preserve">
+    <value>The security of an internet connected device requires continuous renewal.
+
+With 4x4, Microsoft is sharing over 20 years of experience in protecting internet connected devices.
+
+This simulator will help you get started with your 4x4. With it, you will be able to:
+- Select a template from the Data Packet Designer
+- Preview some sample data
+- Send data to the 4x4
+- Watch the data being retrieved from Azure IoT Hub in real time.
+
+To get started, please login.</value>
+  </data>
+  <data name="HomeProductTitle" xml:space="preserve">
+    <value>4x4 Chip Summary</value>
+  </data>
+  <data name="PreviewTemplateChipStatusConnected" xml:space="preserve">
+    <value>Connected !</value>
+  </data>
+  <data name="PreviewTemplateChipStatusDescription" xml:space="preserve">
+    <value>Before starting the simulation, please make sure that:
+- Your chip was properly initialized and is connected through wifi.
+- Your chip is powered through USB to your computer.
+- Your chip is connected to a Serial Port dongle (UART) to your computer.</value>
+  </data>
+  <data name="PreviewTemplateChipStatusDisconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="PreviewTemplateChipStatusTitle" xml:space="preserve">
+    <value>Status of your 4x4 chip</value>
+  </data>
+  <data name="PreviewTemplateDataPreviewDescription" xml:space="preserve">
+    <value>The template will be used to generate a JSON string containing randomized data. 
+In the next screen, the simulator will take the role of a connected device, sending updated data to your 4x4.
+The 4x4 will then forward these messages to IoT Hub.</value>
+  </data>
+  <data name="PreviewTemplateDataPreviewTitle" xml:space="preserve">
+    <value>Preview Template Data</value>
+  </data>
+  <data name="PreviewTemplateRetryButton" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="PreviewTemplateSelectDongle" xml:space="preserve">
+    <value>Select your UART dongle:</value>
+  </data>
+  <data name="PreviewTemplateSimulateButton" xml:space="preserve">
+    <value>Simulate !</value>
+  </data>
+  <data name="SelectTemplateRefreshButton" xml:space="preserve">
+    <value>Refresh list</value>
+  </data>
+  <data name="SimulateReceivingFirstRow" xml:space="preserve">
+    <value>Receiving Data Packet</value>
+  </data>
+  <data name="SimulateReceivingSecondRow" xml:space="preserve">
+    <value>in Cosmos DB</value>
+  </data>
+  <data name="SimulateRestartButton" xml:space="preserve">
+    <value>Restart Simulation</value>
+  </data>
+  <data name="SimulateSendingFirstRowTitle" xml:space="preserve">
+    <value>Sending messages through</value>
+  </data>
+  <data name="SimulateSendingSecondRowTitle" xml:space="preserve">
+    <value>4x4 chip to IoT Hub</value>
+  </data>
+</root>

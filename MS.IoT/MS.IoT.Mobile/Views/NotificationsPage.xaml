@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<qxfutils:BaseContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"    
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:qxfutils="clr-namespace:QXFUtilities;assembly=MS.IoT.Mobile"
+    xmlns:local="clr-namespace:MS.IoT.Mobile;assembly=MS.IoT.Mobile"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    x:Class="MS.IoT.Mobile.NotificationsPage"
+    x:Name="NotificationsPage"
+    Title="Notifications"
+    >
+
+    <qxfutils:BaseContentPage.Resources>
+        <ResourceDictionary>
+            <qxfutils:ItemTappedEventArgsConverter x:Key="ItemTappedConverter" />
+            <local:NotificationListTemplateSelector x:Key="NotificationTemplateSelector" />
+        </ResourceDictionary>
+    </qxfutils:BaseContentPage.Resources>
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Icon="{Binding NotificationIconName}"
+            Order="Primary"
+            Priority="0"
+        />
+    </ContentPage.ToolbarItems>
+
+    <qxfutils:BaseContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0, 20, 0, 0" />
+            <On Platform="Android" Value="0, 0, 0, 0" />
+            <On Platform="WinPhone" Value="0, 20, 0, 0" />
+            <On Platform="Windows" Value="0, 40, 0, 0" />
+        </OnPlatform>
+    </qxfutils:BaseContentPage.Padding>
+
+    <qxfutils:BaseContentPage.Content>
+        <ListView 
+            x:Name="NotificationsList"
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill"
+            ItemTemplate="{StaticResource NotificationTemplateSelector}"
+            ItemsSource="{Binding NotificationCollection}"
+            HasUnevenRows="True" 
+            SeparatorVisibility="Default"
+            SeparatorColor="{x:Static local:GlobalResources.Colors.FeaturesSeperatorColor}"
+            BackgroundColor="{x:Static local:GlobalResources.Colors.NotificationBackgroundColor}"
+            ItemTapped="OnItemTapped"
+            >
+            <ListView.Behaviors>
+                <qxfutils:EventToCommandBehaviour EventName="ItemTapped" Command="{Binding ListItemTapped}" EventArgsConverter="{StaticResource ItemTappedConverter}" />
+            </ListView.Behaviors>
+        </ListView>
+
+    </qxfutils:BaseContentPage.Content>
+</qxfutils:BaseContentPage>   

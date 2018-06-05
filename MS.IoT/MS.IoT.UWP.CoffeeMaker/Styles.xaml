@@ -1,0 +1,82 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib"
+                    xmlns:helpers="clr-namespace:MS.IoT.Simulator.WPF.Helpers"
+                    xmlns:local="clr-namespace:MS.IoT.Simulator.WPF">
+    <SolidColorBrush x:Key="colorForeground">#565656</SolidColorBrush>
+    <SolidColorBrush x:Key="colorBackground">#96e0ff</SolidColorBrush>
+    <SolidColorBrush x:Key="colorDisabled">Gray</SolidColorBrush>
+    <SolidColorBrush x:Key="colorError">Red</SolidColorBrush>
+
+    <!-- Blocs -->
+    <Style TargetType="StackPanel" x:Key="stackPnlStats">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="15" />
+    </Style>
+    
+    <!-- Actions -->
+    <Style TargetType="TextBlock" x:Key="textActionTitleBlock">
+        <Setter Property="Foreground" Value="{StaticResource colorForeground}"/>
+        <Setter Property="LineHeight" Value="30"/>
+        <Setter Property="Margin" Value="0,20,0,5"/>
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="textActionDescriptionBlock">
+        <Setter Property="Foreground" Value="{StaticResource colorForeground}"/>
+        <Setter Property="LineHeight" Value="30"/>
+        <Setter Property="FontWeight" Value="Thin" />
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    
+    <!-- Titles -->
+    <Style TargetType="TextBlock" x:Key="textTitleBlock">
+        <Setter Property="Foreground" Value="{StaticResource colorForeground}"/>
+        <Setter Property="LineHeight" Value="30"/>
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="textNormalBlock">
+        <Setter Property="Foreground" Value="{StaticResource colorForeground}"/>
+        <Setter Property="LineHeight" Value="30"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="textNumberBlock">
+        <Setter Property="Foreground" Value="{StaticResource colorForeground}"/>
+        <Setter Property="LineHeight" Value="30"/>
+        <Setter Property="FontWeight" Value="Thin"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="textDateBlock">
+        <Setter Property="Foreground" Value="{StaticResource colorForeground}"/>
+        <Setter Property="LineHeight" Value="30"/>
+        <Setter Property="FontWeight" Value="Thin" />
+        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+    <Style TargetType="Image" x:Key="iconWifi">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="0,10,0,0"/>
+        <Setter Property="Width" Value="32" />
+        <Setter Property="Height" Value="25"/>
+    </Style>
+
+    <!-- Errors -->
+    <Style TargetType="TextBlock" x:Key="textErrorBlock">
+        <Setter Property="Foreground" Value="{StaticResource colorError}"/>
+        <Setter Property="LineHeight" Value="30"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+</ResourceDictionary>

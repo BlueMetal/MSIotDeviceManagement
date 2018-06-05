@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:MS.IoT.Mobile;assembly=MS.IoT.Mobile"
+            xmlns:qxfutils="clr-namespace:QXFUtilities;assembly=MS.IoT.Mobile"
+            xmlns:globalresources="clr-namespace:MS.IoT.Mobile.GlobalResources;assembly=MS.IoT.Mobile"  
+            xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+            xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+            x:Class="MS.IoT.Mobile.StandardSettingViewCell">
+    <ViewCell.View>
+        <Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <qxfutils:ExpandedToRotationConverter x:Key="IndicatorRotationConverter" />
+                </ResourceDictionary>
+            </Grid.Resources>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="6*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height ="60" />
+            </Grid.RowDefinitions>
+            <BoxView
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                BackgroundColor="{x:Static local:GlobalResources.Colors.FeaturesBackgroundColor}"
+                />
+            <ffimageloadingsvg:SvgCachedImage 
+                Grid.Column="0"
+                Grid.Row="0"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                Margin="20,12,5,12"
+                Aspect="AspectFit"
+                Source="{Binding Icon}" />
+            <Label 
+                Grid.Column="1"
+                Grid.Row="0"                
+                HorizontalOptions="Start"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center" 
+                Margin="15,0,5,0" 
+                FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                FontSize="20"
+                TextColor="{x:Static local:GlobalResources.Colors.TextColor}"
+                Text="{Binding Label}"
+                />
+            <ffimageloadingsvg:SvgCachedImage
+                x:Name="Indicator"
+                Grid.Column="2"
+                Grid.Row="0"
+                HorizontalOptions="End"
+                VerticalOptions="Center"               
+                Margin="5,15,25,15"
+                Aspect="AspectFit"
+                Source="resource://MS.IoT.Mobile.Assets.Icons.btn-chevron-right.svg"
+                Rotation="{Binding Expanded, Converter={StaticResource IndicatorRotationConverter}}"
+                />
+        </Grid>
+  </ViewCell.View>
+</ViewCell>

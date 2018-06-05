@@ -1,0 +1,15 @@
+﻿$familyMain: "Segoe UI Light", Open Sans, sans-serif;
+$familyTitle: "Segoe UI Medium", Open Sans, sans-serif;
+$linkColor: #40c4ff;
+
+@import 'style/_header.scss';
+@import 'style/_directive_editable_field.scss';
+@import 'style/_directive_template_selector.scss';
+@import 'style/_directive_treeview_block.scss';
+@import 'style/_step.scss';
+@import 'style/_home.scss';
+@import 'style/_choosetemplate.scss';
+@import 'style/_managetemplate.scss';
+@import 'style/_simulatetemplate.scss';
+
+@charset "UTF-8";

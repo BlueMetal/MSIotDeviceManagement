@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<qxfutils:BaseContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"    
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:qxfutils="clr-namespace:QXFUtilities;assembly=MS.IoT.Mobile"
+    xmlns:local="clr-namespace:MS.IoT.Mobile;assembly=MS.IoT.Mobile"
+    xmlns:globalresources="clr-namespace:MS.IoT.Mobile.GlobalResources;assembly=MS.IoT.Mobile"
+    xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+    xmlns:syncfusion="clr-namespace:Syncfusion.SfCarousel.XForms;assembly=Syncfusion.SfCarousel.XForms"  
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    x:Class="MS.IoT.Mobile.MainPage"
+    x:Name="MainPage"
+    Title="Connected Device App"
+    >
+
+    <qxfutils:BaseContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="itemTemplate">
+                <Grid
+                    RowSpacing="0"
+                    >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="150" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill"  
+                        HorizontalTextAlignment="Center"
+                        VerticalTextAlignment="Center" 
+                        FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPLight}"
+                        FontSize="24"
+                        Text="{Binding Caption}" 
+                        />
+                    <ffimageloadingsvg:SvgCachedImage
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Source="{Binding Icon}" 
+                        Aspect="AspectFit"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill"
+                        Margin="0"
+                        />
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="featuresTemplate">
+                <ListView 
+                    x:Name="FeaturesList"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="Fill"
+                    ItemTemplate="{StaticResource FeatureTemplateSelector}"
+                    ItemsSource="{Binding Path=BindingContext. FeatureCollection, Source={x:Reference MainPage}}"
+                    HasUnevenRows="True" 
+                    SeparatorVisibility="Default"
+                    SeparatorColor="{x:Static local:GlobalResources.Colors.FeaturesSeperatorColor}"
+                    BackgroundColor="{x:Static local:GlobalResources.Colors.FeaturesBackgroundColor}"
+                    ItemTapped="OnFeatureTapped"   
+                    >
+                    <ListView.Behaviors>
+                        <qxfutils:EventToCommandBehaviour 
+                            EventName="ItemTapped" 
+                            Command="{Binding Path=BindingContext. ListItemTapped, Source={x:Reference MainPage}}" 
+                            EventArgsConverter="{StaticResource ItemTappedConverter}" 
+                            />
+                    </ListView.Behaviors>
+                </ListView>
+            </DataTemplate>            
+            <qxfutils:SelectionChangedEventArgsToSelectedIndexConverter x:Key="SelectedItemConverter" />
+            <qxfutils:ItemTappedEventArgsConverter x:Key="ItemTappedConverter" />
+            <qxfutils:EqualityConverter x:Key="EqualConverter" />  
+            <qxfutils:NonEqualityConverter x:Key="NotEqualConverter" />            
+            <local:DeviceFeatureTemplateSelector x:Key="FeatureTemplateSelector" />
+            <x:Int32 x:Key="Zero">0</x:Int32>
+        </ResourceDictionary>
+    </qxfutils:BaseContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <qxfutils:EventToCommandBehaviour EventName="Appearing" Command="{Binding PageAppearing}" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Icon="{Binding NotificationIconName}"
+            Order="Primary"
+            Priority="0"
+            Command="{Binding NotificationIconClicked}"
+        />
+    </ContentPage.ToolbarItems>
+
+
+    <qxfutils:BaseContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0, 20, 0, 0" />
+            <On Platform="Android" Value="0, 0, 0, 0" />
+            <On Platform="WinPhone" Value="0, 20, 0, 0" />
+            <On Platform="Windows" Value="0, 40, 0, 0" />
+        </OnPlatform>
+    </qxfutils:BaseContentPage.Padding>
+
+
+    <qxfutils:BaseContentPage.Content>
+        <AbsoluteLayout
+            x:Name= "RootLayout"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+            BackgroundColor="{x:Static globalresources:Colors.MainBackgroundColor}"
+            >
+
+            <StackLayout
+                x:Name = "NoDeviceMessageArea"
+                AbsoluteLayout.LayoutBounds="1.0,0.0,1.0,0.6"
+                AbsoluteLayout.LayoutFlags="All" 
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                BackgroundColor="Transparent"
+                Orientation="Vertical"
+                IsVisible="{Binding NumberDevices, Converter={StaticResource EqualConverter}, ConverterParameter={StaticResource Zero}} }"
+                >
+                <Label
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        Margin="20,0,20,20"
+                        FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPLight}"
+                        FontSize="24"
+                        TextColor="White"
+                        Text="No Registered Devices Found" 
+                    />
+                <Label
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        Margin="20,10,20,10"
+                        FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPLight}"
+                        FontSize="20"
+                        TextColor="White"
+                        Text="Please wait for devices to load" 
+                    /> 
+                <Label
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        Margin="20,10,20,10"
+                        FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPLight}"
+                        FontSize="20"
+                        TextColor="White"
+                        Text="or register your connected devices" 
+                    />                 
+            </StackLayout>
+
+            <!-- Device selection Carousel -->
+            <ContentView
+                x:Name = "DeviceSelectionArea"
+                AbsoluteLayout.LayoutBounds="1.0,0.0,1.0,0.4"
+                AbsoluteLayout.LayoutFlags="All" 
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                BackgroundColor="White"
+                IsVisible="{Binding NumberDevices, Converter={StaticResource NotEqualConverter}, ConverterParameter={StaticResource Zero}} }"
+                >
+
+                <ContentView.Content>
+                    <syncfusion:SfCarousel 
+                        x:Name="DeviceCarousel"
+                        ItemTemplate="{StaticResource itemTemplate}" 
+                        VerticalOptions="Fill"
+                        HorizontalOptions="Fill"
+                        ItemWidth="200"
+                        ItemHeight="200"
+                        ItemSpacing="500"
+                        Offset="100"
+                        SelectedItemOffset="80"
+                        RotationAngle="0"
+                        SelectedIndex="1"
+                        Duration="200"
+                        DataSource="{Binding DeviceCollection}"
+                        >
+
+                        <syncfusion:SfCarousel.Behaviors>
+                            <qxfutils:SFCarouselEventToCommandBehaviour EventName="SelectionChanged" Command="{Binding DeviceSelected}" EventArgsConverter="{StaticResource SelectedItemConverter}" />
+                        </syncfusion:SfCarousel.Behaviors>
+
+
+                    </syncfusion:SfCarousel>
+                </ContentView.Content>
+            </ContentView>
+
+            <!-- Device Details Area -->
+            <ContentView
+                x:Name = "DeviceDetailsArea"
+                AbsoluteLayout.LayoutBounds="1.0,1.0,1.0,0.6"
+                AbsoluteLayout.LayoutFlags="All" 
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"   
+                Padding="0,20,0,0"
+                BackgroundColor="{x:Static globalresources:Colors.FeaturesBackgroundColor}"
+                IsVisible="{Binding NumberDevices, Converter={StaticResource NotEqualConverter}, ConverterParameter={StaticResource Zero}} }"
+                >
+                <ContentView.Content>
+                    <StackLayout
+                        x:Name="DeviceDetailsStack"
+                        Spacing="0"
+                        Orientation="Vertical"
+                        >
+                        <Frame
+                            OutlineColor="Transparent"
+                            BackgroundColor="{x:Static globalresources:Colors.FeaturesHeaderColor}"
+                            Padding="0"
+                            HasShadow="False"
+                            >
+                            <Label
+                                VerticalOptions="Start"
+                                HorizontalOptions="Center"
+                                TextColor ="White"
+                                FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                                FontSize="15"
+                                Text="FEATURES"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center"                             
+                                Margin ="12"                            
+                                />
+                        </Frame>
+                        <cv:CarouselViewControl 
+                            x:Name="DeviceDetailsCarousel"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            Orientation="Horizontal" 
+                            InterPageSpacing="0"
+                            IsSwipingEnabled="False"
+                            ShowIndicators="False"
+                            Position="{Binding Path=BindingContext. CurrentDeviceSelection, Source={x:Reference MainPage}}"
+                            ItemsSource="{Binding Path=BindingContext. DeviceCollection, Source={x:Reference MainPage}}"                           
+                            ItemTemplate="{StaticResource featuresTemplate}"                             
+                            >
+                        </cv:CarouselViewControl>
+                    </StackLayout>
+                </ContentView.Content>
+            </ContentView>
+
+        </AbsoluteLayout>
+    </qxfutils:BaseContentPage.Content>
+</qxfutils:BaseContentPage>

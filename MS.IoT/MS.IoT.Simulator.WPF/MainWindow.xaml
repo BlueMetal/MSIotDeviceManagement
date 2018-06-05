@@ -1,0 +1,98 @@
+﻿<Window x:Class="MS.IoT.Simulator.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:resx="clr-namespace:MS.IoT.Simulator.WPF.Properties"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        mc:Ignorable="d"
+        Title="Microsoft DataPacket Simulator" Height="900" Width="1280" MinWidth="1280" MinHeight="768">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Height="64">
+            <Grid.Background>
+                <SolidColorBrush Color="Black"></SolidColorBrush>
+            </Grid.Background>
+            <Grid HorizontalAlignment="Center" Width="1192">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Margin="0,6,0,6" Source="Resources/logo.png"/>
+                <Label Grid.Column="1" Content="{x:Static resx:Resources.HeaderTitle}" Margin="16,15,0,0" FontSize="18" Foreground="#40c4ff"/>
+                <Label Grid.Column="3" HorizontalAlignment="Right" Content="{Binding CurrentUser.Name}" Margin="0,15,32,0" FontSize="18" Foreground="#40c4ff"/>
+                <Label Grid.Column="4" Content="{x:Static resx:Resources.HeaderSignOutButton}" Margin="0,15,0,15" FontSize="18" Foreground="#40c4ff" Style="{StaticResource btnSignOut}" Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDown">
+                            <i:InvokeCommandAction Command="{Binding LogoutCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Label>
+            </Grid>
+        </Grid>
+        
+        <!-- Content -->
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="Resources/background.png" Stretch="UniformToFill"></ImageBrush>
+            </Grid.Background>
+            <Grid Margin="0,30,0,30" Width="1140" HorizontalAlignment="Center">
+                <ContentControl Content="{Binding }" DataContext="{Binding CurrentViewModel}"/>
+            </Grid>
+        </Grid>
+
+        <!-- Footer -->
+        <Grid Grid.Row="2" Height="32" Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.Background>
+                <SolidColorBrush Color="Black"></SolidColorBrush>
+            </Grid.Background>
+            <Grid HorizontalAlignment="Center" Width="1192">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontSize="14">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Content" Value="{x:Static resx:Resources.FooterUSBDisconnected}"/>
+                            <Setter Property="Foreground" Value="#ff8000"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ChipNetworkReady}" Value="True">
+                                    <Setter Property="Content" Value="{x:Static resx:Resources.FooterUSBConnected}"/>
+                                    <Setter Property="Foreground" Value="#40c4ff"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <Label Grid.Column="1" FontSize="14" Margin="16,0,0,0">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Content" Value="{x:Static resx:Resources.FooterUARTDisconnected}"/>
+                            <Setter Property="Foreground" Value="#ff8000"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ChipUARTResponding}" Value="True">
+                                    <Setter Property="Content" Value="{x:Static resx:Resources.FooterUARTConnected}"/>
+                                    <Setter Property="Foreground" Value="#40c4ff"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

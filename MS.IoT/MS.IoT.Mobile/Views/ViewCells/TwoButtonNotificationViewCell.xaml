@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:local="clr-namespace:MS.IoT.Mobile;assembly=MS.IoT.Mobile"
+          xmlns:globalresources="clr-namespace:MS.IoT.Mobile.GlobalResources;assembly=MS.IoT.Mobile"  
+          xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+          xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+          x:Class="MS.IoT.Mobile.TwoButtonNotificationViewCell"
+          >
+  <ViewCell.View>
+        <Grid
+            RowSpacing="0"
+            ColumnSpacing="0"
+            HorizontalOptions="Fill"
+            BackgroundColor="{x:Static local:GlobalResources.Colors.NotificationBackgroundColor}"
+            >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="12*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height ="Auto" />
+                <RowDefinition Height ="60" />
+            </Grid.RowDefinitions>
+
+            <Label 
+                x:Name="Indicator"
+                Grid.Column="0"
+                Grid.Row="0"                
+                HorizontalOptions="Fill"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center" 
+                Margin="10,10,0,10"
+                FontSize="30"
+                FontAttributes="Bold"
+                TextColor="{x:Static local:GlobalResources.Colors.NewNotificationIndicatorColor}"
+                Text="&#x2022;"
+                IsVisible="{Binding IsUnread}"
+                />
+
+            <ffimageloadingsvg:SvgCachedImage
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                HeightRequest="30"
+                Margin="5,12,5,12"               
+                Aspect="AspectFit"
+                Source="{Binding Icon}" 
+                />
+            <Label 
+                x:Name="Title"
+                Grid.Column="2"
+                Grid.Row="0"                
+                HorizontalOptions="Fill"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Start" 
+                LineBreakMode="WordWrap"
+                Margin="0,10,5,5"
+                FontFamily="{Binding FontFamily}"
+                FontSize="15"
+                TextColor="{x:Static local:GlobalResources.Colors.TextColor}"
+                Text="{Binding Label}"
+                />
+            <Label 
+                x:Name="TimeStamp"
+                Grid.Column="3"
+                Grid.Row="0"                
+                HorizontalOptions="Fill"
+                HorizontalTextAlignment="End"
+                VerticalTextAlignment="Start" 
+                Margin="0,10,10,0"
+                FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPLight}"
+                FontSize="15"
+                TextColor="{x:Static local:GlobalResources.Colors.TextColor}"
+                Text="{Binding Received}"
+                />
+            <StackLayout
+                Grid.Column="2"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                HorizontalOptions="Fill"
+                VerticalOptions="Center"
+                Margin="0,0,15,15"  
+                Orientation="Horizontal"
+                >
+                <ffimageloadingsvg:SvgCachedImage
+                    x:Name= "LaterButton"
+                    VerticalOptions="Center"
+                    Aspect="AspectFit"
+                    Margin="0,0,4,0"
+                    Source="resource://MS.IoT.Mobile.Assets.Icons.btn-later.svg"
+                    >
+                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer
+                        Command="{Binding ButtonClicked}"
+                        CommandParameter="LaterButton" />
+                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+                <ffimageloadingsvg:SvgCachedImage
+                    x:Name= "YesButton"
+                    VerticalOptions="Center"
+                    Aspect="AspectFit"
+                    Margin="4,0,0,0"
+                    Source="resource://MS.IoT.Mobile.Assets.Icons.btn-yes.svg"
+                    >
+                    <ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding ButtonClicked}"
+                            CommandParameter="YesButton" />
+                    </ffimageloadingsvg:SvgCachedImage.GestureRecognizers>
+                </ffimageloadingsvg:SvgCachedImage>
+            </StackLayout>
+        </Grid>
+    </ViewCell.View>
+</ViewCell>

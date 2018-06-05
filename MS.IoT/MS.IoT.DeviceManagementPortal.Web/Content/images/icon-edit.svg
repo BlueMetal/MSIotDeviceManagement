@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="14px" height="15px" viewBox="0 0 14 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Edit</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Edit-2" transform="translate(-1.000000, 0.000000)" stroke="#FFFFFF">
+            <g id="Edit" transform="translate(1.000000, -1.000000)">
+                <g id="Group" transform="translate(7.000000, 8.500000) rotate(10.000000) translate(-7.000000, -8.500000) translate(2.000000, 1.000000)">
+                    <path d="M3.25,12.97 L0.075,14.8375 L0.29,11.16 L6.935,0.2825 C7.00710735,0.165566753 7.16005774,0.128724689 7.2775,0.2 L9.8125,1.75 C9.92943325,1.82210735 9.96627531,1.97505774 9.895,2.0925 L3.25,12.97 Z" id="Shape" stroke-width="0.5"></path>
+                    <path d="M5.875,2.015 L8.835,3.825" id="Shape" stroke-width="0.5"></path>
+                    <path d="M0.145,13.505 L1.225,14.165" id="Shape" stroke-width="0.5"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

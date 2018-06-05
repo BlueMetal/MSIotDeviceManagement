@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"> 
+  <?define MS.IoT.Simulator.WPF_TargetDir=$(var.MS.IoT.Simulator.WPF.TargetDir)?>
+    <Product Id="*" Name="4x4Simulator" Language="1033" Version="1.0.1.0" Manufacturer="Microsoft-BlueMetal" UpgradeCode="{6058CF2C-E243-4DFF-8FBF-F9D5A72473AA}">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <!--Custom c# action to set appsettings in configuration-->
+    <Binary Id="MS.IoT.Simulator.Installer.SetConfigXML.CA.dll" SourceFile="..\MS.IoT.Simulator.Installer.SetConfigXML\bin\$(var.Configuration)\MS.IoT.Simulator.Installer.SetConfigXML.CA.dll" />
+    <InstallExecuteSequence>
+      <Custom Action="ReadSetConfigXML" Before="CostFinalize" />
+    </InstallExecuteSequence>
+    
+    <!--Installer UI-->
+    <UIRef Id="WixUI_Minimal" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+    <WixVariable Id="WixUILicenseRtf" Value="LicenseAgreement.rtf" />
+    <WixVariable Id="WixUIDialogBmp" Value="4x4simulator.bmp" />
+    
+    <Icon Id="icon.exe" SourceFile="icon1.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.exe" />
+    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+    <!--Configuration App setting values-->
+    <Property Id="CosmosDBEndPoint" />
+    <Property Id="CosmosDBAuthKey" />
+    <Property Id="IoTHubHostName" />
+    <Property Id="IoTHubConnectionString" />
+    
+		<Feature Id="ProductFeature" Title="4x4Simulator" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+		</Feature>
+	</Product>
+
+  <Fragment>
+    <CustomAction Id="ReadSetConfigXML" BinaryKey="MS.IoT.Simulator.Installer.SetConfigXML.CA.dll" DllEntry="ReadSetConfigXML" Return="check" Execute="immediate" />
+  </Fragment>
+  
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="4x4Simulator" />
+			</Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="4x4Simulator" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+		</Directory>
+	</Fragment>
+
+  <!--Creates application shortcut and program folder-->
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="{57E7755C-45D8-48A4-99FD-D30BDBEE2C13}">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="4x4Simulator" Description="My Application Description" Icon="icon.exe" Target="[INSTALLFOLDER]MS.IoT.Simulator.WPF.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\4x4Simulator" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="{70351981-99EC-4E16-85F4-176E5186FA5C}">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="4x4Simulator" Description="My Application Description" Icon="icon.exe" Target="[INSTALLFOLDER]MS.IoT.Simulator.WPF.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\4x4Simulator" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+  
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+    
+			<Component Id="MS.IoT.Simulator.WPF.exe" Guid="{18BB114D-031A-45F8-937F-FCD8DC32E4FD}">       
+			  <File Id="MS.IoT.Simulator.WPF.exe" Name="MS.IoT.Simulator.WPF.exe" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)MS.IoT.Simulator.WPF.exe" />
+        <RemoveFolder Id="INSTALLFOLDER" On="uninstall" />
+        <RemoveFile Id="RemoveMS.IoT.Simulator.WPF.exe" Name="MS.IoT.Simulator.WPF.exe" On="uninstall" />
+			</Component>
+
+      <!--Change App config files on installation-->
+      <Component Id="ChangeConfig" Guid="{CD48445D-8377-448E-A306-D01B1C2BCDB9}">
+        <File Id="App.config" Name="MS.IoT.Simulator.WPF.exe.config" Vital="yes" KeyPath="yes" Source="$(var.MS.IoT.Simulator.WPF.TargetDir)MS.IoT.Simulator.WPF.exe.config" />       
+        <util:XmlFile Id="AppConfigSetConnStr1" Action="setValue" Permanent="yes" File="[#App.config]" ElementPath="/configuration/appSettings/add[\[]@key='cdb:EndPoint'[\]]" Name="value" Value="[CosmosDBEndPoint]" />        
+        <util:XmlFile Id="AppConfigSetConnStr2" Action="setValue" Permanent="yes" File="[#App.config]" ElementPath="/configuration/appSettings/add[\[]@key='cdb:AuthKey'[\]]" Name="value" Value="[CosmosDBAuthKey]" />       
+        <util:XmlFile Id="AppConfigSetConnStr3" Action="setValue" Permanent="yes" File="[#App.config]" ElementPath="/configuration/appSettings/add[\[]@key='iotHub:HostName'[\]]" Name="value" Value="[IoTHubHostName]" />      
+        <util:XmlFile Id="AppConfigSetConnStr4" Action="setValue" Permanent="yes" File="[#App.config]" ElementPath="/configuration/appSettings/add[\[]@key='iotHub:ConnectionString'[\]]" Name="value" Value="[IoTHubConnectionString]" />
+      
+        <RemoveFile Id="RemoveApp.config" Name="App.config" On="uninstall" />
+      </Component>
+      
+			<Component Id="MS.IoT.Domain.dll" Guid="{35C8153C-30F1-45CA-AD54-B80B2D8E2B4A}">
+			  <File Id="MS.IoT.Domain.dll" Name="MS.IoT.Domain.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)MS.IoT.Domain.dll" />
+        <RemoveFile Id="RemoveMS.IoT.Domain.dll" Name="MS.IoT.Domain.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Azure.Documents.ServiceInterop.dll" Guid="{DE1440DF-7180-4566-96A9-14E6F6251C2A}">
+			  <File Id="Microsoft.Azure.Documents.ServiceInterop.dll" Name="Microsoft.Azure.Documents.ServiceInterop.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.Documents.ServiceInterop.dll" />      
+        <RemoveFile Id="RemoveMicrosoft.Azure.Documents.ServiceInterop.dll" Name="Microsoft.Azure.Documents.ServiceInterop.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="DocumentDB.Spatial.Sql.dll" Guid="{561AE577-FBA6-420B-8E24-E95FA7AE0097}">
+			  <File Id="DocumentDB.Spatial.Sql.dll" Name="DocumentDB.Spatial.Sql.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)DocumentDB.Spatial.Sql.dll" />        
+        <RemoveFile Id="RemoveDocumentDB.Spatial.Sql.dll" Name="DocumentDB.Spatial.Sql.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="MS.IoT.Repositories.dll" Guid="{DD8B4050-0619-4DEF-8872-80AA5095D2F0}">
+			  <File Id="MS.IoT.Repositories.dll" Name="MS.IoT.Repositories.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)MS.IoT.Repositories.dll" />      
+        <RemoveFile Id="RemoveMS.IoT.Repositories.dll" Name="MS.IoT.Repositories.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="MS.IoT.Common.dll" Guid="{7D11B2CA-8BBA-4439-91DB-4526BB1B11FE}">
+			  <File Id="MS.IoT.Common.dll" Name="MS.IoT.Common.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)MS.IoT.Common.dll" />       
+        <RemoveFile Id="RemoveMS.IoT.Common.dll" Name="MS.IoT.Common.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Guid="{8ED44C71-89C9-4CB0-9E87-31546DA57FDE}">
+			  <File Id="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Name="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.IdentityModel.Clients.ActiveDirectory.dll" Name="Microsoft.IdentityModel.Clients.ActiveDirectory.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll" Guid="{A2FD2946-A39E-489C-945B-03A6EC2469A9}">
+			  <File Id="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll" Name="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.IdentityModel.Clients.ActiveDirectory.Platform.dll" Name="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Practices.ServiceLocation.dll" Guid="{AC642EF0-025D-4030-93F6-B821452658E9}">
+			  <File Id="Microsoft.Practices.ServiceLocation.dll" Name="Microsoft.Practices.ServiceLocation.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Practices.ServiceLocation.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Practices.ServiceLocation.dll" Name="Microsoft.Practices.ServiceLocation.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Practices.Unity.dll" Guid="{A55C9AB4-C75F-46F0-BAA9-C177DEB45F56}">
+			  <File Id="Microsoft.Practices.Unity.dll" Name="Microsoft.Practices.Unity.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Practices.Unity.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Practices.Unity.dll" Name="Microsoft.Practices.Unity.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Practices.Unity.Configuration.dll" Guid="{1DF4E3DE-B74F-4EF4-A911-F2939DD2C325}">
+			  <File Id="Microsoft.Practices.Unity.Configuration.dll" Name="Microsoft.Practices.Unity.Configuration.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Practices.Unity.Configuration.dll" />       
+        <RemoveFile Id="RemoveMicrosoft.Practices.Unity.Configuration.dll" Name="Microsoft.Practices.Unity.Configuration.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Practices.Unity.RegistrationByConvention.dll" Guid="{56D58F61-AB82-488E-8856-393ABF763F60}">
+			  <File Id="Microsoft.Practices.Unity.RegistrationByConvention.dll" Name="Microsoft.Practices.Unity.RegistrationByConvention.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Practices.Unity.RegistrationByConvention.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Practices.Unity.RegistrationByConvention.dll" Name="Microsoft.Practices.Unity.RegistrationByConvention.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="ICSharpCode.SharpZipLib.dll" Guid="{EFF0AE86-A880-49C5-AFDE-8708700E937F}">
+			  <File Id="ICSharpCode.SharpZipLib.dll" Name="ICSharpCode.SharpZipLib.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)ICSharpCode.SharpZipLib.dll" />        
+        <RemoveFile Id="RemoveICSharpCode.SharpZipLib.dll" Name="ICSharpCode.SharpZipLib.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Newtonsoft.Json.dll" Guid="{B379D716-52F6-4F8C-814D-AD02F2D05558}">
+			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Newtonsoft.Json.dll" />      
+        <RemoveFile Id="RemoveNewtonsoft.Json.dll" Name="Newtonsoft.Json.dll" On="uninstall" />
+			</Component>
+        
+			<Component Id="Microsoft.Azure.ActiveDirectory.GraphClient.dll" Guid="{4308B92B-293D-48EC-9FD7-37E960B8F033}">
+			  <File Id="Microsoft.Azure.ActiveDirectory.GraphClient.dll" Name="Microsoft.Azure.ActiveDirectory.GraphClient.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.ActiveDirectory.GraphClient.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Azure.ActiveDirectory.GraphClient.dll" Name="Microsoft.Azure.ActiveDirectory.GraphClient.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Azure.Management.ResourceManager.dll" Guid="{30E306C7-404E-47F5-A123-C3FA9DC2E96B}">
+			  <File Id="Microsoft.Azure.Management.ResourceManager.dll" Name="Microsoft.Azure.Management.ResourceManager.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.Management.ResourceManager.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Azure.Management.ResourceManager.dll" Name="Microsoft.Azure.Management.ResourceManager.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Azure.Documents.Client.dll" Guid="{5DEE4C6B-93BE-4AAE-99E1-426E967043BF}">
+			  <File Id="Microsoft.Azure.Documents.Client.dll" Name="Microsoft.Azure.Documents.Client.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.Documents.Client.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Azure.Documents.Client.dll" Name="Microsoft.Azure.Documents.Client.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="RestSharp.dll" Guid="{0B28DCB1-F29D-4586-B055-422418FC285E}">
+			  <File Id="RestSharp.dll" Name="RestSharp.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)RestSharp.dll" />       
+        <RemoveFile Id="RemoveRestSharp.dll" Name="RestSharp.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Rest.ClientRuntime.dll" Guid="{7F4FC014-5E80-412E-B227-27B2347F84C4}">
+			  <File Id="Microsoft.Rest.ClientRuntime.dll" Name="Microsoft.Rest.ClientRuntime.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Rest.ClientRuntime.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Rest.ClientRuntime.dll" Name="Microsoft.Rest.ClientRuntime.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.WindowsAzure.Storage.dll" Guid="{938F6786-C11A-42B4-8621-DF62DD66B994}">
+			  <File Id="Microsoft.WindowsAzure.Storage.dll" Name="Microsoft.WindowsAzure.Storage.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.WindowsAzure.Storage.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.WindowsAzure.Storage.dll" Name="Microsoft.WindowsAzure.Storage.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Data.Edm.dll" Guid="{E78F77E6-0058-43F3-867B-076FD2902850}">
+			  <File Id="Microsoft.Data.Edm.dll" Name="Microsoft.Data.Edm.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Data.Edm.dll" />       
+        <RemoveFile Id="RemoveMicrosoft.Data.Edm.dll" Name="Microsoft.Data.Edm.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Data.OData.dll" Guid="{0579E878-B27D-48AD-B51E-5376F0215FE2}">
+			  <File Id="Microsoft.Data.OData.dll" Name="Microsoft.Data.OData.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Data.OData.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Data.OData.dll" Name="Microsoft.Data.OData.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Data.Services.Client.dll" Guid="{C04D8037-9228-4040-B32A-765CECC8833B}">
+			  <File Id="Microsoft.Data.Services.Client.dll" Name="Microsoft.Data.Services.Client.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Data.Services.Client.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Data.Services.Client.dll" Name="Microsoft.Data.Services.Client.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Rest.ClientRuntime.Azure.dll" Guid="{1B0EB65F-CFEF-4688-BFE2-DC6415A3BB2C}">
+			  <File Id="Microsoft.Rest.ClientRuntime.Azure.dll" Name="Microsoft.Rest.ClientRuntime.Azure.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Rest.ClientRuntime.Azure.dll" />       
+        <RemoveFile Id="RemoveMicrosoft.Rest.ClientRuntime.Azure.dll" Name="Microsoft.Rest.ClientRuntime.Azure.dll" On="uninstall" />
+			</Component>
+        
+			<Component Id="System.Spatial.dll" Guid="{476BD75A-40FC-4ED6-97DD-AB4B24D23AA2}">
+			  <File Id="System.Spatial.dll" Name="System.Spatial.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)System.Spatial.dll" />       
+        <RemoveFile Id="RemoveSystem.Spatial.dll" Name="System.Spatial.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Azure.KeyVault.Core.dll" Guid="{1A9D5895-2747-4936-B914-EA6A0165493E}">
+			  <File Id="Microsoft.Azure.KeyVault.Core.dll" Name="Microsoft.Azure.KeyVault.Core.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.KeyVault.Core.dll" />       
+        <RemoveFile Id="RemoveMicrosoft.Azure.KeyVault.Core.dll" Name="Microsoft.Azure.KeyVault.Core.dll" On="uninstall" />
+			</Component>	
+      
+			<Component Id="Serilog.dll" Guid="{A49BB0AD-4543-4E64-9541-BD7F109F93A3}">
+			  <File Id="Serilog.dll" Name="Serilog.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Serilog.dll" />        
+        <RemoveFile Id="RemoveSerilog.dll" Name="Serilog.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Serilog.Sinks.ApplicationInsights.dll" Guid="{F3FBD641-A4C9-4F02-840F-2D93B4FDB96C}">
+			  <File Id="Serilog.Sinks.ApplicationInsights.dll" Name="Serilog.Sinks.ApplicationInsights.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Serilog.Sinks.ApplicationInsights.dll" />       
+        <RemoveFile Id="RemoveSerilog.Sinks.ApplicationInsights.dll" Name="Serilog.Sinks.ApplicationInsights.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.ApplicationInsights.dll" Guid="{01563A19-E365-4540-AE53-EB076DB9B9F2}">
+			  <File Id="Microsoft.ApplicationInsights.dll" Name="Microsoft.ApplicationInsights.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.ApplicationInsights.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.ApplicationInsights.dll" Name="Microsoft.ApplicationInsights.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Expression.Interactions.dll" Guid="{D9FAFC30-1342-44FB-9907-D13D2C2E511E}">
+			  <File Id="Microsoft.Expression.Interactions.dll" Name="Microsoft.Expression.Interactions.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Expression.Interactions.dll" />      
+        <RemoveFile Id="RemoveMicrosoft.Expression.Interactions.dll" Name="Microsoft.Expression.Interactions.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="System.Windows.Interactivity.dll" Guid="{F5B4A5B4-72EF-4E56-985C-B16D36C72E5A}">
+			  <File Id="System.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)System.Windows.Interactivity.dll" />        
+        <RemoveFile Id="RemoveSystem.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll" Guid="{2C2F9EF3-D895-4D10-BEF1-7CEC9DC0A879}">
+			  <File Id="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll" Name="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll" Name="Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="PInvoke.Kernel32.dll" Guid="{9BBBD10E-8509-4F7F-B742-5655A5AE8219}">
+			  <File Id="PInvoke.Kernel32.dll" Name="PInvoke.Kernel32.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)PInvoke.Kernel32.dll" />        
+        <RemoveFile Id="RemovePInvoke.Kernel32.dll" Name="PInvoke.Kernel32.dll" On="uninstall" />
+			</Component>
+        
+			<Component Id="PInvoke.NCrypt.dll" Guid="{674EFECF-D663-41B2-8EE9-8B1DBF95E2DC}">
+			  <File Id="PInvoke.NCrypt.dll" Name="PInvoke.NCrypt.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)PInvoke.NCrypt.dll" />      
+        <RemoveFile Id="RemovePInvoke.NCrypt.dll" Name="PInvoke.NCrypt.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="PInvoke.Windows.Core.dll" Guid="{98B9DA88-CA79-4125-B6C8-B9FC3EF65964}">
+			  <File Id="PInvoke.Windows.Core.dll" Name="PInvoke.Windows.Core.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)PInvoke.Windows.Core.dll" />       
+        <RemoveFile Id="RemovePInvoke.Windows.Core.dll" Name="PInvoke.Windows.Core.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="System.Net.Http.Formatting.dll" Guid="{24356055-18CC-4EC4-9262-816F31E68C3E}">
+			  <File Id="System.Net.Http.Formatting.dll" Name="System.Net.Http.Formatting.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)System.Net.Http.Formatting.dll" />       
+        <RemoveFile Id="RemoveSystem.Net.Http.Formatting.dll" Name="System.Net.Http.Formatting.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="System.Runtime.InteropServices.RuntimeInformation.dll" Guid="{02B13195-13B4-45C0-A684-5F4980CABAC6}">
+			  <File Id="System.Runtime.InteropServices.RuntimeInformation.dll" Name="System.Runtime.InteropServices.RuntimeInformation.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)System.Runtime.InteropServices.RuntimeInformation.dll" />       
+        <RemoveFile Id="RemoveSystem.Runtime.InteropServices.RuntimeInformation.dll" Name="System.Runtime.InteropServices.RuntimeInformation.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="System.Web.Http.dll" Guid="{BB22CD3A-E5A6-43A6-8E6C-0894C7635DB5}">
+			  <File Id="System.Web.Http.dll" Name="System.Web.Http.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)System.Web.Http.dll" />        
+        <RemoveFile Id="RemoveSystem.Web.Http.dll" Name="System.Web.Http.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Extensions.Logging.Abstractions.dll" Guid="{524EC339-BF18-4703-8308-76F1073A6E58}">
+			  <File Id="Microsoft.Extensions.Logging.Abstractions.dll" Name="Microsoft.Extensions.Logging.Abstractions.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Extensions.Logging.Abstractions.dll" />      
+        <RemoveFile Id="RemoveMicrosoft.Extensions.Logging.Abstractions.dll" Name="Microsoft.Extensions.Logging.Abstractions.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Extensions.Logging.dll" Guid="{52AB2DDC-3F37-489C-82AC-1576F4DDB649}">
+			  <File Id="Microsoft.Extensions.Logging.dll" Name="Microsoft.Extensions.Logging.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Extensions.Logging.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Extensions.Logging.dll" Name="Microsoft.Extensions.Logging.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Guid="{815B710C-C81C-4CF0-B60A-D21D9A32E4C3}">
+			  <File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Name="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Extensions.DependencyInjection.Abstractions.dll" Name="Microsoft.Extensions.DependencyInjection.Abstractions.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Validation.dll" Guid="{CB3D0181-25CC-4DBE-8D9E-CDE5D0CB851D}">
+			  <File Id="Validation.dll" Name="Validation.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Validation.dll" />        
+        <RemoveFile Id="RemoveValidation.dll" Name="Validation.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="PInvoke.BCrypt.dll" Guid="{3044BB80-2F75-4C1F-8B51-A49DA48CE635}">
+			  <File Id="PInvoke.BCrypt.dll" Name="PInvoke.BCrypt.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)PInvoke.BCrypt.dll" />        
+        <RemoveFile Id="RemovePInvoke.BCrypt.dll" Name="PInvoke.BCrypt.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Azure.Devices.Shared.dll" Guid="{3350860C-8A10-43BC-A640-4BBE1B1BE49E}">
+			  <File Id="Microsoft.Azure.Devices.Shared.dll" Name="Microsoft.Azure.Devices.Shared.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.Devices.Shared.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Azure.Devices.Shared.dll" Name="Microsoft.Azure.Devices.Shared.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Azure.Devices.Client.dll" Guid="{B6556599-0DBB-4A2C-BFC8-531205AE9AA3}">
+			  <File Id="Microsoft.Azure.Devices.Client.dll" Name="Microsoft.Azure.Devices.Client.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.Devices.Client.dll" />       
+        <RemoveFile Id="RemoveMicrosoft.Azure.Devices.Client.dll" Name="Microsoft.Azure.Devices.Client.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="PCLCrypto.dll" Guid="{3C7035B1-B794-46C3-BD2D-00AB4FDAE084}">
+			  <File Id="PCLCrypto.dll" Name="PCLCrypto.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)PCLCrypto.dll" />       
+        <RemoveFile Id="RemovePCLCrypto.dll" Name="PCLCrypto.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Azure.Amqp.dll" Guid="{BA6AEBD2-0639-4F31-8541-23F004EA2833}">
+			  <File Id="Microsoft.Azure.Amqp.dll" Name="Microsoft.Azure.Amqp.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.Amqp.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Azure.Amqp.dll" Name="Microsoft.Azure.Amqp.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Microsoft.Azure.Devices.dll" Guid="{66C33BE8-09D6-4127-9BFE-6BD8891D4B4E}">
+			  <File Id="Microsoft.Azure.Devices.dll" Name="Microsoft.Azure.Devices.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Microsoft.Azure.Devices.dll" />        
+        <RemoveFile Id="RemoveMicrosoft.Azure.Devices.dll" Name="Microsoft.Azure.Devices.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="DotNetty.Codecs.dll" Guid="{0AF2BD22-99C9-40FC-BE0B-73809257762C}">
+			  <File Id="DotNetty.Codecs.dll" Name="DotNetty.Codecs.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)DotNetty.Codecs.dll" />        
+        <RemoveFile Id="RemoveDotNetty.Codecs.dll" Name="DotNetty.Codecs.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="DotNetty.Codecs.Mqtt.dll" Guid="{EBD3BE11-2502-4F83-8307-D11EC9B49F08}">
+			  <File Id="DotNetty.Codecs.Mqtt.dll" Name="DotNetty.Codecs.Mqtt.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)DotNetty.Codecs.Mqtt.dll" />       
+        <RemoveFile Id="RemoveDotNetty.Codecs.Mqtt.dll" Name="DotNetty.Codecs.Mqtt.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="DotNetty.Common.dll" Guid="{35EC1A8A-8C88-41DC-BD1A-7DEBB0F70EC2}">
+			  <File Id="DotNetty.Common.dll" Name="DotNetty.Common.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)DotNetty.Common.dll" />
+        
+        <RemoveFile Id="RemoveDotNetty.Common.dll" Name="DotNetty.Common.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="DotNetty.Buffers.dll" Guid="{7AF5577B-9EA8-4D84-861C-BB077597D9E5}">
+			  <File Id="DotNetty.Buffers.dll" Name="DotNetty.Buffers.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)DotNetty.Buffers.dll" />        
+        <RemoveFile Id="RemoveDotNetty.Buffers.dll" Name="DotNetty.Buffers.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="DotNetty.Handlers.dll" Guid="{B294FB94-91B8-4BCF-87C2-2B09A5EDE19A}">
+			  <File Id="DotNetty.Handlers.dll" Name="DotNetty.Handlers.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)DotNetty.Handlers.dll" />       
+        <RemoveFile Id="RemoveDotNetty.Handlers.dll" Name="DotNetty.Handlers.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="DotNetty.Transport.dll" Guid="{A3954B58-4657-4C4B-BF74-A1FCD9CEAE63}">
+			  <File Id="DotNetty.Transport.dll" Name="DotNetty.Transport.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)DotNetty.Transport.dll" />        
+        <RemoveFile Id="RemoveDotNetty.Transport.dll" Name="DotNetty.Transport.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="WpfAnimatedGif.dll" Guid="{83FDC9EB-0C53-4DC5-85BD-2E26B58AA536}">
+			  <File Id="WpfAnimatedGif.dll" Name="WpfAnimatedGif.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)WpfAnimatedGif.dll" />
+        <RemoveFile Id="WpfAnimatedGif.dll" Name="WpfAnimatedGif.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Serilog.Sinks.File.dll" Guid="{A4207CA8-5A21-4280-AF9A-43531C68DB1D}">
+			  <File Id="Serilog.Sinks.File.dll" Name="Serilog.Sinks.File.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Serilog.Sinks.File.dll" />
+        <RemoveFile Id="Serilog.Sinks.File.dll" Name="Serilog.Sinks.File.dll" On="uninstall" />
+			</Component>
+      
+			<Component Id="Serilog.Sinks.RollingFile.dll" Guid="{B130512D-5A6D-4712-B7C0-04DECC4F3518}">
+			  <File Id="Serilog.Sinks.RollingFile.dll" Name="Serilog.Sinks.RollingFile.dll" Source="$(var.MS.IoT.Simulator.WPF_TargetDir)Serilog.Sinks.RollingFile.dll" />
+        <RemoveFile Id="Serilog.Sinks.RollingFile.dll" Name="Serilog.Sinks.RollingFile.dll" On="uninstall" />
+			</Component>
+    
+		</ComponentGroup>
+	</Fragment>
+</Wix>

@@ -1,0 +1,109 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6.1</TargetFramework>
+    <PackageTargetFallback>portable-net45+win8+wpa81+wp8</PackageTargetFallback>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_6_1;DEMO</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD1_6_1;DEMO</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Icons\appliances-coffeemaker.svg" />
+    <None Remove="Assets\Icons\appliances.svg" />
+    <None Remove="Assets\Icons\apps-coffeemaker.svg" />
+    <None Remove="Assets\Icons\apps-stove.svg" />
+    <None Remove="Assets\Icons\apps-washer.svg" />
+    <None Remove="Assets\Icons\btn-back.svg" />
+    <None Remove="Assets\Icons\btn-chevron-right.svg" />
+    <None Remove="Assets\Icons\btn-later.svg" />
+    <None Remove="Assets\Icons\btn-medium-brew-selected.svg" />
+    <None Remove="Assets\Icons\btn-medium-brew.svg" />
+    <None Remove="Assets\Icons\btn-mild-brew-selected.svg" />
+    <None Remove="Assets\Icons\btn-mild-brew.svg" />
+    <None Remove="Assets\Icons\btn-start.svg" />
+    <None Remove="Assets\Icons\btn-strong-brew-selected.svg" />
+    <None Remove="Assets\Icons\btn-strong-brew.svg" />
+    <None Remove="Assets\Icons\btn-yes.svg" />
+    <None Remove="Assets\Icons\bullet-carousel-active.svg" />
+    <None Remove="Assets\Icons\bullet-carousel-inactive.svg" />
+    <None Remove="Assets\Icons\checkmark.svg" />
+    <None Remove="Assets\Icons\coffee-maker.png" />
+    <None Remove="Assets\Icons\dishwasher.png" />
+    <None Remove="Assets\Icons\fridge.png" />
+    <None Remove="Assets\Icons\icon-brew.svg" />
+    <None Remove="Assets\Icons\icon-coffee-strength.svg" />
+    <None Remove="Assets\Icons\icon-grind.svg" />
+    <None Remove="Assets\Icons\icon-new-feature.svg" />
+    <None Remove="Assets\Icons\icon-savings.svg" />
+    <None Remove="Assets\Icons\icon-schedule.svg" />
+    <None Remove="Assets\Icons\login-bkgd.svg" />
+    <None Remove="Assets\Icons\logo-facebook.svg" />
+    <None Remove="Assets\Icons\shadow-expanded-row.svg" />
+    <None Remove="Assets\Icons\splash-screen.svg" />
+    <None Remove="Assets\Icons\toaster.png" />
+    <None Remove="Assets\Icons\washing-machine.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Icons\appliances-coffeemaker.svg" />
+    <EmbeddedResource Include="Assets\Icons\appliances.svg" />
+    <EmbeddedResource Include="Assets\Icons\apps-coffeemaker.svg" />
+    <EmbeddedResource Include="Assets\Icons\apps-stove.svg" />
+    <EmbeddedResource Include="Assets\Icons\apps-washer.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-back.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-chevron-right.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-later.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-medium-brew-selected.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-medium-brew.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-mild-brew-selected.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-mild-brew.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-start.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-strong-brew-selected.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-strong-brew.svg" />
+    <EmbeddedResource Include="Assets\Icons\btn-yes.svg" />
+    <EmbeddedResource Include="Assets\Icons\bullet-carousel-active.svg" />
+    <EmbeddedResource Include="Assets\Icons\bullet-carousel-inactive.svg" />
+    <EmbeddedResource Include="Assets\Icons\checkmark.svg" />
+    <EmbeddedResource Include="Assets\Icons\coffee-maker.png" />
+    <EmbeddedResource Include="Assets\Icons\dishwasher.png" />
+    <EmbeddedResource Include="Assets\Icons\fridge.png" />
+    <EmbeddedResource Include="Assets\Icons\icon-grind-and-brew.svg" />
+    <EmbeddedResource Include="Assets\Icons\icon-brew.svg" />
+    <EmbeddedResource Include="Assets\Icons\icon-coffee-strength.svg" />
+    <EmbeddedResource Include="Assets\Icons\icon-grind.svg" />
+    <EmbeddedResource Include="Assets\Icons\icon-new-feature.svg" />
+    <EmbeddedResource Include="Assets\Icons\icon-savings.svg" />
+    <EmbeddedResource Include="Assets\Icons\icon-schedule.svg" />
+    <EmbeddedResource Include="Assets\Icons\login-bkgd.svg" />
+    <EmbeddedResource Include="Assets\Icons\logo-facebook.svg" />
+    <EmbeddedResource Include="Assets\Icons\shadow-expanded-row.svg" />
+    <EmbeddedResource Include="Assets\Icons\splash-screen.svg" />
+    <EmbeddedResource Include="Assets\Icons\toaster.png" />
+    <EmbeddedResource Include="Assets\Icons\washing-machine.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Images\" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CarouselView.FormsPlugin" Version="4.4.6" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="1.1.0-preview" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Polly" Version="5.5.0" />
+    <PackageReference Include="Syncfusion.Xamarin.SfCarousel" Version="15.3.0.33" />
+    <PackageReference Include="System.Net.Requests" Version="4.3.0" />
+    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.2.22" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.2.22" />
+    <PackageReference Include="Xamarin.Forms" Version="2.4.0.38779" />
+  </ItemGroup>
+
+</Project>

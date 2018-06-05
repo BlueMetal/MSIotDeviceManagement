@@ -1,0 +1,4 @@
+﻿<li ng-repeat="step in st.steps" class="{{step.stateView == st.currentState.name ? 'selected-step' : ''}}">
+    <span class="ng-hide" ng-show="{{$index < st.currentIndex}}"><a ui-sref="{{step.stateView}}({categoryId: st.currentStateParams.categoryId, templateId: st.currentStateParams.templateId})" ui-sref-opts="{reload: 'app.step'}" ng-bind="step.title"></a></span>
+    <span class="ng-hide" ng-show="{{$index >= st.currentIndex}}" ng-bind="step.title"></span>
+</li>

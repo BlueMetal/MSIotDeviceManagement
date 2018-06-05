@@ -1,0 +1,2039 @@
+﻿[
+  {
+    "id": "refrigerators_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "refrigeration",
+    "subcategoryId": "refrigerators",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "freezers_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "refrigeration",
+    "subcategoryId": "freezers",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "watercooler_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "refrigeration",
+    "subcategoryId": "watercooler",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "stoves_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "kitchen",
+    "subcategoryId": "stoves",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ovens_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "kitchen",
+    "subcategoryId": "ovens",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dishwashers_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "kitchen",
+    "subcategoryId": "dishwashers",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bulbs_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "lighting",
+    "subcategoryId": "bulbs",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "washing_machines_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "laundry",
+    "subcategoryId": "washing_machines",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dryers_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "laundry",
+    "subcategoryId": "dryers",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "air_conditioners_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "heating",
+    "subcategoryId": "air_conditioners",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cars_cyo",
+    "name": "Create your own",
+    "description": "Create your own template",
+    "userId": null,
+    "categoryId": "miscellaneous",
+    "subcategoryId": "cars",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "property1",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "refrigerator_simple",
+    "name": "Refrigerator Simple",
+    "description": "Simple refrigerator with one temperature probe.",
+    "userId": null,
+    "categoryId": "refrigeration",
+    "subcategoryId": "refrigerators",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "refrigerator_smart",
+    "name": "Refrigerator Smart",
+    "description": "Refrigerator template with multiple temperature probes, programs and more.",
+    "userId": null,
+    "categoryId": "refrigeration",
+    "subcategoryId": "refrigerators",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperatures",
+            "type": "object",
+            "properties": [
+              {
+                "name": "probe1",
+                "type": "number",
+                "properties": []
+              },
+              {
+                "name": "probe2",
+                "type": "number",
+                "properties": []
+              },
+              {
+                "name": "probe3",
+                "type": "number",
+                "properties": []
+              }
+            ]
+          },
+          {
+            "name": "water_tank",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "electric_consumption",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "noise",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "cooling_program",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "freezer_simple",
+    "name": "Freezer Simple",
+    "description": "Simple freezer with temperature probes.",
+    "userId": null,
+    "categoryId": "refrigeration",
+    "subcategoryId": "freezers",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "watercooler_simple",
+    "name": "Watercooler Simple",
+    "description": "Water Cooling with temperature probes.",
+    "userId": null,
+    "categoryId": "refrigeration",
+    "subcategoryId": "watercooler",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "stove_electric",
+    "name": "Stove Electric",
+    "description": "Stove working with electricity.",
+    "userId": null,
+    "categoryId": "kitchen",
+    "subcategoryId": "stoves",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "temperature_min",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "temperature_max",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "electric_consumption",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "running_program",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "time_till_finished",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "stove_gas",
+    "name": "Stove Gas",
+    "description": "Stove working with gas.",
+    "userId": null,
+    "categoryId": "kitchen",
+    "subcategoryId": "stoves",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "temperature_min",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "temperature_max",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "gas_consumption",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "running_program",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "time_till_finished",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "oven_electric",
+    "name": "Stove Electric",
+    "description": "Stove working with electricity.",
+    "userId": null,
+    "categoryId": "kitchen",
+    "subcategoryId": "ovens",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "temperature_min",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "temperature_max",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "electric_consumption",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "running_program",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "time_till_finished",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "light_simple",
+    "name": "Light hue",
+    "description": "Light.",
+    "userId": null,
+    "categoryId": "lighting",
+    "subcategoryId": "bulbs",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "light_rgb",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "light_intensity",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "washing_machine_simple",
+    "name": "Washing machine Simple",
+    "description": "Water, Temperature",
+    "userId": null,
+    "categoryId": "laundry",
+    "subcategoryId": "washing_machines",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "water_temperature",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "running_program",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "time_till_finished",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "drying_machine_simple",
+    "name": "Drying machine Simple",
+    "description": "Temperature",
+    "userId": null,
+    "categoryId": "laundry",
+    "subcategoryId": "dryers",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "laundry_weight",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "running_program",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "time_till_finished",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ac_simple",
+    "name": "Air Conditioner Simple",
+    "description": "Temperature",
+    "userId": null,
+    "categoryId": "heating",
+    "subcategoryId": "air_conditioners",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "temperature",
+            "type": "number",
+            "properties": []
+          },
+          {
+            "name": "running_program",
+            "type": "number",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "car_smart",
+    "name": "Car",
+    "description": "Car Location",
+    "userId": null,
+    "categoryId": "miscellaneous",
+    "subcategoryId": "cars",
+    "docType": "common",
+    "baseTemplateId": null,
+    "creationDate": "2017-01-01T00:00:00.000000-00:00",
+    "modifiedDate": "2017-01-01T00:00:00.000000-00:00",
+    "properties": [
+      {
+        "name": "header",
+        "type": "object",
+        "properties": [
+          {
+            "name": "message_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "device_id",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "properties": []
+          },
+          {
+            "name": "model",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "brand",
+            "type": "text",
+            "properties": []
+          },
+          {
+            "name": "location",
+            "type": "object",
+            "properties": [
+              {
+                "name": "address",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "properties": []
+              },
+              {
+                "name": "country",
+                "type": "text",
+                "properties": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "body",
+        "type": "object",
+        "properties": [
+          {
+            "name": "gps_value",
+            "type": "text",
+            "properties": []
+          }
+        ]
+      }
+    ]
+  }
+]

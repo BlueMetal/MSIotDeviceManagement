@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:resx="clr-namespace:MS.IoT.Simulator.WPF.Properties"
+                    xmlns:vm="clr-namespace:MS.IoT.Simulator.WPF.ViewModels"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:gif="http://wpfanimatedgif.codeplex.com"
+                    xmlns:helpers="clr-namespace:MS.IoT.Simulator.WPF.Helpers"
+                    xmlns:local="clr-namespace:MS.IoT.Simulator.WPF">
+    <DataTemplate DataType="{x:Type vm:HomeViewModel}">
+        <DataTemplate.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <helpers:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        </DataTemplate.Resources>
+        <Grid VerticalAlignment="Top" Margin="0,80,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="{x:Static resx:Resources.HomeProductTitle}" Style="{StaticResource textTitle}" Margin="0,0,0,30"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static resx:Resources.HomeProductDescription}" Style="{StaticResource textDescription}"/>
+            <Button Grid.Row="2" Grid.Column="0" Content="{x:Static resx:Resources.HomeLoginButton}" Width="160"  Margin="0,15" HorizontalAlignment="Left" Command="{Binding DataContext.LoginCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Style="{StaticResource btnBlue}" FontSize="22"/>
+            <Grid Grid.Row="2" Margin="180,0,0,0" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.LoginCommand.Execution, Converter={StaticResource NullToVisibilityConverter}}">
+                <Image HorizontalAlignment="Left" Width="48" gif:ImageBehavior.AnimatedSource="/Resources/loading-small.gif" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.LoginCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Label Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.LoginCommand.Execution.ErrorMessage}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.LoginCommand.Execution.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}" Style="{StaticResource textError}" />
+            </Grid>
+            <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Source="/Resources/4x4.png" Width="400" HorizontalAlignment="Right" ></Image>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

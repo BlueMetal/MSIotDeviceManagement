@@ -1,0 +1,42 @@
+﻿[
+  {
+    "code": 400,
+    "message": "An unknown error has occured."
+  },
+  {
+    "code": 401,
+    "message": "A feature failed to activate."
+  },
+  {
+    "code": 402,
+    "message": "The device state of the 4x4 is not synchronized."
+  },
+  {
+    "code": 403,
+    "message": "A probe stopped emitting data."
+  },
+  {
+    "code": 404,
+    "message": "The user hasn't agreed to a firmware update in a long time."
+  },
+  {
+    "code": 405,
+    "message": "A manufacturing issue was reported for this device."
+  },
+  {
+    "code": 406,
+    "message": "The consummer has requested assistance for their device."
+  },
+  {
+    "code": 407,
+    "message": "This device hasn't been cleaned in the past 3 months."
+  },
+  {
+    "code": 408,
+    "message": "This device has been depreciated and should be disabled."
+  },
+  {
+    "code": 409,
+    "message": "The device isn't answering to ping/pong calls."
+  }
+]

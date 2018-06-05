@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Deploy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="theme-showcase" role="main" ng-controller="deployController">
+    <div class="container" ng-cloak>
+        <div class="section">
+            <div class="form-group center">
+                <img src="~/Content/images/loader-96.gif" style="width:25%" ng-show="isPageLoading" />  
+            </div>                
+            <div ng-hide="isPageLoading">
+                <div class="center" ng-show="isAnySubscription">
+                    <h3>Sorry!!..You do not have any Azure Subscription.</h3>
+                    <a href="https://azure.microsoft.com/en-us/free/?v=17.16&WT.srch=1&WT.mc_id=AID623261_SEM_YNCA3YMq&gclid=Cj0KCQjw--DLBRCNARIsAFIwR25KbFZZNl9jwSWwUGnt_WJigDRxLJhjhPdYuj75RK1rJd7AO_l85QUaAnXKEALw_wcB" target="_blank"><h4>Click here to get a new Azure Subscription</h4></a>
+                </div>
+                <div class="center" ng-show="isDeployed && !isAnySubscription">
+                    <h3>Congratulations!... Your application is deployed successfully to Azure</h3>
+                    <a href="{{deployStatusResponse.dataPacketDesignerUrl.value}}" target="_blank"><h4>Click here to access your Data Packet Designer Application</h4></a>
+                    <a href="{{deployStatusResponse.deviceManagementPortalUrl.value}}" target="_blank"><h4>Click here to access your Device Management Portal</h4></a>
+                </div>
+                <div class="center" ng-show="isError">
+                    <span class="validationMsg">{{errorMessage}}</span>
+                </div>
+                <form ng-hide="isDeployed" name="provision" novalidate>
+                    <div class="form-group">
+                        <label for="SelectSubscription">Select Subscription</label>
+                        <select name="subscriptionSelect" class="form-control" id="SelectSubscription" ng-change="getLocations()" ng-model="deploy.subscription" 
+                                ng-options="s.DisplayName for s in subscriptions.SubscriptionList" required>
+                            <option value="">-- Select Subscription --</option>
+                        </select>
+                        <span class="validationMsg" ng-show="submitted && provision.subscriptionSelect.$error.required">Subscription is required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="ApplicationName">Application Name</label>
+                        <input name="applicationName" type="text" class="form-control" id="ApplicationName" placeholder="Enter Applicaton Name" ng-model="deploy.applicationName" ng-pattern="/^[a-zA-Z0-9_-]*$/" required>
+                        <span class="validationMsg" ng-show="submitted && provision.applicationName.$error.required">Application name is required.</span>
+                        <span class="validationMsg" ng-show="submitted && provision.applicationName.$error.pattern">Application should contain only alphanumeric characters, underscore and hyphen</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectLocation">Select Location</label>
+                        <select name="locationSelect" class="form-control" id="SelectLocation" 
+                                ng-model="deploy.location" ng-options="s.DisplayName for s in locations.LocationList" required>
+                            <option value="">-- Select Location --</option>
+                        </select>
+                        <span class="validationMsg" ng-show="submitted && provision.locationSelect.$error.required">Location name is required.</span>
+                    </div>
+                    <p class="centerfordevices" ng-hide="isLoading">
+                        <button type="submit" ng-click="deployTemplate()" ng-disabled="isSubmitDisabled"
+                                class="btn btn-md btn-primary">
+                            Provision
+                        </button>
+                    </p>                                  
+                </form>  
+                <div>
+                    <div class="form-group center">
+                        <img src="~/Content/images/loader-96.gif" style="width:25%" ng-show="isLoading" />
+                        <h6 ng-show="isLoading" style="color:#00abf0">This may take 2-5 minutes...</h6>
+                    </div>                   
+                    
+                    <div ng-show="isAppCreatingText" class="col-md-4 text-left">Creating Application</div>
+                    <div ng-show="isAppDeployingText" class="col-md-4 text-center">Provisioning Data Packet Designer</div>
+                    <div ng-show="isAppConfiguringText" class="col-md-4 text-right">Finalizing</div>
+                    
+                    <img ng-show="isAppCreating" src="~/Content/images/Progress1A.jpg" />
+                    <img ng-show="isAppDeploying" src="~/Content/images/Progress2A.jpg" />
+                    <img ng-show="isAppConfiguring" src="~/Content/images/Progress3A.jpg" />                             
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

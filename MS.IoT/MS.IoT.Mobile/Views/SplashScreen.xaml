@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"    
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:qxfutils="clr-namespace:QXFUtilities;assembly=MS.IoT.Mobile"
+    xmlns:qxfcontrols="clr-namespace:QXFUtilities.Controls;assembly=MS.IoT.Mobile"
+    xmlns:local="clr-namespace:MS.IoT.Mobile;assembly=MS.IoT.Mobile"
+    xmlns:globalresources="clr-namespace:MS.IoT.Mobile.GlobalResources;assembly=MS.IoT.Mobile"  
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    x:Class="MS.IoT.Mobile.SplashScreen"
+    >
+    <ContentPage.Content>
+        <AbsoluteLayout
+            x:Name= "RootLayout"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+            BackgroundColor="White"
+            >
+            <ffimageloadingsvg:SvgCachedImage
+                AbsoluteLayout.LayoutBounds="1.0,0.0,1.0,1.0"
+                AbsoluteLayout.LayoutFlags="All" 
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                Source="resource://MS.IoT.Mobile.Assets.Icons.splash-screen.svg"
+                Aspect="AspectFill"
+                Margin="0"
+                />
+
+            <Grid
+                AbsoluteLayout.LayoutBounds="1.0,1.0,1.0,0.35"
+                AbsoluteLayout.LayoutFlags="All"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"  
+                RowSpacing="0"
+                Margin="0,5,0,0"
+                >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+
+                <ActivityIndicator
+                    Grid.Row="0"
+                    Grid.Column="1" 
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill"
+                    Margin="10"
+                    Color="White" 
+                    IsRunning="{Binding Authenticating}"
+                    IsVisible="{Binding Authenticating}"
+                />
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    Margin="10,30,10,0"
+                    HorizontalTextAlignment="Center"
+                    FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                    FontSize="10"
+                    TextColor="White"                   
+                    Text="...Authenticating..."
+                    IsVisible="{Binding Authenticating}"
+                    />
+
+                <qxfcontrols:TextButton
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    x:Name="LogonButton"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill"                  
+                    BackgroundColor="Transparent"        
+                    BorderColor="White"                    
+                    CornerRadius="15"  
+                    BorderWidth="10"                    
+                    FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                    FontSize="17"
+                    TextColor="White"
+                    Text = "{Binding ButtonText}"
+                    Command="{Binding ButtonClicked}"
+                    CommandParameter="Logon"
+                    IsVisible="{Binding ButtonsVisible}"
+                    />
+
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    x:Name="TandCLabel"
+                    Margin="10,30,10,0"
+                    HorizontalTextAlignment="Center"
+                    FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                    FontSize="11"
+                    TextColor="White"                   
+                    Text="By using this app. I agree to the following"
+                    IsVisible="{Binding ButtonsVisible}"
+                    />
+                <StackLayout
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"                    
+                    Padding="0"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding ButtonsVisible}"
+                    >
+                    <Label
+                        x:Name="TandCButton"
+                        Margin="0,0,0,0"
+                        HorizontalTextAlignment="Center"
+                        FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                        FontSize="11"
+                        TextColor="White"                   
+                        Text="Terms and Conditions"
+                        />
+                    <BoxView
+                        BackgroundColor="White"
+                        HeightRequest="1"
+                        Margin="0,-8,0,0"
+                        />
+                </StackLayout>
+            </Grid>
+
+        </AbsoluteLayout>
+    </ContentPage.Content>
+
+
+
+    <ContentPage.Behaviors>
+        <qxfutils:EventToCommandBehaviour EventName="Appearing" Command="{Binding PageAppearing}" />
+    </ContentPage.Behaviors>
+
+
+</ContentPage>

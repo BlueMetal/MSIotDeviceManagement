@@ -1,0 +1,123 @@
+﻿#choosetemplate {
+
+    .categories-container {
+        margin-top: 20px;
+    }
+
+    .subcategory-selector {
+        color: #707070;
+        padding-left: 0px;
+
+        ul {
+            width: 100%;
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        li {
+            background: rgba(191, 201, 215, 0.8);
+            display: inline-block;
+            list-style: none;
+            margin: 0px;
+            width: calc(100% - 100px);
+            height: 150px;
+            border: none;
+            border-bottom: 1px solid #979797;
+            margin-bottom: 1px;
+            padding: 10px;
+        }
+
+        li.subcategory-selected:after {
+            left: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-left-color: #2e89ca;
+            border-width: 30px;
+            margin-top: -30px;
+        }
+
+        li.subcategory-selected {
+            background: rgba(0, 112, 192, 0.8);
+            border: none;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .subcategory-title {
+            width: 100%;
+            padding: 5px 8px;
+        }
+
+        .count-container {
+            position: absolute;
+            width: 275px;
+        }
+
+        li .subcategory-count {
+            padding: 0;
+            right: 25px;
+            top: -42px;
+            font-size: 22px;
+            font-weight: 100;
+            text-align: center;
+            border: 1px #979797 solid;
+            display: block;
+            border-radius: 22px;
+            width: 44px;
+            height: 44px;
+            position: absolute;
+        }
+
+        li.subcategory-selected .subcategory-count {
+            border: 1px #fff solid;
+        }
+
+        li:hover {
+            cursor: pointer;
+        }
+    }
+
+    .commontemplate-selector {
+        color: white;
+
+        ul {
+            width: 100%;
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        li {
+            border-radius: 8px;
+            background-color: #0070C0;
+            display: inline-block;
+            list-style: none;
+            margin: 0px 10px;
+            width: 45%;
+            height: 200px;
+            border: none;
+            margin-bottom: 20px;
+            padding: 20px;
+            vertical-align: top;
+        }
+
+        li:hover {
+            cursor: pointer;
+        }
+    }
+
+    .subcategory-description {
+        padding: 5px 8px;
+        line-height: normal;
+    }
+
+    .subcategory-title.lead {
+        margin-bottom: 0;
+    }
+}

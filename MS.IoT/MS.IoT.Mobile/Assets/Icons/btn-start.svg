@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="83px" height="35px" viewBox="0 0 83 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="82.9714286" height="34.5714286" rx="6"></rect>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="row-w-button" transform="translate(-221.000000, -8.000000)">
+            <g id="Group" transform="translate(221.000000, 8.000000)">
+                <g id="Rectangle-2">
+                    <use fill="#29BB9C" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <rect stroke="#F8FBFF" stroke-width="2" x="1" y="1" width="80.9714286" height="32.5714286" rx="6"></rect>
+                </g>
+                <text id="START" font-family="SegoeWP-Semibold, Segoe WP" font-size="15" font-weight="500" letter-spacing="0.300000012" fill="#FFFFFF">
+                    <tspan x="18.185791" y="23">START</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

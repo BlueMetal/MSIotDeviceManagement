@@ -1,0 +1,125 @@
+﻿<div id="home">
+    <div class="row" ng-cloak>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Views</div>
+                <div class="panel-body" style="padding:0px 15px;height:220px;">
+                    <h5>Global (pins)</h5>
+                    <button type="button" ng-click="vm.mapState.pinViewId = 'devices'; vm.refreshPushpins()" ng-class="{'btn': true, 'btn-default': vm.mapState.pinViewId != 'devices', 'btn-success': vm.mapState.pinViewId == 'devices'}">Show All Devices</button>
+                    <button type="button" ng-click="vm.mapState.pinViewId = 'alerts'; vm.refreshPushpins()" ng-class="{'btn': true, 'btn-default': vm.mapState.pinViewId != 'alerts', 'btn-success': vm.mapState.pinViewId == 'alerts'}">Show All Alerts</button>
+                    <h5>State (area)</h5>
+                    <button type="button" ng-click="vm.mapState.areaViewId = 'count'; vm.refreshAreas()" ng-class="{'btn': true, 'btn-default': vm.mapState.areaViewId != 'count', 'btn-success': vm.mapState.areaViewId == 'count'}">Devices Count</button>
+                    <button type="button" ng-click="vm.mapState.areaViewId = 'activated'; vm.refreshAreas()" ng-class="{'btn': true, 'btn-default': vm.mapState.areaViewId != 'activated', 'btn-success': vm.mapState.areaViewId == 'activated'}">% of activated devices</button>
+                    <h5 ng-show="vm.mapState.filters.filterProductFamily.name != '' || vm.mapState.filters.filterRetailer.name != ''">Filtered views</h5>
+                    <button ng-show="vm.mapState.filters.filterRetailer.name != ''" type="button" ng-click="vm.mapState.areaViewId = 'retailerName'; vm.refreshAreas()" ng-class="{'btn': true, 'btn-default': vm.mapState.areaViewId != 'retailerName', 'btn-success': vm.mapState.areaViewId == 'retailerName'}">% of {{vm.mapState.filters.filterRetailer.displayName}} devices over other Retailers</button>
+                    <!--<button ng-show="vm.mapState.filters.filterProductFamily.name != '' && vm.mapState.filters.filterRetailer.name == ''" type="button" ng-click="vm.mapState.areaViewId = 'productFamily'; vm.refreshAreas()" ng-class="{'btn': true, 'btn-default': vm.mapState.areaViewId != 'productFamily', 'btn-success': vm.mapState.areaViewId == 'productFamily'}">% of {{vm.mapState.filters.filterProductFamily.displayName}} devices over other Product Families</button>-->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 device-summary">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Filters</div>
+                <div class="panel-body" style="padding:0px 15px;height:220px;">
+                    <h5>Retailers</h5>
+                    <ui-select ng-model="vm.mapState.filters.filterRetailer" theme="bootstrap" search-enabled="false" on-select="vm.mapState.areaViewId = 'count';vm.refreshMap()">
+                        <ui-select-match>{{vm.mapState.filters.filterRetailer.displayName}}</ui-select-match>
+                        <ui-select-choices repeat="retailer in vm.mapState.retailers">
+                            <div ng-bind-html="retailer.displayName"></div>
+                            <small>{{retailer.count}} devices</small>
+                        </ui-select-choices>
+                    </ui-select>
+                    <h5>Product Families</h5>
+                    <ui-select ng-model="vm.mapState.filters.filterProductFamily" theme="bootstrap" search-enabled="false" on-select="vm.mapState.areaViewId = 'count';vm.refreshMap()">
+                        <ui-select-match>{{vm.mapState.filters.filterProductFamily.displayName}}</ui-select-match>
+                        <ui-select-choices repeat="productFamily in vm.mapState.productFamilies">
+                            <div ng-bind-html="productFamily.displayName"></div>
+                            <small>{{productFamily.count}} devices</small>
+                        </ui-select-choices>
+                    </ui-select>
+                    <h5>Connection Status</h5>
+                    <ui-select ng-model="vm.mapState.filters.filterConnectionStatus" theme="bootstrap" search-enabled="false" on-select="vm.mapState.areaViewId = 'count';vm.refreshMap()">
+                        <ui-select-match>{{vm.mapState.filters.filterConnectionStatus.displayName}}</ui-select-match>
+                        <ui-select-choices repeat="connectionState in vm.mapState.connectionStates">
+                            <div ng-bind-html="connectionState.displayName"></div>
+                            <small>{{connectionState.count}} devices</small>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Dates</div>
+                <div class="panel-body" style="padding:0px 15px;height:220px;">
+                    <h5>Activation Date</h5>
+                    <div class="row" style="margin-bottom:0px">
+                        <div class="col-md-2" style="line-height:34px">From: </div>
+                        <div class="col-md-10">
+                            <div class="dropdown">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-change="vm.refreshMap()" uib-datepicker-popup ng-model="vm.mapState.filters.filterActivationDateMin"
+                                            is-open="vm.mapState.filters.isActivationDateMinVisible" datepicker-options="vm.mapConfig.dateOptions" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="vm.mapState.filters.isActivationDateMinVisible = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2" style="line-height:34px">To: </div>
+                        <div class="col-md-10">
+                            <div class="dropdown">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-change="vm.refreshMap()" uib-datepicker-popup ng-model="vm.mapState.filters.filterActivationDateMax"
+                                           is-open="vm.mapState.filters.isActivationDateMaxVisible" datepicker-options="vm.mapConfig.dateOptions" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="vm.mapState.filters.isActivationDateMaxVisible = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5>Shipping Date</h5>
+                    <div class="row" style="margin-bottom:0px">
+                        <div class="col-md-2" style="line-height:34px">From: </div>
+                        <div class="col-md-10">
+                            <div class="dropdown">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-change="vm.refreshMap()" uib-datepicker-popup ng-model="vm.mapState.filters.filterShippingDateMin"
+                                           is-open="vm.mapState.filters.isShippingDateMinVisible" datepicker-options="vm.mapConfig.dateOptions" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="vm.mapState.filters.isShippingDateMinVisible = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2" style="line-height:34px">To: </div>
+                        <div class="col-md-10">
+                            <div class="dropdown">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-change="vm.refreshMap()" uib-datepicker-popup ng-model="vm.mapState.filters.filterShippingDateMax"
+                                           is-open="vm.mapState.filters.isShippingDateMaxVisible" datepicker-options="vm.mapConfig.dateOptions" close-text="Close" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="vm.mapState.filters.isShippingDateMaxVisible = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mapContainer">
+                <div id="myMap"></div>
+                <div id="legend" ng-bind-html="vm.mapState.legend"></div>
+            </div>
+        </div>
+    </div>
+</div>

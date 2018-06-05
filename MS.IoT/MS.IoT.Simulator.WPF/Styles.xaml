@@ -1,0 +1,235 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib"
+                    xmlns:helpers="clr-namespace:MS.IoT.Simulator.WPF.Helpers"
+                    xmlns:local="clr-namespace:MS.IoT.Simulator.WPF">
+    <helpers:ProgressToAngleConverter x:Key="ProgressConverter"/>
+    <SolidColorBrush x:Key="colorForeground">#00ABF0</SolidColorBrush>
+    <SolidColorBrush x:Key="colorBackground">#96e0ff</SolidColorBrush>
+    <SolidColorBrush x:Key="colorDisabled">Gray</SolidColorBrush>
+    <SolidColorBrush x:Key="colorError">Red</SolidColorBrush>
+    
+    <!-- Buttons -->
+    <Style TargetType="Button" x:Key="btnBlue">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Padding" Value="20,10,20,10"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="10,10,10,10" Background="{StaticResource colorDisabled}" BorderThickness="1,1,1,1" >
+                        <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="10,10,10,10" Background="{StaticResource colorForeground}" BorderThickness="1,1,1,1" >
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True"></Condition>
+                    <Condition Property="IsEnabled" Value="True"></Condition>
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="Cursor" Value="Hand" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="Border" x:Key="btnLink">
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Style.Resources>
+            <Style TargetType="StackPanel">
+                <Setter Property="Orientation" Value="Horizontal"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontFamily" Value="pack://application:,,,/Resources/fonts/#Open Sans"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Padding" Value="10,0,0,0"/>
+            </Style>
+        </Style.Resources>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="Gray" Opacity=".5" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="Label" x:Key="btnSignOut">
+        <Setter Property="Background" Value="Black" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#333333" />
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Templates -->
+    <Style TargetType="Grid" x:Key="grdTemplate">
+        <Setter Property="Margin" Value="0,0,20,0"/>
+        <Setter Property="Width" Value="200"/>
+        <Setter Property="Height" Value="200"/>
+        <Style.Resources>
+            <Style TargetType="Image">
+                <Setter Property="Width" Value="75"/>
+                <Setter Property="Height" Value="75"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Margin" Value="0,40,0,0"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Width" Value="200"/>
+                <Setter Property="Height" Value="200"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Bottom"/>
+                <Setter Property="Padding" Value="0,0,0,20"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Label">
+                            <Border CornerRadius="10,10,10,10" Background="{Binding Category.Color}">
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Errors -->
+    <Style TargetType="Label" x:Key="textError">
+        <Setter Property="Foreground" Value="{StaticResource colorError}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontFamily" Value="pack://application:,,,/Resources/fonts/#Open Sans"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="textErrorBlock">
+        <Setter Property="Foreground" Value="{StaticResource colorError}"/>
+        <Setter Property="LineHeight" Value="24"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,0,0,20"/>
+        <Setter Property="FontFamily" Value="pack://application:,,,/Resources/fonts/#Open Sans"/>
+    </Style>
+    
+    <!-- Text -->
+    <Style TargetType="Label" x:Key="textTitle">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="400"/>
+        <Setter Property="FontFamily" Value="pack://application:,,,/Resources/fonts/#Open Sans"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,10,0,20"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="textDescription">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="LineHeight" Value="24"/>
+        <Setter Property="FontFamily" Value="pack://application:,,,/Resources/fonts/#Open Sans"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,0,0,20"/>
+    </Style>
+    <Style TargetType="Label" x:Key="textField">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontFamily" Value="pack://application:,,,/Resources/fonts/#Open Sans"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="0,0,0,7"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+    
+    <!-- Progress Circle Bar -->
+    <Style TargetType="{x:Type ProgressBar}" x:Key="ProgressBarStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ProgressBar}">
+                    <Grid>
+                        <Ellipse Fill="{StaticResource colorBackground}"/>
+                        <Ellipse Margin="15" Fill="White"/>
+                        <helpers:Arc StrokeThickness="15" Margin="0" Stroke="{StaticResource colorForeground}">
+                            <helpers:Arc.StartAngle>
+                                <MultiBinding Converter="{StaticResource ProgressConverter}">
+                                    <Binding Path="Minimum" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    <Binding Path="." RelativeSource="{RelativeSource TemplatedParent}"/>
+                                </MultiBinding>
+                            </helpers:Arc.StartAngle>
+                            <helpers:Arc.EndAngle>
+                                <MultiBinding Converter="{StaticResource ProgressConverter}">
+                                    <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    <Binding Path="." RelativeSource="{RelativeSource TemplatedParent}"/>
+                                </MultiBinding>
+                            </helpers:Arc.EndAngle>
+                        </helpers:Arc>
+                        <TextBlock Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat=\{0:0\}}"
+                                       Foreground="{StaticResource colorForeground}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       FontSize="24" FontWeight="Bold"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- Slider -->
+    <Style TargetType="Slider" x:Key="sliderBlue">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Slider">
+                    <Grid>
+                        <Border Name="PART_Border" Padding="2" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                                Background="{StaticResource colorBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                        <Track Name="PART_Track" HorizontalAlignment="Stretch" VerticalAlignment="Center" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                            <Track.Thumb>
+                                <Thumb>
+                                    <Thumb.Style>
+                                        <Style TargetType="Thumb">
+                                            <Setter Property="SnapsToDevicePixels" Value="true"/>
+                                            <Setter Property="OverridesDefaultStyle" Value="false"/>
+                                            <Setter Property="Height" Value="18"/>
+                                            <Setter Property="Width" Value="18"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Thumb">
+                                                        <Rectangle Name="Rectangle" Fill="{StaticResource colorBackground}" />
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource colorForeground}"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Thumb.Style>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

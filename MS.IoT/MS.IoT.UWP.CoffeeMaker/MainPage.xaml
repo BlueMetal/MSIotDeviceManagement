@@ -1,0 +1,151 @@
+﻿<Page xmlns:UserControls="using:MS.IoT.UWP.CoffeeMaker.UserControls" 
+    x:Class="MS.IoT.UWP.CoffeeMaker.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MS.IoT.UWP.CoffeeMaker"
+    xmlns:helper="using:MS.IoT.UWP.CoffeeMaker.Helpers"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Width="800" Height="480">
+    <Grid Width="800" Height="480">
+        <Grid.Resources>
+            <helper:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </Grid.Resources>
+        <Grid.Background>
+            <ImageBrush ImageSource="ms-appx:///Assets/Images/background.png" Stretch="UniformToFill"></ImageBrush>
+        </Grid.Background>
+        <!-- Date -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Style="{StaticResource textDateBlock}" Name="LblDateToday" Text="{Binding LblCurrentDateTime}" FontFamily="Courier New"></TextBlock>
+            <Image Source="{Binding WifiStatusImage}" Style="{StaticResource iconWifi}" Tapped="WifiIcon_Tapped" Visibility="{Binding IsFeatureWifiActivated, Converter={StaticResource BooleanToVisibilityConverter}}"></Image>
+        </StackPanel>
+
+        <!-- Loading -->
+        <Grid Background="Black" Visibility="{Binding IsPanelLoadingVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock Text="Loading..." HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"></TextBlock>
+        </Grid>
+        
+        <!-- Main -->
+        <Grid Visibility="{Binding IsPanelMainVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="11*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="2"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="2"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <!-- Background color -->
+            <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Background="#dddddd"></Grid>
+
+            <!-- Borders -->
+            <Border Grid.Row="1" Grid.Column="0" Background="Gray" Margin="10,0"></Border>
+            <Border Grid.Row="3" Grid.Column="0" Background="Gray" Margin="10,0"></Border>
+
+            <!-- Information Panel -->
+            <!-- Last Brew -->
+            <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource stackPnlStats}">
+                <TextBlock Style="{StaticResource textTitleBlock}" Text="Last Brewed at"></TextBlock>
+                <TextBlock Style="{StaticResource textNormalBlock}" Name="LblLastBrewedDate" Text="{Binding LblLastBrewedDate}" HorizontalAlignment="Center"></TextBlock>
+            </StackPanel>
+            <!-- Stats -->
+            <StackPanel Grid.Row="2" Grid.Column="0" Style="{StaticResource stackPnlStats}">
+                <TextBlock Style="{StaticResource textTitleBlock}" Text="Pots Brewed"></TextBlock>
+                <TextBlock Style="{StaticResource textNumberBlock}" Text="{Binding LblPotsBrewedToday}" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Style="{StaticResource textNormalBlock}" Text="Today" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Style="{StaticResource textNumberBlock}" Text="{Binding LblPotsBrewedWeek}" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Style="{StaticResource textNormalBlock}" Text="Weekly" HorizontalAlignment="Center"></TextBlock>
+            </StackPanel>
+            
+            <!-- Average -->
+            <StackPanel Grid.Row="4" Grid.Column="0" Style="{StaticResource stackPnlStats}">
+                <TextBlock Style="{StaticResource textTitleBlock}" Text="Total Pots Brewed"></TextBlock>
+                <TextBlock Style="{StaticResource textNormalBlock}" Text="{Binding LblPotsBrewedTotal}" HorizontalAlignment="Center"></TextBlock>
+            </StackPanel>
+            <Button Grid.Row="4" Grid.Column="1" Visibility="{Binding IsFeatureDebugActivated, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Tapped="BtnDebug_Tapped">DEBUG</Button>
+
+            <!-- Actions -->
+            <Grid Grid.Row="0" Grid.RowSpan="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <UserControls:ActionButton LoadingImage="{Binding IsActionBrewStrengthLoading}" ActionName="Brew Strength" ActionDescription="{Binding ActionBrewStrengthDescription}" ActionImage="{Binding ActionBrewStrengthImage}" Grid.Column="0" Tapped="ActionBrewStrength_Tapped" Visibility="{Binding IsFeatureBrewStrengthActivated, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <UserControls:ActionButton LoadingImage="{Binding IsActionBrewLoading}" ActionName="Brew" ActionDescription="{Binding ActionBrewDescription}" ActionImage="{Binding ActionBrewImage}" Grid.Column="1" Tapped="ActionBrew_Tapped" Visibility="{Binding IsFeatureBrewActivated, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <UserControls:ActionButton LoadingImage="{Binding IsActionGrindAndBrewLoading}" ActionName="Grind &amp; Brew" ActionDescription="{Binding ActionGrindAndBrewDescription}" ActionImage="{Binding ActionGrindAndBrewImage}" Grid.Column="2" Tapped="ActionGrindBrew_Tapped" Visibility="{Binding IsFeatureGrindAndBrewActivated, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </Grid>
+        </Grid>
+
+        <!-- Wifi -->
+        <Grid Visibility="{Binding IsPanelWifiVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="4*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource textTitleBlock}" FontSize="30">Connect to WiFi</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" FontSize="20">SSID</TextBlock>
+            <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding WifiSSID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" FontSize="20">Password</TextBlock>
+            <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding WifiPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <Grid Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Name="BtnWifiConnect" Grid.Column="1" Content="Connect" HorizontalAlignment="Stretch" Tapped="BtnWifiConnect_Tapped"></Button>
+                <Button Name="BtnWifiCancel" Grid.Column="3" Content="Cancel" HorizontalAlignment="Stretch" Tapped="BtnWifiCancel_Tapped"></Button>
+            </Grid>
+        </Grid>
+
+        <Grid Visibility="{Binding IsPanelDebugVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <!-- Title -->
+            <TextBlock Style="{StaticResource textTitleBlock}" HorizontalAlignment="Left">Debug Panel</TextBlock>
+            <Button Grid.Column="1" Tapped="BtnDebugClose_Tapped" HorizontalAlignment="Right">Close</Button>
+            
+            <!-- UI Console -->
+            <TextBlock Grid.Row="1" Style="{StaticResource textNormalBlock}" HorizontalAlignment="Left">UI Console</TextBlock>
+            <TextBox Grid.Row="2" Text="{Binding DebugUIConsole}" FontSize="10" FontFamily="Courier New" IsReadOnly="True" AcceptsReturn="True" Margin="0,0,10,0" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible"></TextBox>
+            
+            <!-- Variables -->
+            <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource textNormalBlock}" HorizontalAlignment="Left">Variables</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DebugListVariables}" FontSize="11" LineHeight="20" FontFamily="Courier New"/>
+        </Grid>
+
+        <!-- Error -->
+        <Grid Margin="0,150" Visibility="{Binding IsPanelErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.Background>
+                <SolidColorBrush Color="#ff9999" Opacity="0.90"></SolidColorBrush>
+            </Grid.Background>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Style="{StaticResource textErrorBlock}" Text="No UART connection" Visibility="{Binding IsErrorUART, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

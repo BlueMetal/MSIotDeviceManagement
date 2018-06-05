@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>Remove</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Define-Your-Data-Types" transform="translate(-724.000000, -540.000000)" fill-rule="nonzero" fill="#D0021B">
+            <g id="Header-Group" transform="translate(276.000000, 526.000000)">
+                <g id="Group-2" transform="translate(399.000000, 14.000000)">
+                    <g id="Remove" transform="translate(49.000000, 0.000000)">
+                        <path d="M16,31.7894737 C24.7157895,31.7894737 31.7894737,24.7157895 31.7894737,16 C31.7894737,7.28421053 24.7157895,0.210526316 16,0.210526316 C7.28421053,0.210526316 0.210526316,7.28421053 0.210526316,16 C0.210526316,24.7157895 7.28421053,31.7894737 16,31.7894737 Z M16,1.47368421 C24,1.47368421 30.5263158,8 30.5263158,16 C30.5263158,24 24,30.5263158 16,30.5263158 C8,30.5263158 1.47368421,24 1.47368421,16 C1.47368421,8 8,1.47368421 16,1.47368421 Z" id="Shape"></path>
+                        <path d="M10.5263158,16.8421053 L21.4736842,16.8421053 C21.8105263,16.8421053 22.1052632,16.5473684 22.1052632,16.2105263 C22.1052632,15.8736842 21.8105263,15.5789474 21.4736842,15.5789474 L10.5263158,15.5789474 C10.1894737,15.5789474 9.89473684,15.8736842 9.89473684,16.2105263 C9.89473684,16.5473684 10.1894737,16.8421053 10.5263158,16.8421053 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

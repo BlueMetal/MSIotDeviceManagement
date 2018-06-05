@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:local="clr-namespace:MS.IoT.Mobile;assembly=MS.IoT.Mobile"
+          xmlns:qxfutils="clr-namespace:QXFUtilities;assembly=MS.IoT.Mobile"
+          xmlns:globalresources="clr-namespace:MS.IoT.Mobile.GlobalResources;assembly=MS.IoT.Mobile"  
+          xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+          xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+          xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+          x:Class="MS.IoT.Mobile.StandardActionViewCell">
+    <ViewCell.View>
+        <Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <qxfutils:NotConverter x:Key="NotConvtr" />
+                </ResourceDictionary>
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="6*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height ="60" />
+            </Grid.RowDefinitions>
+            <BoxView
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                BackgroundColor="{x:Static local:GlobalResources.Colors.FeaturesBackgroundColor}"
+                />
+            <ffimageloadingsvg:SvgCachedImage
+                Grid.Row="0"
+                Grid.Column="0"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                Margin="20,12,5,12"               
+                Aspect="AspectFit"
+                Source="{Binding Icon}" 
+                />
+            <Label 
+                Grid.Column="1"
+                Grid.Row="0"                
+                HorizontalOptions="Start"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center" 
+                Margin="15,0,5,0"
+                FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                FontSize="20"
+                TextColor="{x:Static local:GlobalResources.Colors.TextColor}"
+                Text="{Binding Label}"
+                />
+
+            <ffimageloadingsvg:SvgCachedImage
+                x:Name= "ActionButton"
+                Grid.Row="0"
+                Grid.Column="2"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                Aspect="AspectFit"
+                Margin="5,10,25,10"
+                Source="resource://MS.IoT.Mobile.Assets.Icons.btn-start.svg"
+                Transformations="{Binding ButtonColorTransform}"
+                >
+            </ffimageloadingsvg:SvgCachedImage>
+            <Label
+                Grid.Row="0"
+                Grid.Column="2" 
+                HorizontalOptions="Center"
+                VerticalOptions="Center"    
+                Margin="5,0,25,0"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                TextColor="White"
+                FontSize="14"
+                Text="START"  
+                IsVisible="{Binding IsBusy, Converter={StaticResource NotConvtr}}"           
+                />
+            <Label
+                Grid.Row="0"
+                Grid.Column="2" 
+                HorizontalOptions="Start"
+                VerticalOptions="Center"    
+                Margin="12,0,0,0"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"
+                FontFamily="{x:Static local:GlobalResources.Fonts.SegeoWPSemiBold}"
+                TextColor="White"
+                FontSize="14"
+                Text="STOP"  
+                IsVisible="{Binding IsBusy}"           
+                />
+            <ActivityIndicator
+                Grid.Row="0"
+                Grid.Column="2" 
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                Margin="0,20,15,20"
+                Color="White" 
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                />                                
+
+            
+
+        </Grid>
+    </ViewCell.View>
+</ViewCell>

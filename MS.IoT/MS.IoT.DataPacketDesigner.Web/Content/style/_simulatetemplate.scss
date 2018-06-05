@@ -1,0 +1,36 @@
+﻿#simulatetemplate {
+    .simulate-block {
+        margin-top: 30px;
+        padding: 0;
+        border: none;
+    }
+
+    div:nth-child(5) {
+        margin-top: 30px;
+    }
+
+    .lead {
+        font-size: 24px;
+    }
+
+    .btn-success.blue {
+        margin: 30px 0 10px;
+        height: 80px;
+        font-size: 36px;
+        padding: 0 30px;
+        border-radius: 10px;
+    }
+
+    img.download-image {
+        position: relative;
+        top: -5px;
+        margin-right: 10px;
+    }
+
+    .steps {
+        color: #707070;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
