@@ -1,20 +1,23 @@
 #Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+This is an IoT solution accelerator for Microsoft Azure sphere.
+
+#Prerequisites
+You will need Visual Studio 2015 or later
+Microsoft Azure subscription account to deploy. 
 
 #Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
-
-#Build and Test
-TODO: Describe and show how to build your code and run the tests. 
-
-#Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+ This solution consists of 5 parts- 
+  
+  MSIoT deployment script- You can deploy the resources required for the Azure Sphere solution accelrator using this script.
+  
+  MSIoT solution consists-
+    Marketing portal solution (This does the same job like the MSIoT deployment script)
+    Data packet designer -  This portal helps to design and create the data packet(json) IoT device template. You can also download and install the simulator using this portal.
+    Device Management Portal- This portal manages the Azure sphere IoT devices.  
+    
+  MsIoT.FourByFour.App solution - this contains the IoT coffe maker solution code to deploy in Azure Sphere (previously known by codename  4x4)  
+  
+  MS.IoT.Mobile.solution - This is a xamarin android native app to control and manage iot devices (e.g you can vrew a coffee using this mobile app and will switch on the actual coffe maker device connected with Azure Sphere)
+  
+  MS.IoT.Simulator solution - This is the Universal windows desktop app simulator to send messages to deployed IoT hub, stream analytics and cosmosdb
+  
