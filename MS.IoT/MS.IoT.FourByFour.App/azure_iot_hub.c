@@ -461,7 +461,7 @@ static int deviceMethodCallback(const char *methodName,
 
 	else
 	{
-		LogError("No method %s found\r\n", methodName);
+		Log_Debug("No method %s found\r\n", methodName);
 		responseMessage = notFound;
 		result = 404;
 	}
@@ -507,7 +507,7 @@ static void twinCallback(DEVICE_TWIN_UPDATE_STATE updateState,
 
 		if (MULTITREE_OK != MultiTree_GetChildByName(tree, "desired", &child))
 		{
-			LogInfo("This device twin message contains desired message only");
+			Log_Debug("This device twin message contains desired message only");
 			child = tree;
 		}
 		const void *value = NULL;

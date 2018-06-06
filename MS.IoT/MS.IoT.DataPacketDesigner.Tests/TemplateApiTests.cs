@@ -5,17 +5,16 @@ using MS.IoT.Repositories;
 using MS.IoT.DataPacketDesigner.Web;
 using MS.IoT.DataPacketDesigner.Web.Helpers;
 using System.Collections.Generic;
-using System.Web.Http;
-using System.Web.Http.Results;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System.Collections;
+using Xunit;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace MS.IoT.DataPacketDesigner.Tests
 {
-    [TestClass]
-    public class TemplateApiTests
+    public class TemplateApiTests : IAsyncLifetime
     {
         public static readonly string tenantId = "72f43d57-b980-4152-b703-e2d8666a3ea9";
         public static readonly string clientId = "17073c60-a87e-42b7-a896-22123d500b1d";
@@ -34,8 +33,8 @@ namespace MS.IoT.DataPacketDesigner.Tests
         public static readonly string AADInstance = "https://login.microsoftonline.com/";
         public static readonly string graphUri = "https://graph.windows.net";
 
-        [TestInitialize]
-        public async Task SetupAsync()
+        
+        public async Task InitializeAsync()
         {
             string authContextURL = "https://login.microsoftonline.com/" + tenantId;
             // string authContextURL = "https://login.microsoftonline.com/common";
@@ -45,138 +44,136 @@ namespace MS.IoT.DataPacketDesigner.Tests
             managementAuthToken = result.AccessToken;
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestGetCommonTemplates()
         {
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
 
-            IHttpActionResult actionResult = await templateApiController.GetCommonTemplates();
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<IEnumerable<Template>>));
+            IActionResult actionResult = await templateApiController.GetCommonTemplates();
+            
+            actionResult.AssertOkValueType<IEnumerable<Template>>();
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestGetUserTemplates()
         {
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
 
-            IHttpActionResult actionResult = await templateApiController.GetUserTemplates();
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<IEnumerable<Template>>));
+            var actionResult = await templateApiController.GetUserTemplates();
+            actionResult.AssertOkValueType<IEnumerable<Template>>();
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestGetCategories()
         {
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
 
-            IHttpActionResult actionResult = await templateApiController.GetCategories();
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<IEnumerable<Category>>));
+            var actionResult = await templateApiController.GetCategories();
+            actionResult.AssertOkValueType<IEnumerable<Category>>();
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestGetTemplateById()
         {
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
 
-            IHttpActionResult actionResult = await templateApiController.GetTemplateById("refrigerator_smart");
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<Template>));
+            var actionResult = await templateApiController.GetTemplateById("refrigerator_smart");
+            actionResult.AssertOkValueType<Template>();
 
-            OkNegotiatedContentResult<Template> result = (OkNegotiatedContentResult<Template>)actionResult;
+            var result = actionResult.OkayContent<Template>(); ;
 
-            Assert.AreEqual("refrigerator_smart", result.Content.Id);
-            Assert.AreEqual(TemplateDocumentType.CommonTemplate, result.Content.DocType);
+            Assert.Equal("refrigerator_smart", result.Id);
+            Assert.Equal(TemplateDocumentType.CommonTemplate, result.DocType);
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestGetCurrentUser()
         {
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<UserApiController> _logger1 = new LoggerFactory().CreateLogger<UserApiController>();
 
-            UserApiController userApiController = new UserApiController(_UserProfileProvider);
+            UserApiController userApiController = new UserApiController(_UserProfileProvider, _logger1);
 
-            IHttpActionResult actionResult = await userApiController.GetCurrentUser();
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<User>));
+            var actionResult = await userApiController.GetCurrentUser();
+            actionResult.AssertOkValueType<User>();
 
-            OkNegotiatedContentResult<User> result = (OkNegotiatedContentResult<User>)actionResult;
+            var result = actionResult.OkayContent<User>(); ;
 
-            Assert.AreEqual("JohnDoe@test.com", result.Content.Id);
+            Assert.Equal("JohnDoe@test.com", result.Id);
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestAddTemplate()
         {
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
+            ILogger<UserApiController> _logger1 = new LoggerFactory().CreateLogger<UserApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
-            UserApiController userApiController = new UserApiController(_UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
+            UserApiController userApiController = new UserApiController(_UserProfileProvider, _logger1);
 
-            IHttpActionResult actionUserResult = await userApiController.GetCurrentUser();
-            OkNegotiatedContentResult<User> userResult = (OkNegotiatedContentResult<User>)actionUserResult;
+            var actionUserResult = await userApiController.GetCurrentUser();
+            var userResult = actionUserResult.OkayContent<User>();
 
-            IHttpActionResult actionResult = await templateApiController.CreateUserTemplate(new Template(){ Name = "TemplateTest" });
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<string>));
+            var actionResult = await templateApiController.CreateUserTemplate(new Template(){ Name = "TemplateTest" });
+            actionResult.AssertOkValueType<string>();
 
-            OkNegotiatedContentResult<string> result = (OkNegotiatedContentResult<string>)actionResult;
-            string templateId = result.Content;
+            string templateId = actionResult.OkayContent<string>();
 
-            Assert.IsNotNull(templateId);
+            Assert.NotNull(templateId);
 
-            IHttpActionResult actionResult2 = await templateApiController.GetTemplateById(templateId);
-            Assert.IsInstanceOfType(actionResult2, typeof(OkNegotiatedContentResult<Template>));
+            var actionResult2 = await templateApiController.GetTemplateById(templateId);
+            actionResult2.AssertOkValueType<Template>();
 
-            OkNegotiatedContentResult<Template> result2 = (OkNegotiatedContentResult<Template>)actionResult2;
-            Assert.AreEqual(templateId, result2.Content.Id);
-            Assert.AreEqual(TemplateDocumentType.User, result2.Content.DocType);
-            Assert.AreEqual(userResult.Content.Id.ToLower(), result2.Content.UserId);
+            var result2 = actionResult2.OkayContent<Template>(); ;
+            Assert.Equal(templateId, result2.Id);
+            Assert.Equal(TemplateDocumentType.User, result2.DocType);
+            Assert.Equal(userResult.Id.ToLower(), result2.UserId);
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestEditCommonTemplate()
         {
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
 
-            IHttpActionResult actionResult = await templateApiController.GetTemplateById("refrigerator_smart");
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<Template>));
-
-            OkNegotiatedContentResult<Template> result = (OkNegotiatedContentResult<Template>)actionResult;
-
-            Template toEdit = result.Content;
+            var actionResult = await templateApiController.GetTemplateById("refrigerator_smart");
+            actionResult.AssertOkValueType<Template>();
+            
+            var toEdit = actionResult.OkayContent<Template>(); 
             toEdit.Name = "New Name";
 
-            IHttpActionResult actionResult2 = await templateApiController.EditUserTemplate(toEdit); //Should fail because you can't edit a common template
-            Assert.IsInstanceOfType(actionResult2, typeof(StatusCodeResult));
+            var actionResult2 = await templateApiController.EditUserTemplate(toEdit); //Should fail because you can't edit a common template
+            Assert.IsType<StatusCodeResult>(actionResult2);
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestEditUserTemplate()
         {
             await TestAddTemplate();
@@ -184,87 +181,97 @@ namespace MS.IoT.DataPacketDesigner.Tests
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
 
-            IHttpActionResult actionGetTemplatesResult = await templateApiController.GetUserTemplates();
-            Assert.IsInstanceOfType(actionGetTemplatesResult, typeof(OkNegotiatedContentResult<IEnumerable<Template>>));
-
-            OkNegotiatedContentResult<IEnumerable<Template>> userTemplatesResult = (OkNegotiatedContentResult<IEnumerable<Template>>)actionGetTemplatesResult;
-            IEnumerable<Template> userTemplates = userTemplatesResult.Content;
+            var actionGetTemplatesResult = await templateApiController.GetUserTemplates();
+            actionGetTemplatesResult.AssertOkValueType<IEnumerable<Template>>();
+            
+            var userTemplates = actionGetTemplatesResult.OkayContent<IEnumerable<Template>>(); 
             IEnumerator enumerator = userTemplates.GetEnumerator();
             enumerator.MoveNext();
             Template toEdit = (Template)enumerator.Current;
 
             toEdit.Name = "New Name";
 
-            IHttpActionResult actionResult = await templateApiController.EditUserTemplate(toEdit);
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<bool>));
+            var actionResult = await templateApiController.EditUserTemplate(toEdit);
+            actionResult.AssertOkValueType<bool>();
 
-            OkNegotiatedContentResult<bool> result = (OkNegotiatedContentResult<bool>)actionResult;
-            Assert.AreEqual(true, result.Content);
+            var result = actionResult.OkayContent<bool>();
+            Assert.True(result);
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestDeleteUserTemplate()
         {
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
 
-            IHttpActionResult actionGetTemplatesResult = await templateApiController.GetUserTemplates();
-            Assert.IsInstanceOfType(actionGetTemplatesResult, typeof(OkNegotiatedContentResult<IEnumerable<Template>>));
+            var actionGetTemplatesResult = await templateApiController.GetUserTemplates();
+            actionGetTemplatesResult.AssertOkValueType<IEnumerable<Template>>();
 
-            OkNegotiatedContentResult<IEnumerable<Template>> userTemplatesResult = (OkNegotiatedContentResult<IEnumerable<Template>>)actionGetTemplatesResult;
-            IEnumerable<Template> userTemplates = userTemplatesResult.Content;
+            IEnumerable<Template> userTemplates = actionGetTemplatesResult.OkayContent<IEnumerable<Template>>();
             IEnumerator enumerator = userTemplates.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 Template toDelete = (Template)enumerator.Current;
 
-                IHttpActionResult actionResult = await templateApiController.DeleteUserTemplate(toDelete.Id);
-                Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<bool>));
+                var actionResult = await templateApiController.DeleteUserTemplate(toDelete.Id);
+                actionResult.AssertOkValueType<bool>();
 
-                OkNegotiatedContentResult<bool> result = (OkNegotiatedContentResult<bool>)actionResult;
-                Assert.AreEqual(true, result.Content);
+                var result = actionResult.OkayContent<bool>();
+                Assert.True(result);
             }
 
-            IHttpActionResult actionGetTemplatesResult2 = await templateApiController.GetUserTemplates();
-            Assert.IsInstanceOfType(actionGetTemplatesResult2, typeof(OkNegotiatedContentResult<IEnumerable<Template>>));
-            OkNegotiatedContentResult<IEnumerable<Template>> userTemplatesResult2 = (OkNegotiatedContentResult<IEnumerable<Template>>)actionGetTemplatesResult2;
-            IEnumerable<Template> userTemplates2 = userTemplatesResult2.Content;
+            var actionGetTemplatesResult2 = await templateApiController.GetUserTemplates();
+            actionGetTemplatesResult.AssertOkValueType<IEnumerable<Template>>();
+            
+            IEnumerable<Template> userTemplates2 = actionGetTemplatesResult2.OkayContent<IEnumerable<Template>>();
             IEnumerator enumerator2 = userTemplates2.GetEnumerator();
-            Assert.AreEqual(false, enumerator2.MoveNext());
+            Assert.False(enumerator2.MoveNext());
         }
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "skipped")]
         public async Task TestDeleteCommonTemplate()
         {
             ICosmosDBRepository<Template> _RepoTemplate = new CosmosDBRepository<Template>(endpoint, authkey, database, colTemplate);
             ICosmosDBRepository<Category> _RepoCategory = new CosmosDBRepository<Category>(endpoint, authkey, database, colTemplate);
             IUserProfileService _UserProfileProvider = new MockUserProfileService(graphUri, clientId2, appKey, AADInstance);
+            ILogger<TemplateApiController> _logger = new LoggerFactory().CreateLogger<TemplateApiController>();
 
-            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider);
+            TemplateApiController templateApiController = new TemplateApiController(_RepoTemplate, _RepoCategory, _UserProfileProvider, _logger);
 
-            IHttpActionResult actionResult = await templateApiController.GetTemplateById("refrigerator_smart");
-            Assert.IsInstanceOfType(actionResult, typeof(OkNegotiatedContentResult<Template>));
+            var actionResult = await templateApiController.GetTemplateById("refrigerator_smart");
+            actionResult.AssertOkValueType<Template>();
+            
+            var toDelete = actionResult.OkayContent<Template>();
 
-            OkNegotiatedContentResult<Template> result = (OkNegotiatedContentResult<Template>)actionResult;
-
-            Template toDelete = result.Content;
-
-            IHttpActionResult actionResult2 = await templateApiController.DeleteUserTemplate(toDelete.Id); //Should fail because you can't delete a common template
-            Assert.IsInstanceOfType(actionResult2, typeof(StatusCodeResult));
+            var actionResult2 = await templateApiController.DeleteUserTemplate(toDelete.Id); //Should fail because you can't delete a common template
+            Assert.IsAssignableFrom<StatusCodeResult>(actionResult2);
         }
 
-        [TestCleanup]
-        public async Task Cleanup()
+        
+        public async Task DisposeAsync()
         {
             await TestDeleteUserTemplate();
+        }
+    }
+
+    static class TestExtensions
+    {
+        public static T OkayContent<T>(this IActionResult actionResult)
+        {
+            return (T)((actionResult as OkObjectResult)?.Value);
+        }
+
+        public static void AssertOkValueType<T>(this IActionResult actionResult)
+        {
+            Assert.IsAssignableFrom<T>((actionResult as OkObjectResult)?.Value);
         }
     }
 }

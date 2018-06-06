@@ -1,0 +1,52 @@
+﻿<div id="simulatetemplate" ng-show="vm.currentTemplateId != null">
+    <div class="row">
+        <div class="col-md-12">
+            <div><h3>Simulating Your Product</h3></div>
+            <div>We will simulate your IoT Experience in the cloud. Just follow these steps.</div>
+        </div>
+    </div>
+
+    <div class="row simulate-block">
+        <div class="col-md-12">
+            <div class="steps">Step 1</div>
+            <div class="lead">Order 4x4 Device</div>
+            <div>If you already have the 4x4 device start with step 2, otherwise click the below link to order a new one.</div>
+            <div><button type="button" class="btn btn-success blue" ng-click="vm.downloadBlobZip('4x4tools')"> Order 4x4 Device</button></div>
+        </div>
+    </div>
+
+    <div class="row simulate-block">
+        <div class="col-md-12">
+            <div class="steps">Step 2</div>
+            <div class="lead">Setup 4x4 Device</div>
+            <div>Please download the tools required to get started with 4x4. Please follow the get started document to configure and setup 4x4 device on your machine.</div>
+            <div><button type="button" class="btn btn-success blue" ng-click="vm.downloadBlobZip('4x4tools')"><img class="download-image" src="/images/icon-download.svg" alt="" /> Download and Setup your 4x4 Device</button></div>
+        </div>
+    </div>
+
+    <div class="row simulate-block">
+        <div class="col-md-12">
+            <div class="steps">Step 3</div>
+            <div class="lead">Connect UART Cable to 4x4</div>
+            <div>Connect the UARt cable to 4x4 device. Follow the instructions on this <a target="_blank" href="https://www.adafruit.com/product/954">link</a></div>
+        </div>
+    </div>
+
+    <div class="row simulate-block">
+        <div class="col-md-12">
+            <div class="steps">Step 4</div>
+            <div class="lead">Download and Deploy the 4x4 code on device</div>
+            <div>Download the C code below to deploy to 4x4 device. You will need Visual Studio 2017 V 15.3 or later to open the solution and deploy the code.</div>
+            <div><button type="button" class="btn btn-success blue" ng-click="vm.downloadBlobZip('4x4appcode')"><img class="download-image" src="/images/icon-download.svg" alt="" /> Download and Deploy 4x4 Code</button></div>
+        </div>
+    </div>
+
+    <div class="row simulate-block">
+        <div class="col-md-12">
+            <div class="steps">Step 5</div>
+            <div class="lead">Download and Install the Simulator Desktop App</div>
+            <div>The simulator app will help you connect to the 4x4 device and send data packets to the IoT hub.</div>
+            <div><button type="button" class="btn btn-success blue" ng-click="vm.downloadBlobZip('simulator')"><img class="download-image" src="/images/icon-download.svg" alt="" /> Download and Install Simulator</button></div>
+        </div>
+    </div>   
+</div>

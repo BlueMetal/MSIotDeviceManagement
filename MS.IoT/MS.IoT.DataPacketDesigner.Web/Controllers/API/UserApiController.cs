@@ -1,10 +1,10 @@
-﻿using Microsoft.Azure.ActiveDirectory.GraphClient;
-using MS.IoT.Common;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.ActiveDirectory.GraphClient;
+using Microsoft.Extensions.Logging;
 using MS.IoT.DataPacketDesigner.Web.Helpers;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
+using Microsoft.AspNetCore.Http;
 
 namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
 {
@@ -12,16 +12,19 @@ namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
     /// User Controller API
     /// </summary>
     [Authorize]
-    [RoutePrefix("api/user")]
+    [Route("api/user")]
     public class UserApiController : BaseApiController
     {
+        private readonly ILogger<UserApiController> logger;
+
         /// <summary>
         /// Main Constructor
         /// </summary>
         /// <param name="userProfile">User Profile Service</param>
-        public UserApiController(IUserProfileService userProfile)
+        public UserApiController(IUserProfileService userProfile, ILogger<UserApiController> logger)
             : base(userProfile)
         {
+            this.logger = logger;
         }
 
         /// <summary>
@@ -29,16 +32,16 @@ namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
         /// </summary>
         /// <returns>User Object</returns>
         [Route("current")]
-        [ResponseType(typeof(IUser))]
+        [Produces(typeof(IUser))]
         [HttpGet]
-        public async Task<IHttpActionResult> GetCurrentUser()
+        public async Task<IActionResult> GetCurrentUser()
         {
             Domain.Model.User currentUser = await EnsureCurrentUser();
 
             if (currentUser == null)
             {
-                Log.Error("API GetCurrentUser error: User not found.");
-                return StatusCode(HttpStatusCode.InternalServerError);
+                logger.LogError("API GetCurrentUser error: User not found.");
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return Ok(currentUser);
         }

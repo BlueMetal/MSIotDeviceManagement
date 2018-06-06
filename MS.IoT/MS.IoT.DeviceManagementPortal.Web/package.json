@@ -1,0 +1,43 @@
+{
+  "name": "MS.IoT.DeviceManagementPortal.Web",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "test": "karma start ClientApp/test/karma.conf.js"
+  },
+  "devDependencies": {
+    "@types/angular": "^1.6.40",
+    "@types/angular-ui-bootstrap": "^0.13.46",
+    "@types/bingmaps": "0.0.1",
+    "@types/webpack-env": "^1.13.3",
+    "aspnet-webpack": "^2.0.1",
+    "css-loader": "^0.28.8",
+    "eventsource-polyfill": "^0.9.6",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-minify-loader": "^1.3.0",
+    "node-sass": "^4.7.2",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.1",
+    "ts-loader": "^3.2.0",
+    "typescript": "^2.6.2",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-env": "^0.8.0",
+    "webpack-hot-middleware": "^2.21.0"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.13",
+    "angular": "^1.6.8",
+    "angular-aside": "^1.4.0",
+    "angular-sanitize": "^1.6.8",
+    "angular-ui-bootstrap": "^2.5.6",
+    "bingmaps": "^2.0.2",
+    "bootstrap": "3.3.7",
+    "ng-file-upload": "^12.2.13",
+    "ng-sortable": "^1.3.8",
+    "ng-tags-input": "^3.2.0",
+    "ui-select": "^0.19.8"
+  }
+}

@@ -7,7 +7,7 @@
     <div class="container" ng-cloak>
         <div class="section">
             <div class="form-group center">
-                <img src="~/Content/images/loader-96.gif" style="width:25%" ng-show="isPageLoading" />  
+                <img src="~/images/loader-96.gif" style="width:25%" ng-show="isPageLoading" />  
             </div>                
             <div ng-hide="isPageLoading">
                 <div class="center" ng-show="isAnySubscription">
@@ -26,7 +26,7 @@
                     <div class="form-group">
                         <label for="SelectSubscription">Select Subscription</label>
                         <select name="subscriptionSelect" class="form-control" id="SelectSubscription" ng-change="getLocations()" ng-model="deploy.subscription" 
-                                ng-options="s.DisplayName for s in subscriptions.SubscriptionList" required>
+                                ng-options="s.displayName for s in subscriptions.subscriptionList" required>
                             <option value="">-- Select Subscription --</option>
                         </select>
                         <span class="validationMsg" ng-show="submitted && provision.subscriptionSelect.$error.required">Subscription is required.</span>
@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="SelectLocation">Select Location</label>
                         <select name="locationSelect" class="form-control" id="SelectLocation" 
-                                ng-model="deploy.location" ng-options="s.DisplayName for s in locations.LocationList" required>
+                                ng-model="deploy.location" ng-options="s.displayName for s in locations.locationList" required>
                             <option value="">-- Select Location --</option>
                         </select>
                         <span class="validationMsg" ng-show="submitted && provision.locationSelect.$error.required">Location name is required.</span>
@@ -54,7 +54,7 @@
                 </form>  
                 <div>
                     <div class="form-group center">
-                        <img src="~/Content/images/loader-96.gif" style="width:25%" ng-show="isLoading" />
+                        <img src="~/images/loader-96.gif" style="width:25%" ng-show="isLoading" />
                         <h6 ng-show="isLoading" style="color:#00abf0">This may take 2-5 minutes...</h6>
                     </div>                   
                     
@@ -62,9 +62,9 @@
                     <div ng-show="isAppDeployingText" class="col-md-4 text-center">Provisioning Data Packet Designer</div>
                     <div ng-show="isAppConfiguringText" class="col-md-4 text-right">Finalizing</div>
                     
-                    <img ng-show="isAppCreating" src="~/Content/images/Progress1A.jpg" />
-                    <img ng-show="isAppDeploying" src="~/Content/images/Progress2A.jpg" />
-                    <img ng-show="isAppConfiguring" src="~/Content/images/Progress3A.jpg" />                             
+                    <img ng-show="isAppCreating" src="~/images/Progress1A.jpg" />
+                    <img ng-show="isAppDeploying" src="~/images/Progress2A.jpg" />
+                    <img ng-show="isAppConfiguring" src="~/images/Progress3A.jpg" />                             
                 </div>
             </div>
         </div>

@@ -1,0 +1,50 @@
+﻿<div class="modal-header">
+    <h5 class="modal-title">{{ vm.title }} ({{vm.selectedDevices.length}} devices selected)</h5>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <span>The properties will be sent to the devices through IoT Hub.</span><br/>
+            <span style="color:red">Warning: Upon saving the changes, all the {{vm.selectedDevices.length}} devices will be modified.</span>
+        </div>
+    </div>
+    <form class="form-horizontal" style="margin-top:10px" name="formProperties">
+        <div class="form-group" ng-repeat="property in vm.properties">
+            <label for="{{property.name}}" class="col-md-3 control-label" ng-bind="property.name"></label>
+            <div class="col-md-8">
+                <input ng-show="property.type < 5" type="text" placeholder="original value" class="form-control" ng-model="property.value">
+                <div ng-show="property.type == 5" class="row">
+                    <div class="col-md-12"><span ng-click="vm.addSubProperty(property)"><img src="/images/btn-add.svg" /></span></div>
+                </div>
+                <div ng-show="property.type == 5" class="row" ng-repeat="subProperty in property.children">
+                    <div class="col-md-5"><input type="text" placeholder="fieldname" ng-paste="$event.preventDefault();" reg-ex-input reg-ex="^[a-zA-Z0-9_]+$" maxlength="12" required class="form-control" ng-model="subProperty.name"></div>
+                    <div class="col-md-5"><input type="text" placeholder="value" class="form-control" ng-model="subProperty.value" maxlength="32" required ></div>
+                    <div class="col-md-2"><span ng-click="vm.removeProperty(property, subProperty)"><img src="/images/btn-remove.svg" /></span></div>
+                </div>
+            </div>
+        </div>
+    </form>
+        <br />
+        <div class="row" ng-show="vm.isUpdateClicked">
+            <div class="col-md-12"><span style="color:red">Update in progress - Please wait a few minutes...</span></div>
+        </div>
+        <div class="row" ng-show="vm.isUpdateClicked">
+            <div class="col-md-12"><img style="text-align:center" src="/images/loader-48.gif" /></div>
+        </div>
+        <div class="row" ng-hide="vm.isUpdateClicked">
+            <div class="col-md-10">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary" type="button" ng-click="vm.confirmUpdate()">Update</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h5 ng-class="vm.isError">{{vm.errorMessage}}</h5>
+            </div>
+        </div>
+</div>
+<div class="modal-footer" ng-hide="vm.isUpdateClicked">
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+    <button class="btn btn-primary" type="button" ng-click="vm.cancel()">Cancel</button>
+</div>

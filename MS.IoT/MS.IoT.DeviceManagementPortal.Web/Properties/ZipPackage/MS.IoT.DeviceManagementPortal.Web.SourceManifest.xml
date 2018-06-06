@@ -1,6 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sitemanifest>
-  <IisApp path="C:\SourceCode\MSIoT\MS.IoT\MS.IoT.DeviceManagementPortal.Web\obj\Release\Package\PackageTmp" />
-  <setAcl path="C:\SourceCode\MSIoT\MS.IoT\MS.IoT.DeviceManagementPortal.Web\obj\Release\Package\PackageTmp" setAclResourceType="Directory" />
-  <setAcl path="C:\SourceCode\MSIoT\MS.IoT\MS.IoT.DeviceManagementPortal.Web\obj\Release\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
+  <IisApp path="C:\SourceCode\MSIoT\miteshnetcore\MS.IoT\MS.IoT.DeviceManagementPortal.Web\obj\Release\netcoreapp2.0\PubTmp\Out\" />
 </sitemanifest>

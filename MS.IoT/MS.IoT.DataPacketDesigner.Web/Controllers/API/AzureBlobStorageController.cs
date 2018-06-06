@@ -1,14 +1,17 @@
-﻿using MS.IoT.Common;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MS.IoT.Common;
 using MS.IoT.DataPacketDesigner.Web.Helpers;
 using MS.IoT.Domain.Interface;
 using System;
 using System.IO;
-using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 using System.Xml;
+using Microsoft.Extensions.Options;
+using MS.IoT.DataPacketDesigner.Web.Models;
+using MS.IoT.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
 {
@@ -17,21 +20,34 @@ namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
     /// Service to communicate with Azure and retrieve data from Azure
     /// </summary>
     [Authorize]
-    [RoutePrefix("api/blob")]
+    [Route("api/blob")]
     public class AzureBlobStorageController : BaseApiController
     {
         //Service member
         public readonly IBlobStorageRepository _blobRepo;
+        private readonly ILogger<AzureBlobStorageController> logger;
+        private readonly CosmosDbOptions cosmostOptions;
+        private readonly IoTHubOptions iotOptions;
+        private readonly BlobOptions blobOptions;
 
         /// <summary>
         /// Main Controller
         /// </summary>
         /// <param name="userProfile">User Service</param>
         /// <param name="blobRepo">Blob Repository</param>
-        public AzureBlobStorageController(IUserProfileService userProfile, IBlobStorageRepository blobRepo)
+        public AzureBlobStorageController(IUserProfileService userProfile, 
+                                          IBlobStorageRepository blobRepo,
+                                          IOptionsSnapshot<IoTHubOptions> iotOptions,
+                                          IOptionsSnapshot<BlobOptions> blobOptions,
+                                          IOptionsSnapshot<CosmosDbOptions> cosmostOptions,
+                                          ILogger<AzureBlobStorageController> logger)
             : base(userProfile)
         {
             _blobRepo = blobRepo;
+            this.logger = logger;
+            this.cosmostOptions = cosmostOptions.Value;
+            this.iotOptions = iotOptions.Value;
+            this.blobOptions = blobOptions.Value;
         }
 
         /// <summary>
@@ -41,8 +57,10 @@ namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
         /// <returns></returns>
         [HttpGet]
         [Route("download/{folderpath}")]
-        public async Task<IHttpActionResult> DownloadSimulatorZip(string folderpath)
+        public async Task<IActionResult> DownloadSimulatorZip(string folderpath)
         {
+            Stream response = null; //The stream must not be closed prior to sending the file to the view
+
             try
             {
                 // if the path is simulator then create a config.xml file of appsettings
@@ -51,22 +69,27 @@ namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
                     using (StringWriterWithEncoding sw = new StringWriterWithEncoding(new UTF8Encoding(false)))
                     {
                         CreateXMLConfig(sw);
-                        var response = await _blobRepo.DownloadBlobZip(
-                            AppConfig.ConfigurationItems.SimulateToolsContainerName, folderpath, sw.ToString());
-                        return Ok(response);
+                        response = await _blobRepo.DownloadBlobZip(
+                                                  blobOptions.SimulateToolsContainerName,
+                                                  folderpath,
+                                                  sw.ToString());
+                            return File(response, "application/octet-stream", $"{folderpath}.zip");
                     }
                 }
                 else
                 {
-                    var response = await _blobRepo.DownloadBlobZip(
-                    AppConfig.ConfigurationItems.SimulateToolsContainerName, folderpath,null);
-                    return Ok(response);
+                    response = await _blobRepo.DownloadBlobZip(
+                                              blobOptions.SimulateToolsContainerName,
+                                              folderpath,
+                                              null);
+                    return File(response, "application/octet-stream", $"{folderpath}.zip");
                 }            
             }
             catch (Exception e)
             {                
-                Log.Error("Download Blob error {error}: ",e.Message);
-                return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.Message));
+                logger.LogError(e, "Download Blob error {error}", e.Message);
+                response.Dispose();
+                throw;
             }         
         }
 
@@ -85,10 +108,10 @@ namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
                 using (XmlWriter writer = XmlWriter.Create(tw, settings))
                 {
                     writer.WriteStartElement("appsettings");             
-                    writer.WriteElementString("CosmosDBEndPoint", AppConfig.ConfigurationItems.EndPoint);
-                    writer.WriteElementString("CosmosDBAuthKey", AppConfig.ConfigurationItems.AuthKey);
-                    writer.WriteElementString("IoTHubHostName", AppConfig.ConfigurationItems.IoTHubHostName);
-                    writer.WriteElementString("IoTHubConnectionString", AppConfig.ConfigurationItems.IoTHubConnectionString);
+                    writer.WriteElementString("CosmosDBEndPoint", cosmostOptions.Endpoint);
+                    writer.WriteElementString("CosmosDBAuthKey", cosmostOptions.AuthKey);
+                    writer.WriteElementString("IoTHubHostName", iotOptions.HostName);
+                    writer.WriteElementString("IoTHubConnectionString", iotOptions.ConnectionString);
                     writer.Flush();
                 }
             }

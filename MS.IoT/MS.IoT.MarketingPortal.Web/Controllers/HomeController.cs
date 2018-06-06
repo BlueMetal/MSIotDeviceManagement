@@ -1,93 +1,89 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
-using System.Web;
-using System.Web.Mvc;
 using System.Threading.Tasks;
-using Microsoft.Azure.ActiveDirectory.GraphClient;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OpenIdConnect;
-using MS.IoT.MarketingPortal.Web.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MS.IoT.Domain.Interface;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using MS.IoT.Common;
-using MS.IoT.MarketingPortal.Web.Helpers;
+using MS.IoT.MarketingPortal.Web.Models;
 
 namespace MS.IoT.MarketingPortal.Web.Controllers
 {
-   
+    [Authorize]
     public class HomeController : Controller
-    {      
+    {
         public readonly IServicePrincipalRepository _servicePrincipalRepo;
         public readonly IResourceManagerRepository _resourceManagerRepo;
+        private readonly IOptions<UrlOptions> urlOptions;
+        private readonly ILogger<HomeController> logger;
 
-        public HomeController(IServicePrincipalRepository servicePrincipalRepo, IResourceManagerRepository resourceManagerRepo)
+        public HomeController(IServicePrincipalRepository servicePrincipalRepo, 
+                              IResourceManagerRepository resourceManagerRepo, 
+                              IOptions<UrlOptions> urlOptions,
+                              ILogger<HomeController> logger)
         {
-            this._servicePrincipalRepo = servicePrincipalRepo;
-            this._resourceManagerRepo = resourceManagerRepo;
+            _servicePrincipalRepo = servicePrincipalRepo;
+            _resourceManagerRepo = resourceManagerRepo;
+            this.urlOptions = urlOptions;
+            this.logger = logger;
         }
 
         [Authorize]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
+        {
+
+            ViewData["Message"] = "Your application description page.";
+
+            return View(new WatchVideoModel() { VideoUrl = urlOptions.Value.WatchVideo });
+        }
+
+        [Authorize]
+        public ActionResult GetStarted()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Deploy()
         {
             
-            ViewBag.Message = "Your application description page.";          
-
-            return View(new WatchVideoModel() { VideoUrl = AppConfig.ConfigurationItems.WatchVideoUrl });                  
-        }
-
-        [Authorize]
-        public async Task<ActionResult> GetStarted()
-        {                      
-            ViewBag.Message = "Your application description page.";
+            ViewData["Message"] = "Your application description page.";
 
             return View();
         }
 
-        [Authorize]
-        public async Task<ActionResult> Deploy()
-        {
-            Log.Information("Application Loaded- auth value {AuthCode}", AuthConfig.SessionItems.AuthCode);
-            Log.Information("Application Loaded- graph token value {GraphToken}", AuthConfig.SessionItems.GraphAuthToken);
-            Log.Information("Application Loaded- managament token value {ManagemenToken}", AuthConfig.SessionItems.ManagementAuthToken);
-
-            var authcode = AuthConfig.SessionItems.AuthCode;
-            if (authcode == null)
-            {
-                RefreshSession("/Home/Deploy");
-                Log.Information("Application Refresh session- auth value {AuthCode}", AuthConfig.SessionItems.AuthCode);
-                Log.Information("Application Refresh session- graph token value {GraphToken}", AuthConfig.SessionItems.GraphAuthToken);
-                Log.Information("Application Refresh session- managament token value {ManagemenToken}", AuthConfig.SessionItems.ManagementAuthToken);
-            }
-            return View();
-        }
-
-        public void RefreshSession(string path)
-        {
-            Log.Information("Application Refresh session called");
-            HttpContext.GetOwinContext().Authentication.Challenge(
-                new AuthenticationProperties { RedirectUri = path },
-                OpenIdConnectAuthenticationDefaults.AuthenticationType);
-        }
-
+        [AllowAnonymous]
         public ActionResult Faqs()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewData["Message"] = "Your application description page.";
 
             return View();
         }
 
-        public ActionResult ContactUs()
+        [AllowAnonymous]
+        public IActionResult About()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewData["Message"] = "Your application description page.";
 
             return View();
-        }    
+        }
+
+        [AllowAnonymous]
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

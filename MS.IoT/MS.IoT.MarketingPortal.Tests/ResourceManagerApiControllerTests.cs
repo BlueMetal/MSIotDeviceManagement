@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MS.IoT.Repositories;
 using Moq;
 using MS.IoT.Domain.Interface;
@@ -11,33 +10,39 @@ using System.Threading.Tasks;
 using MS.IoT.MarketingPortal.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http.Results;
 using Microsoft.Azure.Management.ResourceManager.Models;
+using Microsoft.Extensions.Logging;
+using MS.IoT.MarketingPortal.Web;
 using MS.IoT.MarketingPortal.Web.Helpers;
+using Xunit;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MS.IoT.MarketingPortal.Tests
 {
-    [TestClass]
     public class ResourceManagerApiControllerTests
     {
 
-        [TestMethod]
+        [Fact]
         public async Task get_subscription_controller()
         {
             var servicePrinRepo = new Mock<IServicePrincipalRepository>();
             var resourceManagerRepo = new Mock<IResourceManagerRepository>();
-            resourceManagerRepo.Setup(ur => ur.GetSubscriptions(AuthConfig.SessionItems.ManagementAuthToken))
+            resourceManagerRepo.Setup(ur => ur.GetSubscriptions())
                 .Returns(MockedGetSubscriptions());
 
-            var resCtrl = new ResourceManagerApiController(servicePrinRepo.Object, resourceManagerRepo.Object);
+            var opts = new UrlOptions();
+            var logger = new LoggerFactory().CreateLogger<ResourceManagerApiController>();
+
+            var resCtrl = new ResourceManagerApiController(servicePrinRepo.Object, resourceManagerRepo.Object, Options.Create(opts), logger);
            
             var subscriptions = await resCtrl.GetSubscriptions();
-            var contentResult = subscriptions as OkNegotiatedContentResult<SubscriptionResponseModel>;
+            var contentResult = subscriptions.OkayContent<SubscriptionResponseModel>();
 
-            Assert.AreEqual(contentResult.Content.SubscriptionList[0].DisplayName, "Subscription MSDN");
-            Assert.AreEqual(contentResult.Content.SubscriptionList[0].Id, "1234");
-            Assert.AreEqual(contentResult.Content.SubscriptionList[0].State.ToString(), "Enabled");
-            Assert.AreEqual(contentResult.Content.SubscriptionList[0].SubscriptionId, "1234");
+            Assert.Equal("Subscription MSDN", contentResult.SubscriptionList[0].DisplayName);
+            Assert.Equal("1234", contentResult.SubscriptionList[0].Id);
+            Assert.Equal("Enabled", contentResult.SubscriptionList[0].State.ToString());
+            Assert.Equal("1234", contentResult.SubscriptionList[0].SubscriptionId);
         }
 
         //[TestMethod]
@@ -80,25 +85,18 @@ namespace MS.IoT.MarketingPortal.Tests
         //    Assert.AreEqual(contentResult.Content.IotHubName, "testiothubname");
             
         //}
-       
 
-        private Task<SubscriptionResponse> MockedGetSubscriptions()
+
+        private Task<IReadOnlyList<Subscription>> MockedGetSubscriptions()
         {
-            var ret = new SubscriptionResponse()
+
+            var s = new List<Subscription>()
             {
-                SubscriptionList = new List<Domain.Model.Subscription>()
-                {
-                    new Domain.Model.Subscription()
-                    {
-                        DisplayName="Subscription MSDN",
-                        Id="1234",
-                        State=SubState.Enabled,
-                        SubscriptionId="1234",
-                    }
-                }.ToList(),
+                new Subscription("1234", displayName: "Subscription MSDN", state: SubscriptionState.Enabled, subscriptionId: "1234")
             };
 
-            return Task.FromResult(ret);
+
+            return Task.FromResult<IReadOnlyList<Subscription>>(s);
         }
 
         //private Task<DeploymentExtended> MockedDeploy4x4IoTSolution()
@@ -115,5 +113,17 @@ namespace MS.IoT.MarketingPortal.Tests
 
         //    return Task.FromResult(ret);
         //}
+    }
+    static class TestExtensions
+    {
+        public static T OkayContent<T>(this IActionResult actionResult)
+        {
+            return (T)((actionResult as OkObjectResult)?.Value);
+        }
+
+        public static void AssertOkValueType<T>(this IActionResult actionResult)
+        {
+            Assert.IsAssignableFrom<T>((actionResult as OkObjectResult)?.Value);
+        }
     }
 }

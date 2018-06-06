@@ -14,7 +14,6 @@ using System.Web;
 using Microsoft.Azure.ActiveDirectory.GraphClient;
 using System.Diagnostics;
 using System.Security.Cryptography;
-using RestSharp;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.Azure;
@@ -33,16 +32,17 @@ namespace MS.IoT.Repositories
             _blobConnectionString = blobConnectionString;
         }
 
-        public async Task<System.Web.HttpResponse> DownloadBlobZip(string containerName,string folderpath,string configXml)
+        public async Task<Stream> DownloadBlobZip(string containerName,string folderpath,string configXml)
         {
             try
             {
                 var container = GetBlobContainer(containerName);
-                System.Web.HttpResponse Response = HttpContext.Current.Response;
-                using (var zipOutputStream = new ZipOutputStream(Response.OutputStream))
-                {
-                    var blobs = container.ListBlobs(useFlatBlobListing: true);
-                    var blobNames = blobs.OfType<CloudBlockBlob>().Select(b => b.Name).ToList();
+                var ms = new MemoryStream();
+                var zipOutputStream = new ZipOutputStream(ms);
+                //using (var zipOutputStream = new ZipOutputStream(ms)) //The stream must not be closed prior to sending the file to the view
+                //{
+                    var blobs = await container.ListBlobsSegmentedAsync(folderpath, true, BlobListingDetails.All, 10, null, null, null);
+                    var blobNames = blobs.Results.OfType<CloudBlockBlob>().Select(b => b.Name).ToList();
                     foreach (var blobName in blobNames)
                     {
                         var blobPathNameSplit = blobName.Split('/');
@@ -52,7 +52,7 @@ namespace MS.IoT.Repositories
                             var blob = container.GetBlockBlobReference(blobName);
                             var entry = new ZipEntry(blobPathNameSplit.Last());
                             zipOutputStream.PutNextEntry(entry);
-                            blob.DownloadToStream(zipOutputStream);
+                            await blob.DownloadToStreamAsync(zipOutputStream);
                         }                      
                     }
                    
@@ -66,14 +66,11 @@ namespace MS.IoT.Repositories
                     }                 
 
                     zipOutputStream.Finish();
-                    zipOutputStream.Close();
-                }
-                Response.BufferOutput = false;
-                Response.AddHeader("Content-Disposition", "attachment; filename=" + folderpath + ".zip");
-                Response.ContentType = "application/octet-stream";
-                Response.Flush();
-                Response.End();
-                return Response;
+                    //zipOutputStream.Close();
+                //}
+                ms.Position = 0;
+
+                return ms;
             }
             catch (Exception e)
             {

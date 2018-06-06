@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Device Management Portal</title>
-    @Styles.Render("~/bundles/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>Device Management Portal</title>
+
     <base href="/">
+    <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/dist/main.css" asp-append-version="true" />
 </head>
 <body ng-app="MSIoTDeviceManagementPortal">
     <!-- header -->
@@ -21,7 +22,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a ui-sref="app.listdashboard" class="navbar-brand" style="color:#267CB4"><img src="/Content/images/dmp-logo.svg" /> Device Management Portal</a>
+                        <a ui-sref="app.listdashboard" class="navbar-brand" style="color:#267CB4"><img src="/images/dmp-logo.svg" /> Device Management Portal</a>
                     </div>
                     <div class="collapse navbar-collapse" uib-collapse="mn.isNavCollapsed">
                         @Html.Partial("_LoginPartial")
@@ -35,19 +36,19 @@
 
         <a ui-sref="app.list">
             <div ng-class="{menu : true, active : sm.isListActivated}">
-                <img class="center-block" src="~/Content/images/tab-devices-selected.svg" />
+                <img class="center-block" src="~/images/tab-devices-selected.svg" />
             </div>
         </a>
 
         <a ui-sref="app.map">
             <div ng-class="{menu : true, active : sm.isMapActivated}">
-                <img class="center-block" src="~/Content/images/tab-map-selected.svg" />
+                <img class="center-block" src="~/images/tab-map-selected.svg" />
             </div>
         </a>
 
         <a ui-sref="app.groups">
             <div ng-class="{menu : true, active : sm.isGroupsActivated}">
-                <img class="center-block" src="~/Content/images/tab-groups-selected.svg" />
+                <img class="center-block" src="~/images/tab-groups-selected.svg" />
             </div>
         </a>
     </div>
@@ -55,13 +56,12 @@
     <!-- body -->
     <div class="container">
         <div id="content-box">
-            @RenderBody()
+            <ui-view></ui-view>
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/angularjs")
-    @Scripts.Render("~/bundles/app")
-    <script src='https://www.bing.com/api/maps/mapcontrol'></script>
+    @RenderBody()
     @RenderSection("scripts", required: false)
+    <script src='https://www.bing.com/api/maps/mapcontrol'></script>
 </body>
 </html>

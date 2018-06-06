@@ -1,0 +1,8 @@
+﻿<div class="editable-field">
+    <div ng-hide="isEditMode"><span ng-bind="field"></span><span ng-click="toggle()"><img src="/images/icon-edit.svg" /></span></div>
+    <div ng-show="isEditMode && inputType == 'text'"><input ng-model="field" maxlength="{{maxlength}}" required="{{required}}" /> <span ng-click="toggle()"><img src="/images/icon-edit.svg" /></span></div>
+    <div ng-show="isEditMode && inputType == 'note'">
+        <div><textarea ng-model="field" maxlength="{{maxlength}}" required="{{required}}"></textarea></div>
+        <span>{{(maxlength - field.length)}} characters remaining.</span><span ng-click="toggle()"><img src="/images/icon-edit.svg" /></span>
+    </div>
+</div>

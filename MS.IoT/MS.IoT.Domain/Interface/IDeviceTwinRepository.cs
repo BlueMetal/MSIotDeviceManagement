@@ -12,7 +12,7 @@ namespace MS.IoT.Domain.Interface
         Task<Microsoft.Azure.Devices.Device> GetDevice(string deviceId);
         Task<Microsoft.Azure.Devices.Device> CreateDevice(string deviceId);
         Task<Microsoft.Azure.Devices.Device> CreateAndInitializeDeviceTwin(string deviceId, DeviceTwinTagsModel tags);
-        Task<Microsoft.Azure.Devices.Device> ImportInitializeDeviceTwin(string deviceId, DeviceTwinTagsModel tags);
+        Task<Microsoft.Azure.Devices.Device> ImportInitializeDeviceTwin(string deviceId, DeviceTwinImportModel tags);
         Task InitializeDeviceTwinDesiredFeaturesAsync(DeviceTwinDesiredFeaturesModel deviceTwinFeaturesModel);
         Task UpdateDeviceTwinDesiredFeatureAsync(DeviceTwinDesiredSingleFeatureModel deviceTwinFeatureModel);
         Task<DeviceUpdateResult> UpdateDevicesAsync(List<string> deviceIds, string jsonDesired, string jsonTags);

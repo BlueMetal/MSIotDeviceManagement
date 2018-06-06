@@ -1,4 +1,3 @@
-﻿
 ===========================
 Prerequisites :
 --------------------------
@@ -9,7 +8,7 @@ This batch file requires that the package file "MS.IoT.DataPacketDesigner.Web.zi
 ===========================
 Usage:
 --------------------------
-MS.IoT.DataPacketDesigner.Web.deploy.cmd [/T|/Y] [/M:ComputerName] [/U:UserName] [/P:Password] [/G:UseTempAgent] [Additional msdeploy.exe flags ...]
+MS.IoT.DataPacketDesigner.Web.deploy.cmd [/T|/Y] [/M:ComputerName] [/U:UserName] [/P:Password] [/G:<True | False>] [/A:<Basic | NTLM>] [Additional msdeploy.exe flags ...]
 
 
 ===========================
@@ -47,7 +46,7 @@ Optional Flags:
 	Specifies that the package is deployed to local IISExpress user instance.
 
 [Additional msdeploy.exe flags]
-	The msdeploy.exe command supports additional flags. You can include any of these additional flags in the "$(ProjectName).Deploy.cmd" file, and the flags are passed through to msdeploy.exe during execution.
+	The msdeploy.exe command supports additional flags. You can include any of these additional flags in the "MS.IoT.DataPacketDesigner.Web.Deploy.cmd" file, and the flags are passed through to msdeploy.exe during execution.
 	Alternatively, you can specify additional flags by setting the "_MsDeployAdditionalFlags" environment variable. These settings are used by this batch file.
 	Note: Any flag value that includes an equal sign (=) must be enclosed in double quotation marks, as shown in the following example, which will skip deploying the databases that are included in the package:
 		"-skip:objectName=dbFullSql" 
@@ -60,4 +59,3 @@ Environment-Specific Settings:
 		 "MS.IoT.DataPacketDesigner.Web.SetParameters.xml"
 ===========================
 For more information on this deploy script visit:	https://go.microsoft.com/fwlink/?LinkID=183544
-

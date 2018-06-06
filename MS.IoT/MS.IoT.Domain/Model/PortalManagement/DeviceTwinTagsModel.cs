@@ -11,6 +11,9 @@ namespace MS.IoT.Domain.Model
 { 
     public class DeviceTwinTagsModel
     {
+        [JsonIgnore]
+        public string DeviceId { get; set; }
+
         [JsonProperty(PropertyName = "productName")]
         public string ProductName { get; set; }
 

@@ -1,54 +1,52 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OpenIdConnect;
-using Microsoft.Owin.Security;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MS.IoT.DataPacketDesigner.Web.Controllers
 {
-    /// <summary>
-    /// Controller for Account
-    /// Provide server side features for SignIn/Out for MVC
-    /// </summary>
+
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        /// <summary>
-        /// Send an OpenID Connect sign-in request.
-        /// </summary>
-        public void SignIn()
+        [HttpGet]
+        public IActionResult SignIn()
         {
-            // Send an OpenID Connect sign-in request.
-            if (!Request.IsAuthenticated)
-            {
-                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" },
-                    OpenIdConnectAuthenticationDefaults.AuthenticationType);
-            }
+            var redirectUrl = Url.Action(nameof(HomeController.Index), "Home");
+            return Challenge(
+                new AuthenticationProperties { RedirectUri = redirectUrl },
+                OpenIdConnectDefaults.AuthenticationScheme);
         }
 
-        /// <summary>
-        /// Redirect to the SignOut page (MVC server side)
-        /// </summary>
-        public void SignOut()
+        [HttpGet]
+        public IActionResult SignOut()
         {
-            string callbackUrl = Url.Action("SignOutCallback", "Account", routeValues: null, protocol: Request.Url.Scheme);
-
-            HttpContext.GetOwinContext().Authentication.SignOut(
+            var callbackUrl = Url.Action(nameof(SignedOut), "Account", values: null, protocol: Request.Scheme);
+            return SignOut(
                 new AuthenticationProperties { RedirectUri = callbackUrl },
-                OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                OpenIdConnectDefaults.AuthenticationScheme);
         }
 
-        /// <summary>
-        /// Once the user is logged out, redirect to the Index page
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult SignOutCallback()
+        [HttpGet]
+        public IActionResult SignedOut()
         {
-            if (Request.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 // Redirect to home page if the user is authenticated.
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
             return View();
         }
     }

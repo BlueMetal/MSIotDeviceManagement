@@ -1,0 +1,665 @@
+﻿body {
+    background-color: #F6F6F6;
+    font-family: SegoeUI, 'Segoe UI', "Open Sans", Helvetica;
+    font-size: 13px;
+    color: #59565A;
+}
+
+.navbar-inverse {
+    background-color: white;
+    border:none;
+    border-bottom: 5px solid #DDDDDD;
+    
+}
+
+.navbar-brand {
+    color: #267CB4;
+}
+
+.successText {
+    color:forestgreen;
+}
+
+.errorText {
+    color: crimson;
+}
+.validationMsg {
+    color: crimson;
+}
+
+.editsidepanel {
+    height: 25px;
+    margin-top: 5px;
+}
+
+.menu {
+    width: 65px;
+    height: 65px;
+    padding: 10px;
+    margin: 0 0 10px 0;
+    color: #719CB2;
+    background-color: #094A75;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.menu.active {
+    color: #fff;
+    background-color: #267CB4;
+    }
+
+.menu > img {
+    opacity: 0.4;
+}
+
+/* styling of animated loader */
+.menu.active > img {
+    opacity: 1;
+}
+
+.loaderCenter img, .loaderCenter .loading {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.loaderCenter .loading {
+    margin-top: 80px;
+}
+
+/* panel image styling */
+.panel.panel-primary.features .loaderCenter img {
+    margin-left: auto;
+    margin-right: 0;
+    display: block;
+    position:relative;
+    top:3px;
+}
+
+/* alert stying */
+.loaderCenter .col-alert img {
+    margin: 0;
+    padding-right: 5px;
+}
+
+.space{
+    margin-bottom:15px;
+}
+
+.cursorclick{
+    cursor:pointer;
+}
+
+/*table*/
+.tableDiv {
+    margin-top: 10px;
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+}
+
+.tableHeader {
+    background-color: #267CB4;
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 5px solid #DDDDDD;
+}
+
+.tableRow {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.col-alert img{
+    display:inline;
+    margin-right:5px;
+}
+
+/*panels*/
+.panel-primary .panel-heading {
+    background-color: #267CB4;
+}
+
+.panel-default, .panel-body {
+    padding: 0px;
+}
+
+.panel-heading {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    font-size: 18px;
+}
+
+.panel {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.panel-primary {
+    border-color: #D9D9D9;
+}
+
+.list-group-item {
+    border: 1px solid transparent;
+}
+
+.badge {
+    color: #59565A;
+    background-color: transparent;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.list-group-item.indent {
+    margin-left: 20px;
+}
+
+a.navbar-brand { 
+    font-size: 24px; 
+    font-weight: 300; 
+    position: relative; 
+    top: 5px;
+}
+
+.navbar-brand > img {
+    display: block;
+    float: left;
+    margin-right: 10px;
+    position: relative;
+    top: -5px;
+}
+
+.navbar {
+    min-height: 70px;
+}
+
+.navbar-inverse {
+    border-bottom: 1px solid #D9D9D9;
+}
+
+/* web part on home page */
+.list-group-item {
+    padding: 9px 15px;
+}
+
+.col-md-4.device-summary {
+    padding-left: 0;
+}
+
+.col-md-4.top10 {
+    padding-right: 0;
+}
+
+.col-md-4.alert-summary {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.progress {
+    height: 16px;
+    margin-bottom: 9px;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 4px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width:230px;
+}
+
+.progress-bar-info {
+    background-color: #29bb9c;
+    border-radius: 8px;
+}
+
+.progress-bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 13px;
+    line-height: 14px;
+    color: #fff;
+    text-align: right;
+    background-color: #29bb9c;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+    padding-right: 15px;
+    font-family: SegoeUI, 'Segoe UI', "Open Sans", Helvetica;
+}
+
+.top10 .panel-body .row.ng-scope {
+    padding: 9px 0 0 0;
+}
+
+.top10 .col-md-8 {
+    padding: 0 0 0 0;
+}
+.top10 .col-md-4 {
+    padding: 0 0 0 30px;
+}
+/* table */
+.navbar-inverse .navbar-nav > li > a, .navbar-inverse .navbar-nav > li > a:hover {
+    color: #267CB4;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #267CB4;
+    cursor: default;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid #267CB4;
+    font-weight: bold;
+}
+
+tags-input .tags .input {
+    box-shadow: none;
+    background-color: transparent;
+    font-family: inherit;
+}
+
+tags-input .tags {
+    box-shadow: none;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px #999 solid;
+    border-radius: 0;
+    background: url(/images/icon-search.svg) right no-repeat;
+    font: SegoeUI, 'Segoe UI', "Open Sans", Helvetica;
+}
+
+tags-input .tags .tag-item .remove-button:active, tags-input .tags .tag-item .remove-button {
+    color: #fff;
+}
+
+tags-input {
+    min-width: 190px;
+}
+
+.groupby {
+    width: 70px;
+    float: left;
+    position: relative;
+    top: 9px;
+}
+
+.nav-tabs > li > a {
+    margin-right: 0;
+    color: #59565A;
+}
+
+.nav-tabs {
+    border-bottom: 0;
+}
+
+.navbar-form .input-group {
+    position: relative;
+    top: -3px;
+    left: 15px;
+}
+
+.nav-tabs > li > a:hover {
+    border-color: transparent;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+    text-decoration: none;
+    background-color: #f1f1f1;
+}
+
+.tableheadercols {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 10px;
+}
+
+.sort-decending, .sort-ascending {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    line-height: 1;
+    background: url(/images/sort-a-to-z.svg) no-repeat;
+    width: 17px;
+    height: 10px;
+}
+
+.sort-decending {
+    background:url(/images/sort-a-to-z.svg) no-repeat;
+}
+
+.dmptable .tableRow:hover {
+   cursor:pointer;
+   background-color: #e9f7ff;
+}
+
+.dmptable .tableRow.tableHeader:hover {
+    background-color: #267CB7;
+}
+
+/* modal styling */
+.modal-open .modal {
+    background-color: rgba(0, 0, 0, .6);
+}
+
+.ng-aside.horizontal .modal-dialog {
+    width: 768px;
+}
+
+.modal-md {
+    width: 45%;
+    color: #454545;
+}
+
+.modal-header {
+    padding: 5px;
+    background-color: #094A75;
+    color: #ffffff;
+    height: 34px;
+    text-transform: uppercase;
+}
+
+.modal-header2 {
+    padding: 15px;
+    background-color: #ffffff;
+    color: #454545;
+    border-radius: 6px;
+}
+
+.modal-header > .row > .col-md-1 {
+    width: 1% !important;
+}
+
+.modal-header > .row > .col-md-6 {
+    padding-left: 8px !important;
+} 
+
+.cancelbtn {
+    text-align: right;
+}
+
+iconspacer {
+    margin-right:10px;
+}
+
+button.cancel {
+    background-color: #D9D9D9;
+    color: #454545;
+}
+
+button.save {
+    background-color: #094A75;
+    color: white;
+}
+
+button.save:hover, button.cancel:hover {
+    background-color: #267CB4;
+    color: white;
+}
+
+.modal-body {
+    line-height: 2;
+}
+
+.statusplacement {
+    text-align: center;
+    padding: 15px 0 0 0;
+}
+
+.panel.panel-primary.features {
+    margin-top:50px;
+}
+
+.text-left {
+    text-align: left;
+    color: #267CB4;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.list-group.ng-scope .col-md-8.ng-binding {
+    padding-left: 0;
+}
+
+.prod-detail-title {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+h3.modal-title {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+/* pagination */
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.pagination > li > a, .pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 2px 8px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #267CB4;
+    text-decoration: none;
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+    z-index: 2;
+    color: #267CB4;
+    background-color: transparent;
+    border-color: #267CB4;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 3;
+    color: #267CB4;
+    cursor: default;
+    background-color: transparent;
+    border-color: #267CB4;
+    border-radius: 4px;
+}
+
+/* checkboxes */
+input[type=checkbox]:before {
+    content: "";
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    cursor:pointer;
+}
+
+input[type=checkbox]:before {
+    background: url("/images/checkbox.svg") no-repeat #fff;
+    background-size:contain;
+    height: 17px;
+    width: 17px;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=checkbox]:checked:before {
+    background: url("/images/checkbox-selected.svg") no-repeat #fff;
+    background-size: contain;
+    height: 17px;
+    width: 17px;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+.count {
+    margin-top: 25px;
+    padding: 0 0 0 35px;
+}
+
+.errorText.text-center {
+    padding:25px 0;
+}
+
+.btn-success {
+    background-color: #29bb9c;
+    border-color: #29bb9c;
+}
+
+.btn-success:hover, .btn-success:active:hover, .btn-success:focus, .btn-success.focus, .btn-success:active:focus {
+    background-color: #168c73;
+    border-color: #168c73;
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    color: #267CB4;
+    text-decoration: none;
+    background-color: #e9f7ff;
+}
+
+/* accordian */
+.panel-default > .panel-heading {
+    color: #59565A;
+    background-color: #f6f6f6;
+    border-color: #d9d9d9;
+    border-radius:0;
+}
+
+.panel-group .panel {
+    border-radius: 0;
+}
+
+/* map and legend */
+.mapContainer {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+}
+
+#myMap {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+}
+
+#legend {
+    position: absolute;
+    bottom: 50px;
+    right: 10px;
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 5px;
+    width: 100px;
+    line-height: 15px;
+    padding: 10px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+#legend i {
+    width: 18px;
+    height: 18px;
+}
+
+.mapContainer {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+}
+
+#myMap {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+}
+
+#legend {
+    position: absolute;
+    bottom: 50px;
+    right: 10px;
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 5px;
+    width: 100px;
+    line-height: 15px;
+    padding: 10px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+#legend i {
+    width: 18px;
+    height: 18px;
+}
+
+/* expand collapse */
+[id^="accordiongroup-"] > h4 > a > span > div > div.col-md-1 {
+    text-align: right;
+}
+
+div.panel-default.col-md-12.ng-scope.ng-isolate-scope.panel.panel > [id^="accordiongroup-"] > h4.panel-title {
+    background: url(/images/btn-expand.svg) no-repeat left;
+}
+
+div.panel-default.col-md-12.ng-scope.ng-isolate-scope.panel.panel-open > [id^="accordiongroup-"] > h4.panel-title {
+    background: url(/images/btn-collapse.svg) no-repeat left;
+}
+
+
+.filter-column {
+    padding: 3px;
+}
+
+.row.filter-column-row {
+    margin-left: -3px;
+    margin-right: -3px;
+}
+
+.filter-column input.ng-invalid-required, .filter-column .ng-invalid-required .form-control {
+    border: 1px solid red;
+}
+.side-panel-title {
+    font-weight: bold;
+    font-size: 20px
+}
+
+.formSideCustomGroupPanel-properties .form-control {
+    height: 28px;
+    padding: 2px 10px;
+}
+
+.formSideCustomGroupPanel-properties .ui-select-bootstrap .ui-select-search-hidden {
+    height: 0px;
+    padding: 0px;
+}
+
+.filter-separation {
+    margin:5px -500px;
+    height:1px;
+    background-color: #cccccc;
+}
+
+.btn-listview {
+    cursor: pointer;
+    vertical-align:top;
+}
+
+.btn-listview img {
+    padding: 6px;
+}
+
+.btn-listview:hover img { 
+    background-color: #cccccc;
+}

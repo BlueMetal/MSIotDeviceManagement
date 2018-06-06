@@ -1,0 +1,27 @@
+﻿<div ui-tree-handle class="tree-node tree-node-content">
+    <a class="btn btn-success btn-xs" ng-if="node.properties && node.properties.length > 0" data-nodrag ng-click="toggle(this)">
+        <span class="glyphicon"
+              ng-class="{
+          'glyphicon-chevron-right': collapsed,
+          'glyphicon-chevron-down': !collapsed
+        }"></span>
+    </a>
+    <span>
+        <span><label for="propertyName">Name: </label> <input data-nodrag id="propertyName" type="text" ng-paste="$event.preventDefault();" reg-ex-input reg-ex="^[a-zA-Z0-9_]+$" maxlength="32" ng-model="node.name" required /></span>
+        <span ng-hide="node.properties.length > 0">
+            <label for="propertyType">Type: </label> <select data-nodrag id="propertyType" ng-model="node.type" ng-options="obj.id as obj.name for obj in propertyTypes">
+                >
+            </select>
+        </span>
+    </span>
+    <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="removeItem(this)">
+        <span class="glyphicon glyphicon-remove"></span>
+    </a>
+    <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="newSubItem(this)" style="margin-right: 8px;">
+        <span class="glyphicon glyphicon-plus"></span>
+    </a>
+</div>
+<ul ui-tree-nodes="" ng-model="node.properties" ng-class="{hidden: collapsed}">
+    <li ng-repeat="node in node.properties" ui-tree-node treeview-node>
+    </li>
+</ul>

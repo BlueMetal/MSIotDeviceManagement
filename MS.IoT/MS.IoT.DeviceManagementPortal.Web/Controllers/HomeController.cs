@@ -1,38 +1,33 @@
-﻿using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.OpenIdConnect;
-using MS.IoT.Common;
-using MS.IoT.DeviceManagementPortal.Web.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MS.IoT.DeviceManagementPortal.Web.Helpers;
 
 namespace MS.IoT.DeviceManagementPortal.Web.Controllers
 {
-    /// <summary>
-    /// Home Controller
-    /// Main controller of the application. The navigation is done through Angular navigation
-    /// </summary>
     [Authorize]
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
-        /// <summary>
-        /// Main Controller
-        /// </summary>
-        /// <param name="userProfile">User Profile Service</param>
-        public HomeController(UserProfileService userProfile)
-            : base(userProfile)
+        private readonly IUserProfileService userProfile;
+
+        public HomeController(IUserProfileService userProfile)
         {
+            this.userProfile = userProfile;
         }
 
-        /// <summary>
-        /// Index
-        /// Angular single page endpoint
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
+        public IActionResult Index()
         {
+            return View();
+        }
+
+        [AllowAnonymous	]
+        public IActionResult Error()
+        {
+            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
             return View();
         }
     }

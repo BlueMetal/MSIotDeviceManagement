@@ -1,17 +1,16 @@
-﻿using Microsoft.Azure.ActiveDirectory.GraphClient;
-using MS.IoT.Common;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.ActiveDirectory.GraphClient;
 using MS.IoT.DataPacketDesigner.Web.Helpers;
 using System;
 using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
 {
     /// <summary>
     /// Base Controller for the API
     /// </summary>
-    [Authorize]
-    public class BaseApiController : ApiController
+    public class BaseApiController : Controller
     {
         //Service members
         public readonly IUserProfileService _userProfile;
@@ -43,7 +42,6 @@ namespace MS.IoT.DataPacketDesigner.Web.Controllers.API
 
             if (_currentUser == null)
             {
-                Log.Error("User not found.");
                 throw new Exception("User not found.");
             }
             return _currentUser;

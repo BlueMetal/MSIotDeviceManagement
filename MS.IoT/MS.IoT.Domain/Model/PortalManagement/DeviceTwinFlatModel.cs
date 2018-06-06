@@ -49,10 +49,10 @@ namespace MS.IoT.Domain.Model
         public int StatusCode { get; set; }
 
         [JsonProperty(PropertyName = "firmwareVersion")]
-        public double FirmwareVersion { get; set; }
+        public string FirmwareVersion { get; set; }
 
-        [JsonProperty(PropertyName = "heartbeat")]
-        public DateTime Heartbeat { get; set; }
+        //[JsonProperty(PropertyName = "heartbeat")]
+        //public DateTime Heartbeat { get; set; }
 
         [JsonProperty(PropertyName = "activationDate")]
         public DateTime ActivationDate { get; set; }
@@ -63,8 +63,8 @@ namespace MS.IoT.Domain.Model
         [JsonProperty(PropertyName = "deviceState")]
         public IDictionary<string, string> DeviceState { get; set; }
 
-        [JsonProperty(PropertyName = "connectionStatus")]
-        public DeviceConnectionStatus ConnectionStatus { get; set; }
+        [JsonProperty(PropertyName = "connectionState")]
+        public DeviceConnectionStatus ConnectionState { get; set; }
 
         [JsonProperty(PropertyName = "installedLocation")]
         public string InstalledLocation

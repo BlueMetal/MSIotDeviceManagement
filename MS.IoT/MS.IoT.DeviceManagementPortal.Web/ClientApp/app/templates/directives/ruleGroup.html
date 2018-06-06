@@ -1,0 +1,27 @@
+﻿<div ng-show="editMode || group.rules.length > 0 || group.groups.length > 0">
+    <div ng-show="group.depth > 0" class="filter-separation"></div>
+    <div class="row filter-column-row">
+        <div class="col-md-4 filter-column">
+            <ui-select ng-show="editMode" ng-model="group.operator" theme="bootstrap" search-enabled="false">
+                <ui-select-match>{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="operator.id as operator in operators">
+                    <div ng-bind="operator.name"></div>
+                </ui-select-choices>
+            </ui-select>
+            <span ng-show="!editMode" ng-bind="operators[group.operator].name"></span>
+        </div>
+        <div class="col-md-4 filter-column">
+            <span ng-show="editMode" class="input-group-btn">
+                <span class="btn-listview" ng-click="addRule()" uib-tooltip="Add a new rule for this group." tooltip-popup-delay="1000"><img src="/images/btn-add.svg" /></span>
+                <span class="btn-listview" ng-show="group.depth > 0" ng-click="removeRuleGroup()" uib-tooltip="Remove this group." tooltip-popup-delay="1000"><img src="/images/btn-remove.svg" /></span>
+                <span class="btn-listview" ng-show="group.depth < 2" ng-click="addRuleGroup()" uib-tooltip="Add a new group." tooltip-popup-delay="1000"><img src="/images/btn-group.svg" /></span>
+            </span>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+    <div style="padding-left:15px">
+        <rule-group ng-repeat="entry in group.groups" group="entry" fields="fields" parent="group" edit-mode="editMode"></rule-group>
+        <rule-entry ng-repeat="entry in group.rules" entry="entry" fields="fields" parent="group" edit-mode="editMode"></rule-entry>
+    </div>
+</div>

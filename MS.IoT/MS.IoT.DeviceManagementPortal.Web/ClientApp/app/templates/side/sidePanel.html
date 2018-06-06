@@ -1,0 +1,172 @@
+﻿﻿<form class="form-horizontal" name="formSidePanel">
+    <!--Header-->
+    <div class="modal-header">
+        <div class="row">
+            <div class="col-md-1">
+                <img class="cursorclick" ng-click="vm.cancel()" src="/images/icon-close.svg" />
+            </div>
+            <div class="col-md-6"><h5 class="modal-title">Device Details</h5></div>
+            <div class="col-md-3 cancelbtn">
+                <span class="cursorclick" ng-show="vm.editMode" ng-click="vm.editCancel(formSidePanel)">Cancel</span>
+            </div>
+            <div class="col-md-2">
+                <span class="cursorclick" ng-show="!vm.editMode" ng-click="vm.editMode=true">
+                    <img src="/images/icon-edit.svg" class="iconspacer" /> Edit
+                </span>
+                <span class="cursorclick" ng-show="vm.editMode" ng-click="vm.saveTags(formSidePanel)">
+                    <img src="/images/icon-save.svg" class="iconspacer" /> Save
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!--panel body-->
+    <div class="modal-body" style="padding-left:30px">
+        <div class="row" ng-show="vm.deviceTwin.reported.statusCode != 0">
+            <div class="col-md-12">
+                <h4><img style="width:30px;margin-right:10px" src="/images/icon-alert.svg" /> Alert Code {{vm.deviceTwin.reported.statusCode}}</h4>
+            </div>
+        </div>
+        <div class="row" ng-show="vm.deviceTwin.reported.statusCode != 0" style="margin-bottom:20px">
+            <div class="col-md-12">
+                <span ng-bind="vm.alertDescription"></span>
+            </div>
+        </div>
+        <div class="row" ng-show="vm.isFormDirty">
+            <div class="col-md-7">
+                <h5 class="errorText">Do you want to save changes ?</h5>
+            </div>
+            <div class="col-md-1">
+                <button class="btn save" ng-click="vm.saveTags(formSidePanel)">Yes</button>
+            </div>
+            <div class="col-md-1">
+                <button class="btn cancel"  ng-click="vm.noSaveCancel(formSidePanel)">No</button>
+            </div>
+        </div>
+        <div class="row"> 
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12"><span><h5>{{vm.deviceTwin.tags.productFamily}}</h5></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span class="side-panel-title">{{vm.deviceTwin.tags.productName}}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span>Device Id - {{vm.deviceTwin.deviceId}}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" ng-if="vm.deviceTwin.tags.userId!=null"><span>User Id - {{vm.deviceTwin.tags.userId}}</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span><a href="javascript:;" ng-click="vm.openJSONModal()">View JSON</a></span></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 statusplacement" uib-tooltip="Current connection state of the device." tooltip-popup-delay="1000">
+                <img ng-if="vm.IsConnected(vm.deviceTwin.reported)==true" src="/images/icon-connected.svg" />
+                <img ng-if="vm.IsConnected(vm.deviceTwin.reported)==false" src="/images/icon-disconnected.svg" />
+                <img ng-if="vm.IsConnected(vm.deviceTwin.reported)==null" src="/images/icon-device-inactive.svg" />
+            </div>
+        </div>
+
+        <div class="row space"></div>
+
+        <div class="row">
+            <div class="col-md-5" style="border-right:1px solid #D5DBDB">
+                <div class="row">
+                    <div class="col-md-12 prod-detail-title">
+                        Device Information
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Manufactured Date</div>
+                    <div class="col-md-6">{{vm.deviceTwin.tags.manufacturedDate| date:'MM-dd-yy'}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Ship Date</div>
+                    <div class="col-md-6" ng-show="!vm.editMode">{{vm.deviceTwin.tags.shippedDate| date:'MM-dd-yy'}}</div>
+                    <div class="col-md-6" ng-show="vm.editMode">
+                        <p class="input-group">
+                            <input type="text" class="editsidepanel form-control" uib-datepicker-popup ng-model="vm.deviceTwin.tags.shippedDate"
+                                   is-open="vm.datePopup" datepicker-options="vm.dateOptions" ng-required="true" close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="editsidepanel btn btn-default" ng-click="vm.openDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Activation Date</div>
+                    <div class="col-md-6">{{vm.deviceTwin.reported.activationDate| date:'MM-dd-yy'}}</div>
+                </div>
+            </div>
+
+            <div class="col-md-4" style="border-right:1px solid #D5DBDB">
+                <div class="row">
+                    <div class="col-md-12 prod-detail-title">
+                        Retailer Information
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Retailer Name</div>
+                    <div class="col-md-6" ng-show="!vm.editMode">{{vm.deviceTwin.tags.retailerName}}</div>
+                    <div class="col-md-6" ng-show="vm.editMode"><input type="text" class="editsidepanel form-control" ng-model="vm.deviceTwin.tags.retailerName" value="{{vm.deviceTwin.tags.retailerName}}"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">Retailer Region</div>
+                    <div class="col-md-6" ng-show="!vm.editMode">{{vm.deviceTwin.tags.retailerRegion}}</div>
+                    <div class="col-md-6" ng-show="vm.editMode">
+                    <input type="text" class="editsidepanel form-control" ng-model="vm.deviceTwin.tags.retailerRegion" value="{{vm.deviceTwin.tags.retailerRegion}}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3" ng-if="vm.deviceTwin.tags.location!=null">
+                <div class="row">
+                    <div class="col-md-12 prod-detail-title">
+                        Device Location
+                    </div>
+                </div>
+                <div class="row" uib-tooltip="This information is fetched from the IP Address of the device." tooltip-popup-delay="1000">
+                    <div class="col-md-12">{{vm.deviceTwin.tags.location.city}},{{vm.deviceTwin.tags.location.state}}</div>
+                </div>               
+            </div>
+        </div>
+
+        <!--Features-->
+        <div class="panel panel-primary features">
+            <div class="panel-heading" uib-tooltip="Display a list of features from a specific device." tooltip-popup-delay="1000">Features</div>
+            <div class="panel-body loaderCenter" style="padding:0px">
+                <ul ng-repeat="item in vm.features" class="list-group">
+                    <li class="list-group-item" style="border:none">
+                        <div class="col-md-8">{{item.displayName}}</div>
+                        <div class="col-md-4">
+                            <div ng-show="item.isActivated">
+                                <div class="col-md-6">
+                                    <img class="cursorclick" ng-click="vm.updateDesiredFeatures(item,false)" src="/images/icon-active.svg" />
+                                </div>
+                                <div class="col-md-6 text-left">
+                                    <span>Active</span>
+                                </div>
+                            </div>
+                            <div ng-show="!item.isActivated">
+                                <div class="col-md-6 text-right">
+                                    <img class="cursorclick" ng-click="vm.updateDesiredFeatures(item,true)" src="/images/icon-inactive.svg" />
+                                </div>
+                                <div class="col-md-6 text-left" uib-tooltip="If the device is offline, the feature will be activated the next time the device goes online." tooltip-popup-delay="1000">
+                                    <span>Activate</span>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="modal-footer" style="text-align:center">
+        <button class="btn cancel" ng-show="vm.editMode" ng-click="vm.editCancel(formSidePanel)">Cancel</button>
+        <button class="btn save" ng-show="vm.editMode" ng-click="vm.saveTags(formSidePanel)">Save</button>
+    </div>
+</form>

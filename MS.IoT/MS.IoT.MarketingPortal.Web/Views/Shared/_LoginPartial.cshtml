@@ -1,32 +1,30 @@
-﻿@if (Request.IsAuthenticated)
+@using System.Security.Principal
+
+
+@if (User.Identity.IsAuthenticated)
 {
-    <text>
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @{
-                    var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @{
+                var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
 
-                    if (claimsIdentity != null)
+                if (claimsIdentity != null)
+                {
+                    var givenName = claimsIdentity.Claims.First(e => e.Type.Equals("given_name")).Value;
+
+                    if (givenName != null)
                     {
-                        var givenName = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.GivenName);
-
-                        if (givenName != null)
-                        {
-
-                            @Html.ActionLink(@givenName.Value.ToString(), "Index", "UserProfile", routeValues: null, htmlAttributes: null)
-                        }
+                        <a asp-area="" asp-controller="UserProfile" asp-action="Index">@givenName</a>
                     }
                 }
-            </li>
-            <li>
-                <a href="/Account/SignOut" target="_self">Sign out</a>
-            </li>
-        </ul>
-    </text>
-}
- else
- {
-    <ul class="nav navbar-nav navbar-right">
-    <li>@Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+            }
+        </li>
+        <li><a asp-area="" asp-controller="Account" asp-action="SignOut">Sign out</a></li>
     </ul>
- }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a asp-area="" asp-controller="Account" asp-action="Signin" id="loginLink">Sign in</a></li>
+    </ul>
+}

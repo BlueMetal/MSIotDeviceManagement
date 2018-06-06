@@ -1,81 +1,56 @@
-﻿using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
-using MS.IoT.Domain.Interface;
-using MS.IoT.Domain.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using System.Web;
-using Microsoft.Azure.ActiveDirectory.GraphClient;
-using System.Diagnostics;
 using System.Security.Cryptography;
-using RestSharp;
+using System.Threading.Tasks;
+using Microsoft.Azure.ActiveDirectory.GraphClient;
+using Microsoft.Extensions.Logging;
+using MS.IoT.Domain.Interface;
+using MS.IoT.Domain.Model;
 using Newtonsoft.Json;
-using MS.IoT.Common;
 
 namespace MS.IoT.Repositories
 {
 
     public class ServicePrincipalRepository : IServicePrincipalRepository
     {
-        private static string _graphUrl;
-        public ServicePrincipalRepository(string graphUrl)
+        private readonly ActiveDirectoryClient adClient;
+        private readonly ILogger<ServicePrincipalRepository> logger;
+
+        public ServicePrincipalRepository(ActiveDirectoryClient activeDirectoryClient, ILogger<ServicePrincipalRepository> logger)
         {
-            _graphUrl = graphUrl;
+            adClient = activeDirectoryClient;
+            this.logger = logger;
         }
 
-        public async Task<ServicePrincipalResponse> CreateAppAndServicePrincipal(string displayName, string appIdUri, string password, string tenantId, string token)
+        public async Task<ServicePrincipalResponse> CreateAppAndServicePrincipal(string displayName, string appIdUri, string password, string tenantId)
         {
             try
             {
-                // First create the Azure AD Graph API client proxy
-                var baseUri = new Uri(_graphUrl);
-                var adClient = new ActiveDirectoryClient
-                                    (
-                                        new Uri(baseUri, tenantId),
-                                        async () =>
-                                        {
-                                            if (token == null)
-                                                throw new Exception("Authorization required before calling into Graph!");
-
-                                            return await Task.FromResult<string>(token);
-                                        }
-                                    );
-
                 // First create the app backing up the service principal          
-                var appResponse = await CreateAzureADApplicationIfNotExists(displayName, appIdUri, adClient,
-                    tenantId,token);
+                var appResponse = await CreateAzureADApplicationIfNotExists(displayName, appIdUri, tenantId);
 
                 // Now we can create the service principal to be created in the AD
-                var spResponse = await CreateServicePrincipalIfNotExists(appResponse.App, password, adClient);
+                var spResponse = await CreateServicePrincipalIfNotExists(appResponse.App, password);
 
                 // Finally return the AppId
-                return await Task.FromResult
-                                (
-                                    new ServicePrincipalResponse
-                                    {
-                                        App = appResponse.App,
-                                        AppClientSecret = appResponse.AppClientSecret,
-                                        IsNewApp = appResponse.IsNewApp,
-                                        Principal = spResponse.Principal,
-                                        IsNewPrincipal = spResponse.IsNewPrincipal
-                                    }
-                                );
+                return new ServicePrincipalResponse
+                {
+                    App = appResponse.App,
+                    AppClientSecret = appResponse.AppClientSecret,
+                    IsNewApp = appResponse.IsNewApp,
+                    Principal = spResponse.Principal,
+                    IsNewPrincipal = spResponse.IsNewPrincipal
+                };
             }
             catch (Exception ex)
             {
-                Log.Error("Create Azure AD Application {@error}", ex.Message);
-                throw ex;
+                logger.LogError(ex, "Create Azure AD Application {error}", ex.Message);
+                throw;
             }
         }
 
-        private static async Task<ServicePrincipalResponse> CreateAzureADApplicationIfNotExists(string displayName, 
-            string appIdUri, ActiveDirectoryClient adClient,string tenantId,string token)
+        private async Task<ServicePrincipalResponse> CreateAzureADApplicationIfNotExists(string displayName, string appIdUri, string tenantId)
         {
             try
             {
@@ -122,13 +97,12 @@ namespace MS.IoT.Repositories
                     appCreated = foundApp.CurrentPage.FirstOrDefault();
 
                     // update the Password key
-                    UpdateApplicationPasswordCredentials updateAppPasswordCreds =
-                        new UpdateApplicationPasswordCredentials()
+                    var updateAppPasswordCreds = new UpdateApplicationPasswordCredentials()
                         {
                             StartDate = DateTime.UtcNow,
                             EndDate = DateTime.UtcNow.AddYears(2),
                             Value = CreateRandomClientSecretKey(),
-                            KeyId = Guid.NewGuid().ToString()
+                            KeyId = Guid.NewGuid()
                         };
                     var passwordList = new List<UpdateApplicationPasswordCredentials>();
                     passwordList.Add(updateAppPasswordCreds);
@@ -138,8 +112,7 @@ namespace MS.IoT.Repositories
                         UpdateApplicationPasswordCreds = passwordList
                     };
 
-                    await UpdateAzureADApplicationPasswordCredentialsRest(appCreated.ObjectId,
-                        updateAppPasswordReq, tenantId, token);
+                    await UpdateAzureADApplicationPasswordCredentialsRest(appCreated.ObjectId, updateAppPasswordReq, tenantId);
                     spr.AppClientSecret = updateAppPasswordCreds.Value;
                 }
 
@@ -149,79 +122,71 @@ namespace MS.IoT.Repositories
             }
             catch (Exception ex)
             {
-                Log.Error("Create Azure AD Application {@error}", ex.Message);
-                throw ex;
+                logger.LogError(ex, "Create Azure AD Application {error}", ex.Message);
+                throw;
             }
         }
 
-        public async Task UpdateAzureADApplication(string appObjectId, UpdateApplicationRequest updateReq, 
-            string tenantId, string token)
+        public async Task UpdateAzureADApplication(string appObjectId, UpdateApplicationRequest updateReq, string tenantId)
         {
             try
             {
-                var client = new RestClient(_graphUrl);
-                var endPoint = String.Format("/{0}/applications/{1}", tenantId, appObjectId);
-                var request = new RestRequest(endPoint, Method.PATCH);
-                request.AddQueryParameter("api-version", "1.6");
 
-                request.AddHeader("Authorization", "Bearer " + token);
-                request.AddHeader("Content-Type", "application/json");
+                var adApp = await adClient.Applications.GetByObjectId(appObjectId).ExecuteAsync();
+                adApp.ReplyUrls.Clear();
+                updateReq.ReplyUrls.ForEach(adApp.ReplyUrls.Add);
 
-                var body = JsonConvert.SerializeObject(updateReq);
-                request.AddParameter("application/json", body, ParameterType.RequestBody);
+                adApp.Homepage = updateReq.Homepage;
 
-                await client.ExecuteTaskAsync(request);
-
+                await adApp.UpdateAsync();
             }
             catch (Exception ex)
             {
-                Log.Error("Update Azure AD Application {@error}", ex.Message);
-                throw ex;
+                logger.LogError(ex, "Update Azure AD Application {error}", ex.Message);
+                throw;
             }
         }
 
-        public async Task UpdateAzureADApplicationPasswordCredentials(string appObjectId, 
-            UpdateApplicationPasswordCredsRequest updateReq, string tenantId, string token)
+        public async Task UpdateAzureADApplicationPasswordCredentials(string appObjectId, UpdateApplicationPasswordCredsRequest updateReq, string tenantId)
         {
             try
             {
-                await UpdateAzureADApplicationPasswordCredentialsRest(appObjectId,
-                        updateReq, tenantId, token);
+                await UpdateAzureADApplicationPasswordCredentialsRest(appObjectId, updateReq, tenantId);
             }
             catch (Exception ex)
             {
-                Log.Error("Update Azure AD Application {@error}", ex.Message);
-                throw ex;
+                logger.LogError(ex, "Update Azure AD Application {error}", ex.Message);
+                throw;
             }
         }
 
-        private static async Task UpdateAzureADApplicationPasswordCredentialsRest(string appObjectId,
-            UpdateApplicationPasswordCredsRequest updateReq, string tenantId, string token)
+        private async Task UpdateAzureADApplicationPasswordCredentialsRest(string appObjectId, UpdateApplicationPasswordCredsRequest updateReq, string tenantId)
         {
             try
             {
-                var client = new RestClient(_graphUrl);
-                var endPoint = String.Format("/{0}/applications/{1}/passwordCredentials", tenantId, appObjectId);
-                var request = new RestRequest(endPoint, Method.PATCH);
-                request.AddQueryParameter("api-version", "1.6");
+                var adApp = await adClient.Applications.GetByObjectId(appObjectId).ExecuteAsync();
+                adApp.PasswordCredentials.Clear();
+                foreach (var req in updateReq.UpdateApplicationPasswordCreds)
+                {
+                    adApp.PasswordCredentials.Add(new PasswordCredential
+                    {
+                        Value = req.Value,
+                        KeyId = req.KeyId,
+                        StartDate = req.StartDate,
+                        EndDate = req.EndDate
+                    });
+                }
 
-                request.AddHeader("Authorization", "Bearer " + token);
-                request.AddHeader("Content-Type", "application/json");
-
-                var body = JsonConvert.SerializeObject(updateReq);
-                request.AddParameter("application/json", body, ParameterType.RequestBody);
-
-                await client.ExecuteTaskAsync(request);
-
+                await adApp.UpdateAsync();
             }
             catch (Exception ex)
             {
-                Log.Error("Update Azure AD Application {@error}", ex.Message);
-                throw ex;
+                logger.LogError(ex, "Update Azure AD Application {error}", ex.Message);
+                throw;
             }
         }
 
-        private static async Task<ServicePrincipalResponse> CreateServicePrincipalIfNotExists(IApplication app, string password, ActiveDirectoryClient adClient)
+        private async Task<ServicePrincipalResponse> CreateServicePrincipalIfNotExists(IApplication app, string password)
         {
             try
             {
@@ -273,8 +238,8 @@ namespace MS.IoT.Repositories
             }
             catch (Exception ex)
             {
-                Log.Error("Update Azure AD Application {@error}", ex.Message);
-                throw ex;
+                logger.LogError(ex, "Update Azure AD Application {@error}", ex.Message);
+                throw;
             }
         }
 

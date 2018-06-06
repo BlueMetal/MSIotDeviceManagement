@@ -1,0 +1,39 @@
+﻿<div id="home">
+    <div class="row introduction">
+        <div class="col-xs-12">
+            <div><h2>Hello <span ng-bind="vm.currentUser.name"></span>!</h2></div>
+            <div>White Goods Data Packet designer solution will help you to get started with creating JSON templates which follow industry standards 
+            required to build IoT data packet. These JSON templates can be saved and used to send the data to the IoT Hub using 4x4 Data Simulator. 
+            You can get started with the Starter Templates and customize according to your needs. </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Your Saved Data Templates</h3>
+            <span>Templates that you are already working on.</span>
+            <ul>
+                <li ng-repeat="template in vm.userTemplates" class="template-selector">
+                    <div ui-sref="app.step.managetemplate({categoryId: template.category.id, templateId: template.id})" class="template-item template-user" ng-style="{backgroundColor: template.category.color, backgroundImage: 'url(\'/images/categories/'+template.subcategory.id+'.svg\')'}">
+                        <div>
+                            <span>{{template.name}}</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3>Starter Templates</h3>
+            <span>Start from scratch with a pre-fomatted template.</span>
+            <ul>
+                <li ng-repeat="template in vm.commonCategories" class="template-selector">
+                    <div ui-sref="app.step.choosetemplate({categoryId: template.id})" class="template-item template-common" ng-style="{backgroundColor: template.color, backgroundImage: 'url(\'/images/categories/'+template.id+'.svg\')'}">
+                        <div>
+                            <span ng-bind="template.name"></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿<div class="modal-header2">
+    <h3 class="modal-title">Import CSV File</h3>
+</div>
+<div class="modal-body">
+    <button class="btn save" type="file" ngf-select="vm.uploadFile($file,$invalidFiles)"
+            ngf-pattern="'.xls,.csv,.xlsx'" accept=".csv" ngf-max-height="1000" ngf-max-size="10MB">
+        Browse and Import
+    </button>
+
+    <div class="loaderCenter" style="font:smaller">
+        <img ng-show="!vm.areDevicesImported" src="/images/loader-48.gif" />
+        <div class="errorText" ng-show="vm.errorFile.$errorMessages.pattern"><h5>Allowed formats are {{vm.errorFile.$errorParam}}</h5></div>
+        <div class="successText" ng-show="vm.importSuccessResp"><h5>Data imported successfully !</h5></div>
+        <div class="errorText"><h5>{{vm.importErrorResp}}</h5></div>
+        <!--{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}-->
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn cancel" ng-click="vm.cancel()">Cancel</button>
+    <button class="btn save" ng-click="vm.ok()">Done</button>
+</div>

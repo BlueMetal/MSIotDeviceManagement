@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using Microsoft.Extensions.Options;
 using MS.IoT.Common;
 
 namespace MS.IoT.Repositories
@@ -18,6 +19,14 @@ namespace MS.IoT.Repositories
     {
         public CosmosDBRepository(string endpoint, string authkey, string databaseId, string collectionId) :
             base(endpoint, authkey, databaseId, collectionId)
+        {
+        }
+
+        public CosmosDBRepository(IOptionsSnapshot<CosmosDbOptions> config) :
+            this(config.Get(typeof(T).FullName).Endpoint,
+                 config.Get(typeof(T).FullName).AuthKey,
+                 config.Get(typeof(T).FullName).Database,
+                 config.Get(typeof(T).FullName).Collection) 
         {
         }
 

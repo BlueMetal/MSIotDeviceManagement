@@ -1,0 +1,39 @@
+﻿<div id="managetemplate" ng-show="vm.currentTemplateState != null">
+    <div class="row">
+        <div class="lead col-md-5">
+            <h3 class="editable-field">
+                <span class="ng-hide" ng-show="!vm.isTextEditMode" ng-bind="vm.currentTemplateState.name"></span>
+                <input class="ng-hide" ng-show="vm.isTextEditMode" ng-model="vm.currentTemplateState.name" maxlength="32" required />
+                <span ng-click="vm.toggleTextEdit()"><img src="/images/Icon-edit.svg" /></span>
+            </h3>
+        </div>
+        <div class="col-md-7">
+            <button type="button" ui-sref="app.step.simulatetemplate({categoryId: vm.currentTemplateState.categoryId, templateId: vm.currentTemplateState.id})" ui-sref-opts="{reload: 'app.step'}" class="btn btn-success blue pull-right" ng-disabled="vm.managementMode == 'create'">Simulate</button>
+            <button type="button" class="btn btn-success blue pull-right" ng-hide="vm.managementMode == 'edit' && vm.currentTemplateState.docType == 'common'" ng-click="vm.save()">Save</button>
+            <button type="button" ng-show="vm.managementMode == 'edit' && vm.currentTemplateState.docType == 'user'" ng-class="{'btn-success' : vm.currentTemplateState.isReusableTemplate, 'nocolor' : !vm.currentTemplateState.isReusableTemplate}" class="btn blue pull-right ng-hide" ng-click="vm.useAsReusableTemplate()">Reusable template</button>
+            <button type="button" ng-disabled="!vm.isModified()" class="btn btn-primary nocolor pull-right" ng-click="vm.resetView()">Cancel</button>
+            <button type="button" ng-show="vm.managementMode == 'edit' && vm.currentTemplateState.docType == 'user'" class="ng-hide btn btn-danger nocolor pull-right" ng-click="vm.confirmDelete()">Delete</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span class="ng-hide" ng-show="!vm.isTextEditMode" ng-bind="vm.currentTemplateState.description"></span>
+            <div class="editable-field ng-hide" ng-show="vm.isTextEditMode">
+                <div><textarea ng-model="vm.currentTemplateState.description" maxlength="128"></textarea></div>
+                <span>{{(128 - vm.currentTemplateState.description.length)}} characters remaining.</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div style="margin-top:30px">
+                <button type="button" class="btn btn-success blue" ng-click="vm.openJSONModal()">Display JSON Code</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <treeview-block templates="[vm.currentTemplateState]"></treeview-block>
+        </div>
+    </div>
+</div>

@@ -1,107 +1,93 @@
-﻿using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
+﻿using Microsoft.Azure.Documents.Client;
 using MS.IoT.Domain.Interface;
 using MS.IoT.Domain.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using System.Configuration;
-using System.Web;
-using Microsoft.Azure.ActiveDirectory.GraphClient;
-using System.Diagnostics;
-using System.Security.Cryptography;
 using Microsoft.Azure.Management.ResourceManager;
 using Microsoft.Azure.Management.ResourceManager.Models;
-using Microsoft.Rest;
-using System.IO;
-using RestSharp;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Microsoft.Rest.Azure;
-using MS.IoT.Common;
 
 namespace MS.IoT.Repositories
 {
 
     public class ResourceManagerRepository : IResourceManagerRepository
     {
-        private string _managementEndpoint;
-        private string _armTemplateUrl;
-        private string _armTemplateStreamAnalyticsUrl;
+        private readonly IArmClientFactory clientFactory;
+        private readonly ILogger<ResourceManagerRepository> logger;
+        private readonly ArmOptions armOptions;
 
-        public ResourceManagerRepository(string managementEndpoint, string armTemplateUrl, string armTemplateStreamAnalyticsUrl)
+        public ResourceManagerRepository(IOptions<ArmOptions> armOptions, 
+                                         IArmClientFactory clientFactory, 
+                                         ILogger<ResourceManagerRepository> logger) 
         {
-            _managementEndpoint = managementEndpoint;
-            _armTemplateUrl = armTemplateUrl;
-            _armTemplateStreamAnalyticsUrl = armTemplateStreamAnalyticsUrl;
+            this.armOptions = armOptions.Value;
+            this.clientFactory = clientFactory;
+            this.logger = logger;
         }
 
-        public async Task<SubscriptionResponse> GetSubscriptions(string token)
+        private static async Task<IReadOnlyList<T>> GetAzureItems<T>(Func<CancellationToken, Task<IPage<T>>> getFunc, 
+                                                                     Func<string, CancellationToken, Task<IPage<T>>> nextFunc, 
+                                                                     CancellationToken cancellationToken = default)
+        {
+            var total = new List<T>();
+
+            var items = await getFunc(cancellationToken).ConfigureAwait(false);
+            total.AddRange(items);
+
+            var nextlink = items.NextPageLink;
+
+            while (!string.IsNullOrWhiteSpace(nextlink))
+            {
+                items = await nextFunc(nextlink, cancellationToken).ConfigureAwait(false);
+                total.AddRange(items);
+                nextlink = items.NextPageLink;
+            }
+            return total;
+        }
+
+        public async Task<IReadOnlyList<Subscription>> GetSubscriptions()
         {
             try
             {
-                Log.Information("Get Subscription Repo token {@data}", token);
-                var client = new RestClient(_managementEndpoint);
-                var request = new RestRequest("/subscriptions", Method.GET);
-                request.AddQueryParameter("api-version", "2017-05-10");
-
-                request.AddHeader("Authorization", "Bearer " + token);
-                request.AddHeader("Content-Type", "application/json");
-
-                var response = await client.ExecuteTaskAsync(request);
-                if (response.StatusCode.ToString().Equals("OK"))
-                {
-                    var subscriptions = JsonConvert.DeserializeObject<SubscriptionResponse>(response.Content);
-                    Log.Debug("Get Subscription Repo data {@data}", subscriptions);
-                    return subscriptions;
-                }
-                else
-                {
-                    var error = JsonConvert.DeserializeObject<ErrorResponse>(response.Content);
-                    throw new Exception(error.Error.Message);
-                }
+                var subClient = await clientFactory.GetSubscriptionClientAsync();
+                logger.LogInformation("Get Subscription Repo");
+                return await GetAzureItems(subClient.Subscriptions.ListAsync, subClient.Subscriptions.ListNextAsync);
             }
             catch (Exception e)
             {
-                Log.Error("Get Subscription Repo error {@error}", e.Message);
-                throw e;
+                logger.LogError(e, "Get Subscription Repo error {error}", e.Message);
+                throw;
             }
         }
 
-        public async Task<LocationResponse> GetLocations(string subscriptionId, string token)
+        public async Task<IReadOnlyList<Location>> GetLocations(string subscriptionId)
         {
             try
             {
-                Log.Information("Get Locations for subscription: {subscriptionId}", subscriptionId);
-                var client = new RestClient(_managementEndpoint);
-                var endPoint = String.Format("/subscriptions/{0}/locations", subscriptionId);
-                var request = new RestRequest(endPoint, Method.GET);
-                request.AddQueryParameter("api-version", "2017-05-10");
+                logger.LogInformation("Get Locations for subscription: {subscriptionId}", subscriptionId);
+                var subClient = await clientFactory.GetSubscriptionClientAsync();
 
-                request.AddHeader("Authorization", "Bearer " + token);
-                request.AddHeader("Content-Type", "application/json");
-
-                var response = await client.ExecuteTaskAsync(request);
-                var locations = JsonConvert.DeserializeObject<LocationResponse>(response.Content);
-                return locations;
+                var locations = await subClient.Subscriptions.ListLocationsAsync(subscriptionId);
+                return locations.ToList();
             }
             catch (Exception e)
             {
-                Log.Error("Get Locations for subscription error: {@error}", e.Message);
-                throw e;
+                logger.LogError(e, "Get Locations for subscription error: {error}", e.Message);
+                throw;
             }
         }
 
-        public async Task<ResourceGroup> CreateResoureGroup(string subscriptionId, string location, string resourceGroupName, string token)
+        public async Task<ResourceGroup> CreateResoureGroup(string subscriptionId, string location, string resourceGroupName)
         {
             try
             {
-                var credential = new TokenCredentials(token);
-                var resourceManagementClient = new ResourceManagementClient(credential)
-                { SubscriptionId = subscriptionId };
+                var resourceManagementClient = await clientFactory.GetResourceMangementClientAsync(subscriptionId);
 
                 var resourceGroup = new ResourceGroup { Location = location };
                 var result = await resourceManagementClient.ResourceGroups.CreateOrUpdateAsync(
@@ -111,18 +97,16 @@ namespace MS.IoT.Repositories
             }
             catch (Exception e)
             {
-                Log.Error("Create Resource Group error {@error}", e.Message);
-                throw e;
+                logger.LogError(e, "Create Resource Group error {error}", e.Message);
+                throw;
             }
         }
 
-        public async Task<DeploymentExtended> Deploy4x4MSIoTSolutionUsingAzureRMTemplate(DeploymentRequest depReq, string token)
+        public async Task<DeploymentExtended> Deploy4x4MSIoTSolutionUsingAzureRMTemplate(DeploymentRequest depReq)
         {
             try
             {
-                var credential = new TokenCredentials(token);
-                var resourceManagementClient = new ResourceManagementClient(credential)
-                { SubscriptionId = depReq.SubscriptionId };
+                var resourceManagementClient = await clientFactory.GetResourceMangementClientAsync(depReq.SubscriptionId);
 
                 // generates a parameter json required for ARM template deployment
                 var parameterTemplateJson = Get4x4TemplateParameterJson(depReq);
@@ -131,7 +115,7 @@ namespace MS.IoT.Repositories
                 deployment.Properties = new DeploymentProperties
                 {
                     Mode = DeploymentMode.Incremental,
-                    TemplateLink = new TemplateLink(_armTemplateUrl),
+                    TemplateLink = new TemplateLink(armOptions.TemplateUrl),
                     Parameters = parameterTemplateJson
                 };
 
@@ -146,18 +130,16 @@ namespace MS.IoT.Repositories
             }
             catch (Exception e)
             {
-                Log.Error("Create Template Deployment error {@error}", e.Message);
-                throw e;
+                logger.LogError(e, "Create Template Deployment error {error}", e.Message);
+                throw;
             }
         }
 
-        public async Task<DeploymentExtended> GetDeploymentStatus(DeploymentStatusRequest deployStatus, string token)
+        public async Task<DeploymentExtended> GetDeploymentStatus(DeploymentStatusRequest deployStatus)
         {
             try
             {
-                var credential = new TokenCredentials(token);
-                var resourceManagementClient = new ResourceManagementClient(credential)
-                { SubscriptionId = deployStatus.SubscriptionId };
+                var resourceManagementClient = await clientFactory.GetResourceMangementClientAsync(deployStatus.SubscriptionId);
 
                 // Get the deployment status, return output properties when Succeeded
                 var deploymentOutput = await resourceManagementClient.Deployments.GetAsync(
@@ -171,18 +153,16 @@ namespace MS.IoT.Repositories
             }
             catch (Exception e)
             {
-                Log.Error("Status of Deployment error {@error}", e.Message);
-                throw e;
+                logger.LogError(e, "Status of Deployment error {error}", e.Message);
+                throw;
             }
         }
 
-        public async Task<DeploymentValidateResult> Validate4x4MSIoTSolutionUsingAzureRMTemplate(DeploymentRequest depReq, string token)
+        public async Task<DeploymentValidateResult> Validate4x4MSIoTSolutionUsingAzureRMTemplate(DeploymentRequest depReq)
         {
             try
             {
-                var credential = new TokenCredentials(token);
-                var resourceManagementClient = new ResourceManagementClient(credential)
-                { SubscriptionId = depReq.SubscriptionId };
+                var resourceManagementClient = await clientFactory.GetResourceMangementClientAsync(depReq.SubscriptionId);
 
                 // generates a parameter json required for ARM template deployment
                 var parameterTemplateJson = Get4x4TemplateParameterJson(depReq);
@@ -191,7 +171,7 @@ namespace MS.IoT.Repositories
                 deployment.Properties = new DeploymentProperties
                 {
                     Mode = DeploymentMode.Incremental,
-                    TemplateLink = new TemplateLink(_armTemplateUrl),
+                    TemplateLink = new TemplateLink(armOptions.TemplateUrl),
                     Parameters = parameterTemplateJson
                 };
 
@@ -206,18 +186,16 @@ namespace MS.IoT.Repositories
             }
             catch (Exception e)
             {
-                Log.Error("Validate Template Deployment error {@error}", e.Message);
-                throw e;
+                logger.LogError(e, "Validate Template Deployment error {error}", e.Message);
+                throw;
             }
         }
 
-        public async Task<DeploymentExtended> Deploy4x4StreamAnalyticsUsingAzureRMTemplate(StreamAnalyticsDeploymentRequest depReq, string token)
+        public async Task<DeploymentExtended> Deploy4x4StreamAnalyticsUsingAzureRMTemplate(StreamAnalyticsDeploymentRequest depReq)
         {
             try
             {
-                var credential = new TokenCredentials(token);
-                var resourceManagementClient = new ResourceManagementClient(credential)
-                { SubscriptionId = depReq.SubscriptionId };
+                var resourceManagementClient = await clientFactory.GetResourceMangementClientAsync(depReq.SubscriptionId);
 
                 // generates a parameter json required for ARM template deployment
                 var parameterTemplateJson = GetStreamAnalyticsTemplateParameterJson(depReq);
@@ -226,7 +204,7 @@ namespace MS.IoT.Repositories
                 deployment.Properties = new DeploymentProperties
                 {
                     Mode = DeploymentMode.Incremental,
-                    TemplateLink = new TemplateLink(_armTemplateStreamAnalyticsUrl),
+                    TemplateLink = new TemplateLink(armOptions.TemplateStreamAnalyticsUrl),
                     Parameters = parameterTemplateJson
                 };
 
@@ -236,18 +214,16 @@ namespace MS.IoT.Repositories
             }
             catch (Exception e)
             {
-                Log.Error("Create Stream Analytics error {@error}", e.Message);
-                throw e;
+                logger.LogError(e, "Create Stream Analytics error {error}", e.Message);
+                throw;
             }
         }
 
-        public async Task<DeploymentValidateResult> Validate4x4StreamAnalyticsUsingAzureRMTemplate(StreamAnalyticsDeploymentRequest depReq, string token)
+        public async Task<DeploymentValidateResult> Validate4x4StreamAnalyticsUsingAzureRMTemplate(StreamAnalyticsDeploymentRequest depReq)
         {
             try
             {
-                var credential = new TokenCredentials(token);
-                var resourceManagementClient = new ResourceManagementClient(credential)
-                { SubscriptionId = depReq.SubscriptionId };
+                var resourceManagementClient = await clientFactory.GetResourceMangementClientAsync(depReq.SubscriptionId);
 
                 // generates a parameter json required for ARM template deployment
                 var parameterTemplateJson = GetStreamAnalyticsTemplateParameterJson(depReq);
@@ -256,7 +232,7 @@ namespace MS.IoT.Repositories
                 deployment.Properties = new DeploymentProperties
                 {
                     Mode = DeploymentMode.Incremental,
-                    TemplateLink = new TemplateLink(_armTemplateStreamAnalyticsUrl),
+                    TemplateLink = new TemplateLink(armOptions.TemplateStreamAnalyticsUrl),
                     Parameters = parameterTemplateJson
                 };
 
@@ -266,8 +242,8 @@ namespace MS.IoT.Repositories
             }
             catch (Exception e)
             {
-                Log.Error("Validate Stream Analytics error {@error}", e.Message);
-                throw e;
+                logger.LogError(e, "Validate Stream Analytics error {error}", e.Message);
+                throw;
             }
         }
 

@@ -1,16 +1,16 @@
-﻿{
+{
   "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es2015",
     "sourceMap": true,
-    "target": "es5",
-    "outDir": "./Scripts",
-    "typeRoots": [
-      "./Scripts/@typings"
-    ]
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "preserveConstEnums": false,
+    "lib": [ "es6", "dom" ],
+    "types": [ "webpack-env" ]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": [ "bin", "node_modules" ],
+  "atom": { "rewriteTsconfig": false }
 }

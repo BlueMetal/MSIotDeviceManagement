@@ -1,18 +1,14 @@
-﻿using MS.IoT.Domain.Interface;
-using MS.IoT.Domain.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Dynamic;
 using System.Threading.Tasks;
-using RestSharp;
-using Newtonsoft.Json;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Common.Exceptions;
 using Microsoft.Azure.Devices.Shared;
 using MS.IoT.Common;
-using Microsoft.Azure.Devices.Client.Exceptions;
-using System.Dynamic;
-using System.Text;
-using System.Threading;
+using MS.IoT.Domain.Interface;
+using MS.IoT.Domain.Model;
+using Newtonsoft.Json;
 
 namespace MS.IoT.Repositories
 {
@@ -108,6 +104,7 @@ namespace MS.IoT.Repositories
                 string queryString =
                     @"SELECT
                     deviceId, 
+                    connectionState,
                     tags.productFamily,
                     tags.productType,
                     tags.productName,
@@ -121,10 +118,9 @@ namespace MS.IoT.Repositories
                     properties.reported.statusCode,
                     properties.reported.ipAddress,
                     properties.reported.firmwareVersion,
-                    properties.reported.heartbeat,
                     properties.reported.activationDate,
                     properties.reported.deviceState
-                    FROM devices";
+                    FROM devices"; //properties.reported.heartbeat,
 
                 List<DeviceTwinFlatModel> deviceTwinsLight = new List<DeviceTwinFlatModel>();
                 IQuery query = _registryManager.CreateQuery(queryString);
@@ -148,7 +144,7 @@ namespace MS.IoT.Repositories
         {
             try
             {
-                Device device = await CreateDevice(deviceId);
+                Device device = await GetDevice(deviceId);
 
                 if (device == null)
                 {
@@ -185,7 +181,7 @@ namespace MS.IoT.Repositories
             }
         }
 
-        public async Task<Device> ImportInitializeDeviceTwin(string deviceId, DeviceTwinTagsModel tags)
+        public async Task<Device> ImportInitializeDeviceTwin(string deviceId, DeviceTwinImportModel tags)
         {
             try
             {

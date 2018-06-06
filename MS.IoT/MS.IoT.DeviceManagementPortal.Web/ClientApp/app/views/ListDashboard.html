@@ -1,0 +1,146 @@
+﻿<div id="home">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="theme-showcase" role="main">
+                <div>
+                    <!-- WebParts-->
+                    <div class="row summary-views">
+                        <div class="col-md-4 device-summary">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Devices Summary</div>
+                                <div class="panel-body loaderCenter" style="padding:0px;height:210px;overflow-y:auto">
+                                    <img ng-show="!vm.isDeviceSummaryLoaded" class="loading" src="/images/loader-48.gif" />
+                                    <ul ng-show="vm.isDeviceSummaryLoaded" class="list-group">
+                                        <li class="list-group-item" uib-tooltip="Total number of devices registered to IoT Hub." tooltip-popup-delay="1000">
+                                            <span class="badge">{{vm.deviceTwinSummary.totalDevicesCount}}</span>
+                                            Total Manufactured Devices
+                                        </li>
+                                        <li class="list-group-item" uib-tooltip="A device is considered active once it was connected once to the internet." tooltip-popup-delay="1000">
+                                            <span class="badge">{{vm.deviceTwinSummary.activatedDevicesCount}}</span>
+                                            Active
+                                        </li>
+                                        <li class="list-group-item indent" uib-tooltip="A device is considered connected if it reported being online within the last 10 minutes." tooltip-popup-delay="1000">
+                                            <span class="badge">{{vm.deviceTwinSummary.connectedDevicesCount}}</span>
+                                            Connected
+                                        </li>
+                                        <li class="list-group-item indent" uib-tooltip="A device is considered disconnected if it did not report being online within the last 10 minutes." tooltip-popup-delay="1000">
+                                            <span class="badge">{{vm.deviceTwinSummary.disconnectedDevicesCount}}</span>
+                                            Disconnected
+                                        </li>
+                                        <li class="list-group-item" uib-tooltip="A device is considered inactive if it was never connected to the internet." tooltip-popup-delay="1000">
+                                            <span class="badge">{{vm.deviceTwinSummary.notActivatedDevicesCount}}</span>
+                                            Not Activated
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 alert-summary">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Alert Summary</div>
+                                <div class="panel-body loaderCenter" style="padding:0px;height:210px;overflow-y:auto">
+                                    <img ng-show="!vm.isDeviceSummaryLoaded" class="loading" src="/images/loader-48.gif" />
+                                    <ul ng-show="vm.isDeviceSummaryLoaded" class="list-group">
+                                        <li class="list-group-item" ng-repeat="alert in vm.deviceTwinSummary.alertCounts" uib-tooltip="{{alert.description}}" tooltip-popup-delay="1000">
+                                            <span class="badge">{{alert.count}}</span>
+                                            Alert Type {{alert.alert}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 top10">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading clearfix">
+                                    <span>Top 10 Activated by</span>
+                                    <span uib-dropdown on-toggle="toggled(open)" class="">
+                                        <span id="simple-dropdown" uib-dropdown-toggle style="cursor:pointer;color:white">
+                                            {{vm.currentTopGroupActivated.title}} <img src="images/icon-chevron-down-blue.svg" alt="" width="16" />
+                                        </span>
+                                        <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                                            <li role="menuitem" ng-repeat="topGroup in vm.topGroupActivatedConfig"><a href ng-click="vm.changeTopGroupActivated($index)" ng-bind="topGroup.title">Retailer</a></li>
+                                        </ul>
+                                    </span>
+                                </div>
+                                <div class="panel-body loaderCenter" style="padding:0px;height:210px;overflow-y:auto; overflow-x:hidden">
+                                    <img ng-show="!vm.isDeviceSummaryLoaded" class="loading" src="/images/loader-48.gif" />
+                                    <div ng-show="vm.isDeviceSummaryLoaded" class="row" ng-repeat="group in vm.deviceTwinSummary.devicePerGroupActivated">
+                                        <div class="col-md-4">{{group.name}}</div>
+                                        <div class="col-md-8">
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{group.percentageActivated}}"
+                                                     aria-valuemin="0" aria-valuemax="100" ng-style="{width: group.percentageActivated + '%'}">
+                                                    {{group.percentageActivated}}%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="row">
+
+                        <!-- Tabs & Actions -->
+                        <div class="row">
+                            <div class="col-md-11">
+                                <span class="groupby">Group by:</span><uib-tabset active="active">
+                                    <uib-tab index="$index + 1" ng-repeat="tab in vm.dbConfig.tabs" select="vm.changeTab($index)" heading="{{tab.title}}" disable="tab.disabled"></uib-tab>
+                                    <form class="navbar-form" role="search">
+                                        <div class="input-group add-on">
+                                            <tags-input ng-model="vm.searchBox" placeholder="Filter" min-length="2" on-tag-added="vm.search()" on-tag-removed="vm.search()" replace-spaces-with-dashes="false"></tags-input>
+                                        </div>
+                                    </form>
+                                </uib-tabset>
+                            </div>
+
+                            <div class="col-md-1">
+                                <span uib-dropdown on-toggle="toggled(open)" ng-hide="vm.dbState.root.selectedItems.length==0">
+                                    <h5 id="simple-dropdown" uib-dropdown-toggle style="cursor:pointer;color:#267CB4">
+                                        Actions <img src="images/icon-chevron-down-white.svg" alt="" width="16" />
+                                    </h5>
+                                    <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                                        <li role="menuitem" ng-show="vm.dbState.root.selectedItems.length==1"><a href ng-click="vm.openAside(vm.dbState.root.selectedItems[0],true)">Edit</a></li>
+                                        <li role="menuitem"><a href ng-click="vm.confirmDelete()">Delete</a></li>
+                                        <li role="menuitem"><a href ng-click="vm.openPublishFeatureModal()">Publish Feature</a></li>
+                                    </ul>
+                                </span>
+                            </div>
+                        </div>
+                       
+                        <!-- Datatable -->
+                        <div class="loaderCenter dmptable">
+                            <div class="tableDiv">
+                                <!-- Header -->
+                                <div class="row tableRow tableHeader">
+                                    <div class="col-md-1">
+                                    </div>
+                                    <div ng-click="vm.changeOrder(field.name)" ng-repeat="field in vm.dbState.tab.fields" class="{{field.class}}">
+                                        <strong ng-bind="field.displayName" class="tableheadercols"></strong>
+                                        <span ng-style="{'cursor' : 'pointer', 'font-weight' : (vm.dbState.orderBy == field.name ? 'bold' : 'normal') }" ng-class="vm.dbState.orderBy == field.name && vm.dbState.orderBySorting == 1 ? 'sort-decending' : 'sort-ascending'" ></span><!--glyphicon glyphicon-sort-by-attributes-alt and glyphicon glyphicon-sort-by-attributes-->
+                                    </div>
+                                </div>
+
+                                <datatable-row state="vm.dbState.root" fields="vm.dbState.tab.fields" items-per-page="vm.dbState.itemsPerPage" pagination-max-size="vm.dbConfig.paginationMaxSize" open-modal="vm.openAside(deviceId, editMode)" page-changed="vm.pageChanged(state)" toggle-selection-item="vm.toggleSelectionItem(deviceId)" toggle-selection-group="vm.toggleSelectionGroup(group)"></datatable-row>
+                                <!-- Empty result-->
+                                <div ng-show="!vm.dbState.isDatabaseLoaded"><h2 class="errorText text-center">The database is preloading... please wait a few seconds...</h2></div>
+                                <div ng-show="vm.dbState.isDatabaseLoaded && vm.dbState.root.isLoaded && vm.dbState.root.groups.length==0 && vm.dbState.root.items.length==0"><h2 class="errorText text-center">No results found...</h2></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 count">
+                                    <span ng-show="vm.dbState.root.selectedItems.length>0">{{vm.dbState.root.selectedItems.length}} devices selected out of {{vm.dbState.root.itemsCount}}</span>
+                                </div>
+                                <div class="col-md-9 text-left">
+                                    <ul ng-show="vm.dbState.root.pageItemsCount > 0" uib-pagination total-items="vm.dbState.root.pageItemsCount" ng-model="vm.dbState.root.pageIndex" ng-change="vm.pageChanged(vm.dbState.root)" max-size="vm.dbConfig.paginationMaxSize" items-per-page="vm.dbState.itemsPerPage" class="pagination-sm" boundary-links="true" force-ellipses="true"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--View <select ng-model="vm.viewby" ng-change="vm.setItemsPerPage(vm.viewby)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> records at a time.-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

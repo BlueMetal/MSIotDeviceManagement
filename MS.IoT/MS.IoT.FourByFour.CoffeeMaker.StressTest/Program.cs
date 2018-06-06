@@ -21,13 +21,13 @@ namespace MS.IoT.FourByFour.CoffeeMaker.StressTest
                 "https://msiot-devicemanagement-mobile-api-dev.azurewebsites.net/api/devices/{0}/features/launchGrindAndBrew/0" };
         private static string[] features = { "brewStrengthFeature", "brewFeature", "grindAndBrewFeature", "wifiFeature", "debugFeature" };
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Console.WriteLine("Please enter Device ID:");
             deviceId = Console.ReadLine();
 
             //directmethod
-            CallDirectMethod();
+            await CallDirectMethod();
 
             //desired
             System.Timers.Timer aTimer = new System.Timers.Timer();

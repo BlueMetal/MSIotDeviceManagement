@@ -1,14 +1,12 @@
-﻿using Microsoft.Azure.ActiveDirectory.GraphClient;
-using MS.IoT.Common;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.ActiveDirectory.GraphClient;
 using MS.IoT.DeviceManagementPortal.Web.Helpers;
 using System;
 using System.Threading.Tasks;
-using System.Web.Http;
 
-namespace MS.IoT.DeviceManagementPortal.Web.Controllers.Api
+namespace MS.IoT.DeviceManagementPortal.Web.Controllers.API
 {
-    [HostAuthentication("OAuth2Bearer")]
-    public class BaseApiController : ApiController
+    public class BaseApiController : Controller
     {
         //Service members
         public readonly IUserProfileService _userProfile;
@@ -18,7 +16,7 @@ namespace MS.IoT.DeviceManagementPortal.Web.Controllers.Api
 
         public BaseApiController(IUserProfileService userProfile)
         {
-            this._userProfile = userProfile;
+            _userProfile = userProfile;
         }
 
         /// <summary>
@@ -36,7 +34,6 @@ namespace MS.IoT.DeviceManagementPortal.Web.Controllers.Api
 
             if (_currentUser == null)
             {
-                Log.Error("User not found.");
                 throw new Exception("User not found.");
             }
             return _currentUser;

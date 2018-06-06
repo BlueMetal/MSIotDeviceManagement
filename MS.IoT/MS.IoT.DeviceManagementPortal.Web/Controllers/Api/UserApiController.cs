@@ -1,20 +1,15 @@
-﻿using Microsoft.Azure.ActiveDirectory.GraphClient;
-using MS.IoT.Common;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.ActiveDirectory.GraphClient;
 using MS.IoT.DeviceManagementPortal.Web.Helpers;
-using MS.IoT.Domain.Interface;
-using MS.IoT.Domain.Model;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
 
-namespace MS.IoT.DeviceManagementPortal.Web.Controllers.Api
+namespace MS.IoT.DeviceManagementPortal.Web.Controllers.API
 {
     /// <summary>
     /// User Controller API
     /// </summary>
     [Authorize]
-    [RoutePrefix("api/user")]
+    [Route("api/user")]
     public class UserApiController : BaseApiController
     {
         /// <summary>
@@ -31,9 +26,9 @@ namespace MS.IoT.DeviceManagementPortal.Web.Controllers.Api
         /// </summary>
         /// <returns>User Object</returns>
         [Route("current")]
-        [ResponseType(typeof(IUser))]
+        [Produces(typeof(IUser))]
         [HttpGet]
-        public async Task<IHttpActionResult> GetCurrentUser()
+        public IActionResult GetCurrentUser()
         {
             //Domain.Model.User currentUser = await EnsureCurrentUser();
 

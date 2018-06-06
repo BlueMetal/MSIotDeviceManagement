@@ -1,20 +1,17 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using MS.IoT.Domain.Interface;
 using System.Threading.Tasks;
 using MS.IoT.Domain.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Xunit;
+using MS.IoT.Repositories;
 
-namespace MS.IoT.Repositories.Tests
-{
-    [TestClass]
-    public class DeviceTwinRepositoryTests
+public class DeviceTwinRepositoryTests
     {
         public static readonly string iotHubConnectionString = "HostName=msiot-iothub-dev.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=yrvwTx3onmJW48e3iOy//JlfQzf79ZYVWqeAJVsWo6s=";       
 
-        [TestMethod]
+        [Fact]
         public async Task create_iotHub_device()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -28,10 +25,10 @@ namespace MS.IoT.Repositories.Tests
                 RetailerRegion = "Chicago"
             };
             var device=await repo.CreateAndInitializeDeviceTwin("unittestdevice", tags);
-            Assert.AreEqual("unittestdevice", device.Id);
+            Assert.Equal("unittestdevice", device.Id);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task get_iotHub_device()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -46,10 +43,10 @@ namespace MS.IoT.Repositories.Tests
             };
             var device = await repo.CreateAndInitializeDeviceTwin("unittestdevice", tags);
             var deviceFound = await repo.GetDevice("unittestdevice");
-            Assert.AreEqual("unittestdevice", deviceFound.Id);
+            Assert.Equal("unittestdevice", deviceFound.Id);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task get_iotHub_device_twin()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -63,14 +60,14 @@ namespace MS.IoT.Repositories.Tests
                 RetailerRegion = "Chicago"
             };
             var device = await repo.CreateAndInitializeDeviceTwin("unittestdevice", tags);
-            Assert.AreEqual("unittestdevice", device.Id);
+            Assert.Equal("unittestdevice", device.Id);
 
             // get device twin
             var deviceTwin = await repo.GetDeviceTwinAsync(device.Id);
-            Assert.IsNotNull(deviceTwin);
+            Assert.NotNull(deviceTwin);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task get_iotHub_device_twin_list()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -84,14 +81,14 @@ namespace MS.IoT.Repositories.Tests
                 RetailerRegion = "Chicago"
             };
             var device = await repo.CreateAndInitializeDeviceTwin("unittestdevice", tags);
-            Assert.AreEqual("unittestdevice", device.Id);
+            Assert.Equal("unittestdevice", device.Id);
 
             // get device twin
             var devicesTwin = await repo.GetDevices();
-           // Assert.IsNotNull(deviceTwin);
+           // Assert.NotNull(deviceTwin);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task get_iotHub_device_twin_list_groupby()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -105,14 +102,14 @@ namespace MS.IoT.Repositories.Tests
                 RetailerRegion = "Chicago"
             };
             var device = await repo.CreateAndInitializeDeviceTwin("unittestdevice", tags);
-            Assert.AreEqual("unittestdevice", device.Id);
+            Assert.Equal("unittestdevice", device.Id);
 
             // get device twin
            // var devicesTwin = await repo.GetDevicesTwinGroupByAsync("retailerName");
-            // Assert.IsNotNull(deviceTwin);
+            // Assert.NotNull(deviceTwin);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task get_iotHub_device_twin_aggregations()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -126,14 +123,14 @@ namespace MS.IoT.Repositories.Tests
                 RetailerRegion = "Chicago"
             };
             var device = await repo.CreateAndInitializeDeviceTwin("unittestdevice", tags);
-            Assert.AreEqual("unittestdevice", device.Id);
+            Assert.Equal("unittestdevice", device.Id);
 
             // get device twin
            // var aggResult= repo.GetDevicesSummaryAggregationsAsync();
-            // Assert.IsNotNull(deviceTwin);
+            // Assert.NotNull(deviceTwin);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task get_iotHub_device_twin_retailer_region_aggregations()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -147,38 +144,38 @@ namespace MS.IoT.Repositories.Tests
                 RetailerRegion = "Chicago"
             };
             var device = await repo.CreateAndInitializeDeviceTwin("unittestdevice", tags);
-            Assert.AreEqual("unittestdevice", device.Id);
+            Assert.Equal("unittestdevice", device.Id);
 
             // get device twin
            // var aggResult = await repo.GetRetailerRegionAggregations();
-            // Assert.IsNotNull(deviceTwin);
+            // Assert.NotNull(deviceTwin);
         }
 
-        [TestMethod]
-        public async Task update_iotHub_devices_twin_locations()
+        [Fact]
+        public void update_iotHub_devices_twin_locations()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
            // await repo.UpdateDevicesTwinLocation();
-           // Assert.AreEqual("coffeemaker1", device.Id);
+           // Assert.Equal("coffeemaker1", device.Id);
 
             // get device twin
             //var aggResult = await repo.GetDevicesSummaryAggregationsAsync();
-            // Assert.IsNotNull(deviceTwin);
+            // Assert.NotNull(deviceTwin);
         }
 
-        [TestMethod]
-        public async Task update_iotHub_devices_twin_status()
+        [Fact]
+        public void update_iotHub_devices_twin_status()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
             //await repo.UpdateDevicesStatus();
-            // Assert.AreEqual("coffeemaker1", device.Id);
+            // Assert.Equal("coffeemaker1", device.Id);
 
             // get device twin
             //var aggResult = await repo.GetDevicesSummaryAggregationsAsync();
-            // Assert.IsNotNull(deviceTwin);
+            // Assert.NotNull(deviceTwin);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task delete_iotHub_device()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -195,10 +192,10 @@ namespace MS.IoT.Repositories.Tests
             await repo.DeleteDeviceAsync(device.Id);
 
             var getDevice = await repo.GetDevice(device.Id);
-            Assert.IsNull(getDevice);
+            Assert.Null(getDevice);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task delete_multiple_iotHub_devices()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -209,28 +206,27 @@ namespace MS.IoT.Repositories.Tests
             await repo.DeleteMultipleDevicesAsync(devices);
 
             var getDevice1 = await repo.GetDevice(device1.Id);
-            Assert.IsNull(getDevice1);
+            Assert.Null(getDevice1);
             var getDevice2 = await repo.GetDevice(device2.Id);
-            Assert.IsNull(getDevice2);
+            Assert.Null(getDevice2);
             var getDevice3 = await repo.GetDevice(device3.Id);
-            Assert.IsNull(getDevice3);
+            Assert.Null(getDevice3);
         }
 
-        //[TestMethod]
+        //[Fact]
         //public async Task direct_method_iotHub_test()
         //{
         //    DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
         //    repo.up
         //    //await repo.UpdateDevicesStatus();
-        //    // Assert.AreEqual("coffeemaker1", device.Id);
+        //    // Assert.Equal("coffeemaker1", device.Id);
 
         //    // get device twin
         //    //var aggResult = await repo.GetDevicesSummaryAggregationsAsync();
-        //    // Assert.IsNotNull(deviceTwin);
+        //    // Assert.NotNull(deviceTwin);
         //}
 
-        [TestMethod]
-        [Ignore]
+        [Fact(Skip = "Skipped")]
         public async Task get_iotHub_update_device_twin()
         {
             DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
@@ -244,11 +240,11 @@ namespace MS.IoT.Repositories.Tests
                 RetailerRegion = "Chicago"
             };
             var device = await repo.CreateAndInitializeDeviceTwin("unittestdevice", tags);
-            Assert.AreEqual("unittestdevice", device.Id);
+            Assert.Equal("unittestdevice", device.Id);
 
             // get device twin
             var deviceTwin = await repo.GetDeviceTwinAsync(device.Id);
-            Assert.IsNotNull(deviceTwin);
+            Assert.NotNull(deviceTwin);
 
             var deviceTwinModel = new DeviceTwinModel()
             {
@@ -278,12 +274,11 @@ namespace MS.IoT.Repositories.Tests
             // get device twin
             deviceTwin = await repo.GetDeviceTwinAsync(device.Id);
          
-            //Assert.AreEqual(1,deviceTwin.Tags.Count);
-            //Assert.IsTrue(deviceTwin.Tags.Contains("location"));
+            //Assert.Equal(1,deviceTwin.Tags.Count);
+            //Assert.True(deviceTwin.Tags.Contains("location"));
 
-            //Assert.AreEqual(1, deviceTwin.Properties.Desired.Count);
-            //Assert.IsTrue(deviceTwin.Properties.Desired.Contains("features"));
+            //Assert.Equal(1, deviceTwin.Properties.Desired.Count);
+            //Assert.True(deviceTwin.Properties.Desired.Contains("features"));
         }
     }
-}
 

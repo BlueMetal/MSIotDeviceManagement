@@ -1,38 +1,38 @@
-﻿@if (Request.IsAuthenticated)
+﻿@if (User.Identity.IsAuthenticated)
 {
     <text>
-         <ul class="nav navbar-nav navbar-right">
-             <li>
-                <a style="color:#267CB4" href="" ng-click="mn.importPanel()"><img src="/Content/images/icon-import.svg" /></a>
-             </li>
-             <li style="margin-top:10px">
-                 @{
-                     var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        <a style="color:#267CB4" href="" ng-click="mn.importPanel()"><img src="/images/icon-import.svg" /></a>
+    </li>
+    <li style="margin-top:10px">
+        @{
+            var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
 
-                     if (claimsIdentity != null)
-                     {
-                         var givenName = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.GivenName);
+            if (claimsIdentity != null)
+            {
+                var givenName = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.GivenName);
 
-                         if (givenName != null)
-                         {
+                if (givenName != null)
+                {
 
-                             @Html.ActionLink(@givenName.Value.ToString(), "Index", "UserProfile", routeValues: null, htmlAttributes: null)
-                         }
-                     }
-                 }
-             </li>
-            @*<li>
-                @Html.ActionLink("" + User.Identity.Name + "!", "Index", "UserProfile", routeValues: null, htmlAttributes: null)
-            </li>*@
-            <li style="margin-top:10px">
-                <a href="/Account/SignOut" target="_self">Sign out</a>
-            </li>
-        </ul>
+                    @Html.ActionLink(@givenName.Value.ToString(), "Index", "UserProfile", routeValues: null, htmlAttributes: null)
+                }
+            }
+        }
+    </li>
+    <li style="margin-top:10px">
+        <a href="/Account/SignOut" target="_self">Sign out</a>
+    </li>
+</ul>
     </text>
 }
 else
 {
-     <ul class="nav navbar-nav navbar-right">
-        <a href="/Account/SignIn" target="_self">Sign in</a>
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <!--@Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", target = "_self" })-->
+            <a href="/Account/SignIn" target="_self">Sign in</a>
+        </li>
     </ul>
 }

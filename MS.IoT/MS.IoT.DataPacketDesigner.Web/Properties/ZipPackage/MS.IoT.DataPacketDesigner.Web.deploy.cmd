@@ -1,9 +1,8 @@
 @rem ---------------------------------------------------------------------------------
-@rem Copyright 2008 Microsoft Corporation. All rights reserved.
 @rem This is provided as sample to deploy the package using msdeploy.exe
 @rem For information about IIS Web Deploy technology,
 @rem please visit https://go.microsoft.com/?linkid=9278654
-@rem Note: This batch file assumes the package and setparametsrs.xml are in the same folder with this file
+@rem Note: This batch file assumes the package and setparameters.xml are in the same folder with this file
 @rem ---------------------------------------------------------------------------------
 @if %_echo%!==! echo off
 setlocal

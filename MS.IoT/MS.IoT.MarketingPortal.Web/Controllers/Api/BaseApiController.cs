@@ -7,27 +7,21 @@ using System.Web;
 using System.Threading.Tasks;
 using Microsoft.Azure.ActiveDirectory.GraphClient;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OpenIdConnect;
 using MS.IoT.MarketingPortal.Web.Models;
 using MS.IoT.Domain.Interface;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MS.IoT.MarketingPortal.Web.Controllers
 {
-    public class BaseApiController : ApiController
+    public class BaseApiController : Controller
     {
         public readonly IServicePrincipalRepository _servicePrincipalRepo;
         public readonly IResourceManagerRepository _resourceManagerRepo;
         
         public BaseApiController(IServicePrincipalRepository servicePrincipalRepo, IResourceManagerRepository resourceManagerRepo)
         {
-            this._servicePrincipalRepo = servicePrincipalRepo;
-            this._resourceManagerRepo = resourceManagerRepo;
+            _servicePrincipalRepo = servicePrincipalRepo;
+            _resourceManagerRepo = resourceManagerRepo;
         }
     }
 }

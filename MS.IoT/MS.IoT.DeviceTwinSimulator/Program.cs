@@ -1,17 +1,16 @@
 ﻿using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Client;
-using Microsoft.Azure.Devices.Client.Exceptions;
+using Microsoft.Azure.Devices.Common.Exceptions;
 using Microsoft.Azure.Devices.Shared;
 using MS.IoT.DeviceTwinSimulator.Models;
 using MS.IoT.Domain.Model;
-using MS.IoT.Repositories;
 using Newtonsoft.Json;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Dynamic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,9 +31,9 @@ namespace MS.IoT.DeviceTwinSimulator
         static RegistryManager registryManager = RegistryManager.CreateFromConnectionString(iotHubUri);
         public static string deviceId = "";
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            SwitchChoice().GetAwaiter().GetResult();
+            await SwitchChoice();
         }
 
         public static List<RetailerItem> InitConfig()
@@ -259,7 +258,7 @@ namespace MS.IoT.DeviceTwinSimulator
             return retailers;
         }
 
-        public static void GenerateRandomDevices(int nbrDevices)
+        public static async Task GenerateRandomDevices(int nbrDevices)
         {
             List<RetailerItem> retailersDB = InitConfig();
             List<RetailerItem> retailers = new List<RetailerItem>();
@@ -315,7 +314,7 @@ namespace MS.IoT.DeviceTwinSimulator
                         FirmwareVersion = 1.2,
                         Heartbeat = activated ? (DateTime?)activationDate : null,
                         ActivationDate = activated ? (DateTime?)(activationDate) : null,
-                        IpAddress = activated ? getRandomUSIP(state.State.Name) : null,
+                        IpAddress = activated ? await getRandomUSIP(state.State.Name) : null,
                         Features = new Dictionary<string, DeviceTwinReportedFeaturesModel>()
                             {
                                 {"feature1", new DeviceTwinReportedFeaturesModel
@@ -560,7 +559,7 @@ namespace MS.IoT.DeviceTwinSimulator
                         Console.WriteLine("\nEnter the number of devices to initialize:");
                         var numberOfDevicesDemo = Convert.ToInt32(Console.ReadLine());
 
-                        GenerateRandomDevices(numberOfDevicesDemo);
+                        await GenerateRandomDevices(numberOfDevicesDemo);
 
                         break;
 
@@ -933,7 +932,7 @@ namespace MS.IoT.DeviceTwinSimulator
 
         private static List<LocationAddress> _CacheAddresses = new List<LocationAddress>();
         private static int api_calls = 0;
-        private static string getRandomUSIP(string retailerRegion)
+        private static async Task<string> getRandomUSIP(string retailerRegion)
         {
             string country = string.Empty;
             string region = string.Empty;
@@ -963,7 +962,7 @@ namespace MS.IoT.DeviceTwinSimulator
                     }
 
                     ipAddress = string.Format("{0}.{1}.{2}.{3}", random.Next(24, 242), random.Next(1, 254), random.Next(1, 254), random.Next(1, 254));
-                    location = GetLocationByIPAddress(ipAddress);
+                    location = await GetLocationByIPAddress(ipAddress);
                     if (location != null && !string.IsNullOrEmpty(location.RegionCode) && !string.IsNullOrEmpty(location.City))
                     {
                         country = location.CountryCode;
@@ -980,7 +979,7 @@ namespace MS.IoT.DeviceTwinSimulator
                                 foreach (var groupToDelete in groupsToDelete)
                                     _CacheAddresses.RemoveAll(p => groupToDelete.Contains(p));
                             }
-                            catch(Exception e) { }
+                            catch(Exception) { }
                         }
                     }
                     api_calls++;
@@ -989,26 +988,26 @@ namespace MS.IoT.DeviceTwinSimulator
             catch(Exception e)
             {
                 Console.WriteLine("getRandomUSIP crashed with error {0}. Trying again...", e.Message);
-                return getRandomUSIP(retailerRegion);
+                return await getRandomUSIP(retailerRegion);
             }
 
             return ipAddress;
         }
 
-        private static LocationAddress GetLocationByIPAddress(string ipAddress)
+        private static async Task<LocationAddress> GetLocationByIPAddress(string ipAddress)
         {
             try
             {
-                var client = new RestClient("http://freegeoip.net/json");
-                var request = new RestRequest("/" + ipAddress, Method.GET);
-                request.AddHeader("Content-Type", "application/json");
+                using (var client = new HttpClient())
+                {
+                    var resp = await client.GetStringAsync("http://freegeoip.net/json");
 
-                var response = client.Execute<LocationAddress>(request);
-                response.Data.IpAddress = ipAddress;
-
-                return response.Data;
+                    var data = JsonConvert.DeserializeObject<LocationAddress>(resp);
+                    data.IpAddress = ipAddress;
+                    return data;
+                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

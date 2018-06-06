@@ -24,7 +24,7 @@ namespace MS.IoT.Domain.Interface
         Task DeleteMultipleDevicesAsync(List<string> deviceIds);
         Task<DeviceUpdateResult> UpdateDevicesAsync(List<string> deviceIds, string jsonDesired, string jsonTags);
         Task<bool> UpdateDeviceSync(string deviceId, string jsonDesired, string jsonTags);
-        Task<Device> ImportInitializeDeviceTwin(string deviceId, DeviceTwinTagsModel tags);
+        Task<Device> ImportInitializeDeviceTwin(string deviceId, DeviceTwinImportModel tags);
         List<DeviceFieldModel> GetDeviceFields();
     }
 }

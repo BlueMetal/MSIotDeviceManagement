@@ -1,0 +1,51 @@
+﻿<div class="modal-header">
+    <h5 class="modal-title">{{ vm.title }} ({{vm.selectedDevices.length}} devices selected)</h5>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            {{ vm.content }}
+        </div>
+    </div>
+    <form class="form-horizontal" style="margin-top:10px" name="formFeature">
+        <div class="form-group">
+            <label for="selectFeature" class="col-md-2 control-label">Feature</label>
+            <div class="col-md-10">
+                <select class="form-control" name="selectFeature" ng-model="vm.selectedFeature" ng-options="feature.name for feature in vm.features" required>
+                    <option value="">-- Select Feature to Publish --</option>
+                </select>
+                <span class="validationMsg" ng-show="vm.formSubmitted && formFeature.selectFeature.$error.required">Feature is required</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="featureDescription" class="col-md-2 control-label">Description</label>
+            <div class="col-md-9">       
+                <textarea class="form-control" name="featureDescription" rows="3" ng-model="vm.featureDescription" 
+                          placeholder="Description text to notify mobile users" ng-maxlength="150" ng-required="true"></textarea>
+                <span class="validationMsg" ng-show="vm.formSubmitted && formFeature.featureDescription.$error.required">Description is required.</span>
+                <span class="validationMsg" ng-show="vm.formSubmitted && formFeature.featureDescription.$error.maxlength">Description max length is 150 characters</span>
+            </div>
+        </div>
+
+    </form>
+        <br />
+        <div class="row" ng-show="vm.isPublishClicked">
+            <img src="/images/loader-48.gif" />
+        </div>
+        <div class="row" ng-hide="vm.isPublishClicked">
+            <div class="col-md-10">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary" type="button" ng-click="vm.publish(formFeature)">Publish</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h5 ng-class="vm.isError">{{vm.featureResponse}}</h5>
+            </div>
+        </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+    <button class="btn btn-primary" type="button" ng-click="vm.cancel()">Cancel</button>
+</div>

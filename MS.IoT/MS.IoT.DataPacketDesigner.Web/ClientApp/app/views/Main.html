@@ -1,0 +1,10 @@
+﻿<div id="notifications" class="ng-hide" ng-show="rc.notifications.length > 0">
+    <div class="fullwidth">
+        <div class="container">
+            <ul>
+                <li ng-repeat="notification in rc.notifications" class="notification-{{notification.Type}}" ng-bind="notification.Message"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div ui-view></div>

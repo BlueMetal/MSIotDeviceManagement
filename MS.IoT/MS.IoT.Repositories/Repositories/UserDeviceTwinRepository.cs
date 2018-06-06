@@ -2,12 +2,9 @@
 using MS.IoT.Domain.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using RestSharp;
 using Newtonsoft.Json;
 using Microsoft.Azure.Devices;
-using Microsoft.Azure.Devices.Shared;
 using MS.IoT.Common;
 
 namespace MS.IoT.Repositories

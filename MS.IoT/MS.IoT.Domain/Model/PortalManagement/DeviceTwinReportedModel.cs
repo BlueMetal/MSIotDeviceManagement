@@ -15,7 +15,7 @@ namespace MS.IoT.Domain.Model
         public int StatusCode { get; set; }
 
         [JsonProperty(PropertyName = "firmwareVersion")]
-        public double FirmwareVersion { get; set; }
+        public string FirmwareVersion { get; set; }
 
         [JsonProperty(PropertyName = "heartbeat")]
         public DateTime? Heartbeat { get; set; }

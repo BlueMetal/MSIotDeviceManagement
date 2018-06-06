@@ -12,6 +12,7 @@ namespace MS.IoT.Domain.Interface
     {
         DevicesDBCache DevicesDB { get; }
         void EnsureDeviceEntity(string deviceId, DeviceTwinTagsModel tags);
+        void EnsureDeviceEntity(string deviceId, DeviceTwinImportModel tags);
         void RemoveDeviceEntity(string deviceId);
     }
 }

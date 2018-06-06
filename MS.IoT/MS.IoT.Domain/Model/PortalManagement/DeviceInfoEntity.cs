@@ -18,8 +18,8 @@ namespace MS.IoT.Domain.Model
         [JsonProperty(PropertyName = "productFamily")]
         public string ProductFamily { get; set; }
 
-        [JsonProperty(PropertyName = "connectionStatus")]
-        public DeviceConnectionStatus ConnectionStatus { get; set; }
+        [JsonProperty(PropertyName = "connectionState")]
+        public DeviceConnectionStatus ConnectionState { get; set; }
 
         [JsonProperty(PropertyName = "retailerName")]
         public string RetailerName { get; set; }
@@ -60,10 +60,13 @@ namespace MS.IoT.Domain.Model
             this.RetailerName = source.RetailerName;
             this.RetailerRegion = source.RetailerRegion;
             this.StatusCode = source.StatusCode;
-            this.ProductRegion = source.Location.RegionCode;
-            this.ProductCity = source.Location.City;
-            this.ProductCountry = source.Location.CountryName;
-            this.ConnectionStatus = source.ConnectionStatus;
+            this.ConnectionState = source.ConnectionState;
+            if (source.Location != null)
+            {
+                this.ProductRegion = source.Location.RegionCode;
+                this.ProductCity = source.Location.City;
+                this.ProductCountry = source.Location.CountryName;
+            }         
         }
     }
 }

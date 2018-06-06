@@ -1,0 +1,59 @@
+﻿#managetemplate {
+    .panel-title {
+        line-height: 2.25;
+    }
+
+    #tree-root .btn-primary, #tree-root .btn-danger, #tree-root .btn-primary:hover, #tree-root .btn-danger:hover {
+        background-color: transparent;
+        border-color: transparent;
+        padding: 0;
+        margin: 0;
+        position: relative;
+        top: -4px;
+    }
+
+    .glyphicon-plus:before {
+        content: "";
+    }
+
+    .glyphicon-plus {
+        width: 32px;
+        height: 32px;
+        display: block;
+        background-image: url("/images/Icon-add.svg");
+        background-repeat: no-repeat;
+    }
+
+    .glyphicon-remove:before {
+        content: "";
+    }
+
+    .glyphicon-remove {
+        width: 32px;
+        height: 32px;
+        display: block;
+        background-image: url("/images/Icon-remove.svg");
+        background-repeat: no-repeat;
+    }
+}
+
+.modal_json_code
+{
+    height:600px;
+    overflow:auto;
+}
+
+.modal-error {
+
+    .modal-header {
+        border-bottom: 1px solid red;
+    }
+
+    .modal-footer {
+        border-top: 1px solid red;
+    }
+
+    .modal-content {
+        background-color: #ECA5A5;
+    }
+}

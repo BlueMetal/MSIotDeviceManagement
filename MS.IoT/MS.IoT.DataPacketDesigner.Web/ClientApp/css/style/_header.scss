@@ -1,0 +1,104 @@
+﻿body {
+    font-family: $familyMain;
+    background-image: url('/images/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-size: 14px;
+    line-height: 2;
+    color: #333;
+    background-color: #fff;
+}
+
+.navbar{
+    margin-bottom:0px;
+}
+
+.navbar-inverse {
+    background-color: #000000;
+}
+
+.navbar {
+    border-radius: 0;
+
+    a, a:active, a:hover {
+        color: $linkColor !important;
+    }
+}
+
+h2, h3 {
+    font-family: "Segoe UI Light",Open Sans,sans-serif;
+    font-size: 36px;
+    font-weight: 100;
+}
+
+.navbar-brand {
+    height: 76px;
+
+    > .logo-brand {
+        display: inline-block;
+        margin: 0 15px 0 0;
+    }
+}
+
+.navbar-collapse li a{
+    line-height:45px;
+}
+
+//Button general color
+.btn-success.blue {
+    color: #fff;
+    background-color: #00ABF0;
+    border-color: #00ABF0;
+    min-width: 120px;
+    min-height: 35px;
+    font-size: 18px;
+}
+
+.btn-success.blue:hover {
+    color: #fff;
+    background-color: #0874a0;
+    border-color: #0874a0;
+}
+
+button.btn.nocolor {
+    background: transparent;
+    color: #00ABF0;
+    border-color: transparent;
+}
+
+a {
+    color: #00ABF0;
+    text-decoration: none;
+}
+
+#notifications {
+    padding: 0;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+    font-family: 'Segoe UI';
+
+    .fullwidth {
+        position: absolute;
+        left: 0;
+        background: #d0021b;
+        width: 100%;
+        padding: 8px 0;
+    }
+
+    ul {
+        margin-top: 0;
+        margin: 0;
+        list-style: none;
+        padding: 0;
+    }
+}
+
+label, .angular-ui-tree-handle {
+    font-weight: 500;
+}
+
+#content-box {
+    margin-bottom: 100px;
+}

@@ -1,0 +1,77 @@
+﻿<div id="home">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="theme-showcase" role="main">
+                <div>
+                    <!-- Main Content -->
+                    <div class="row">
+
+                        <!-- Groups -->
+                        <div class="row">
+                            <div class="col-md-11">
+                                <h3>Groups</h3>
+                            </div>
+
+                            <div class="col-md-1">
+                                <span uib-dropdown on-toggle="toggled(open)">
+                                    <h5 id="simple-dropdown" uib-dropdown-toggle style="cursor:pointer;color:#267CB4">
+                                        Actions <img src="images/icon-chevron-down-white.svg" alt="" width="16" />
+                                    </h5>
+                                    <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+                                        <li role="menuitem" ng-show="vm.selectedCustomGroups.length==0"><a href ng-click="vm.addGroup()">Add</a></li>
+                                        <li role="menuitem" ng-show="vm.selectedCustomGroups.length>0"><a href ng-click="vm.openUpdateDesiredProperties()">Update desired properties</a></li>
+                                        <li role="menuitem" ng-show="vm.selectedCustomGroups.length>0"><a href ng-click="vm.openUpdateTagsProperties()">Update tags properties</a></li>
+                                        <li role="menuitem" ng-show="vm.selectedCustomGroups.length>0"><a href ng-click="vm.openPublishFeatureModal()">Publish a feature</a></li>
+                                        <li role="menuitem" ng-show="vm.selectedCustomGroups.length==1"><a href ng-click="vm.openAside(vm.selectedCustomGroups[0],true)">Edit rules and preview</a></li>
+                                        <li role="menuitem" ng-show="vm.selectedCustomGroups.length>0"><a href ng-click="vm.confirmDelete()">Delete</a></li>
+                                    </ul>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                Use this panel to add, edit or remove groups for the dashboard.
+                            </div>
+                        </div>
+                       
+                        <!-- Datatable -->
+                        <div class="loaderCenter dmptable">
+                            <div class="tableDiv" >
+                                <!-- Header -->
+                                <div class="row tableRow tableHeader">
+                                    <div class="col-md-1">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <strong class="tableheadercols">Group name</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <strong class="tableheadercols">Count</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <strong class="tableheadercols">Group Order</strong>
+                                    </div>
+                                </div>
+                                <div ng-model="vm.listCustomGroups" as-sortable="vm.sortableOptions">
+                                    <div ng-show="vm.listCustomGroups.length>0" ng-repeat="customGroup in vm.listCustomGroups" class="row tableRow" as-sortable-item ng-click="vm.openAside(customGroup.id,false)" style="cursor:pointer">
+                                        <div class="col-md-1"><input type="checkbox" name="selectedDevices[]" value="{{customGroup.id}}" ng-checked="state.selectedCustomGroups.indexOf(customGroup.id) > -1" ng-click="vm.toggleSelectionItem(customGroup.id); $event.stopPropagation();"></div>
+                                        <div class="col-md-7" ng-bind="customGroup.name"></div>
+                                        <div class="col-md-2" ng-bind="customGroup.count"></div>
+                                        <div class="col-md-2" uib-tooltip="Hold to move and change the position of this group." tooltip-popup-delay="1000" as-sortable-item-handle><span><i class="glyphicon glyphicon-move"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Empty result-->
+                            <div ng-show="vm.listCustomGroups.length==0"><h2 class="errorText text-center">No custom group found...</h2></div>
+                            <div class="row">
+                                <div class="col-md-3 count">
+                                    <span ng-show="vm.selectedCustomGroups.length>0">{{vm.selectedCustomGroups.length}} custom groups selected out of {{vm.listCustomGroups.length}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

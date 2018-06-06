@@ -1,17 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using MS.IoT.Domain.Interface;
 using System.Threading.Tasks;
 using MS.IoT.Domain.Model;
 using System.Collections.Generic;
+using Xunit;
+using MS.IoT.Repositories;
 
-namespace MS.IoT.Repositories.Tests
-{
-    [TestClass]
-    public class NotificationHubRepositoryTests
+public class NotificationHubRepositoryTests
     {
         public static readonly string notificationHubConString = "Endpoint=sb://msiot-notificationhub-dev.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=8xqIZQFAhSWRy27dEaKliaejZ8kDWuR4lgZO9um44Bo=";
 
 
-        [TestMethod]
+        [Fact]
         public async Task register_device_notification_Hub()
         {
             NotificationHubRepository repo = new NotificationHubRepository(notificationHubConString);
@@ -34,7 +34,7 @@ namespace MS.IoT.Repositories.Tests
            // await repo.SendNotification("{\"data\":{\"message\":\"Notification Hub test notification\"}}", "testtag");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task push_message_notification_Hub()
         {
             NotificationHubRepository repo = new NotificationHubRepository(notificationHubConString);
@@ -70,7 +70,7 @@ namespace MS.IoT.Repositories.Tests
             //await repo.SendNotification("{\"data\":{\"message\":\"Notification Hub test notification\"}}", "testtag");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task send_notification_stringAsync()
         {
             NotificationHubRepository repo = new NotificationHubRepository(notificationHubConString);
@@ -80,7 +80,7 @@ namespace MS.IoT.Repositories.Tests
                 "Test");            
         }
 
-        [TestMethod]
+        [Fact]
         public async Task send_notification_string_multiple_Async()
         {
             NotificationHubRepository repo = new NotificationHubRepository(notificationHubConString);
@@ -92,5 +92,4 @@ namespace MS.IoT.Repositories.Tests
                 tags);
         }
     }
-}
 

@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MS.IoT.Common;
-using RestSharp;
 using System.Collections.Concurrent;
 using Microsoft.Azure.Devices;
 using System.Dynamic;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace MS.IoT.Repositories.Services
 {
@@ -20,7 +20,6 @@ namespace MS.IoT.Repositories.Services
         private IDeviceTwinRepository _DeviceTwinRepo;
         private object _Sync = new object(); //For lock
 
-        private const int CONNECTION_STATE_TIMEOUT = 10;
         private const string CHECK_IP_API = "http://freegeoip.net/json";
 
         public DeviceDBService(string iotHubConnectionString)
@@ -42,7 +41,6 @@ namespace MS.IoT.Repositories.Services
                 {
                     deviceDB.IsDevicesDBCacheLoading = true;
                     deviceDB.LastUpdate = DateTime.UtcNow;
-                    DateTime currentDateChecker = deviceDB.LastUpdate.Subtract(new TimeSpan(0, CONNECTION_STATE_TIMEOUT, 0));
                     ConcurrentDictionary<string, DeviceTwinFlatModel> twins = new ConcurrentDictionary<string, DeviceTwinFlatModel>();
                     List<DeviceTwinFlatModel> devicesLocation = new List<DeviceTwinFlatModel>();
 
@@ -56,7 +54,7 @@ namespace MS.IoT.Repositories.Services
                             device.DeviceState = new Dictionary<string, string>();
                         if (device.CustomTags == null)
                             device.CustomTags = new Dictionary<string, string>();
-                        device.ConnectionStatus = device.Heartbeat == null? DeviceConnectionStatus.NotActivated : RefreshConnectionState(currentDateChecker, (DateTime)device.Heartbeat);
+                        device.ConnectionState = device.ActivationDate == DateTime.MinValue ? DeviceConnectionStatus.NotActivated : device.ConnectionState;
                         if (!string.IsNullOrEmpty(device.IpAddress) && device.IpAddress != device.Location.IpAddress)
                             devicesLocation.Add(device);
                         twins[device.DeviceId] = device;  
@@ -78,29 +76,19 @@ namespace MS.IoT.Repositories.Services
             }
         }
 
-        private DeviceConnectionStatus RefreshConnectionState(DateTime currentDateChecker, DateTime currentDateToCheck)
-        {
-            if (currentDateToCheck == DateTime.MinValue)
-                return DeviceConnectionStatus.NotActivated;
-            if (currentDateToCheck > currentDateChecker && currentDateToCheck < DateTime.UtcNow)
-                return DeviceConnectionStatus.Connected;
-            return DeviceConnectionStatus.Disconnected;
-        }
-
-        private LocationAddress GetLocationByIPAddress(string ipAddress)
+        private async Task<LocationAddress> GetLocationByIPAddress(string ipAddress)
         {
             try
             {
-                var client = new RestClient(CHECK_IP_API);
-                var request = new RestRequest("/" + ipAddress, Method.GET);
-                request.AddHeader("Content-Type", "application/json");
-
-                var response = client.Execute<LocationAddress>(request);
-                response.Data.IpAddress = ipAddress;
-
-                return response.Data;
+                using (var client = new HttpClient())
+                {
+                    var data = await client.GetStringAsync(CHECK_IP_API);
+                    var resp = JsonConvert.DeserializeObject<LocationAddress>(data);
+                    resp.IpAddress = ipAddress;
+                    return resp;
+                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -122,7 +110,7 @@ namespace MS.IoT.Repositories.Services
 
                 foreach (DeviceTwinFlatModel device in devices)
                 {
-                    LocationAddress location = GetLocationByIPAddress(device.IpAddress);
+                    LocationAddress location = await GetLocationByIPAddress(device.IpAddress);
 
                     if (deviceEntities.ContainsKey(device.DeviceId))
                     {
@@ -296,7 +284,7 @@ namespace MS.IoT.Repositories.Services
                 {
                     groups = filteredQuery.Where(p => !string.IsNullOrEmpty(p.RetailerRegion)).GroupBy(p => p.RetailerRegion);
                     foreach (IGrouping<string, DeviceTwinFlatModel> group in groups)
-                        devicesRetailer.Add(group.Key, 100 - (group.Where(x => x.ConnectionStatus == DeviceConnectionStatus.NotActivated).Count() * 100 / group.Count()));
+                        devicesRetailer.Add(group.Key, 100 - (group.Where(x => x.ConnectionState == DeviceConnectionStatus.NotActivated).Count() * 100 / group.Count()));
                 }
                 else if (queryMapConfiguration.ViewId == "retailerName")
                 {
@@ -356,7 +344,7 @@ namespace MS.IoT.Repositories.Services
             {
                 Retailers = devices.GroupBy(p => p.RetailerName).Select(p => new MapFilterItem() { Name = p.Key, DisplayName = p.Key, Count = p.Count() }).OrderBy(p => p.DisplayName).ToList(),
                 ProductFamilies = devices.GroupBy(p => p.ProductFamily).Select(p => new MapFilterItem() { Name = p.Key, DisplayName = p.Key, Count = p.Count() }).OrderBy(p => p.DisplayName).ToList(),
-                ConnectionStates = devices.GroupBy(p => p.ConnectionStatus).Select(p => new MapFilterItem() { Name = ((int)p.Key).ToString(), DisplayName = ((int)p.Key).ToString(), Count = p.Count() }).OrderBy(p => p.DisplayName).ToList(),
+                ConnectionStates = devices.GroupBy(p => p.ConnectionState).Select(p => new MapFilterItem() { Name = ((int)p.Key).ToString(), DisplayName = ((int)p.Key).ToString(), Count = p.Count() }).OrderBy(p => p.DisplayName).ToList(),
                 ItemsCount = devices.Count
             };
         }
@@ -414,8 +402,8 @@ namespace MS.IoT.Repositories.Services
 
                 //Device Summary
                 deviceSummaryAgg.TotalDevicesCount = deviceDB.Count;
-                deviceSummaryAgg.ConnectedDevicesCount = devices.Count(p => p.ConnectionStatus == DeviceConnectionStatus.Connected);
-                deviceSummaryAgg.DisconnectedDevicesCount = devices.Count(p => p.ConnectionStatus == DeviceConnectionStatus.Disconnected);
+                deviceSummaryAgg.ConnectedDevicesCount = devices.Count(p => p.ConnectionState == DeviceConnectionStatus.Connected);
+                deviceSummaryAgg.DisconnectedDevicesCount = devices.Count(p => p.ConnectionState == DeviceConnectionStatus.Disconnected);
                 deviceSummaryAgg.ActivatedDevicesCount = deviceSummaryAgg.ConnectedDevicesCount + deviceSummaryAgg.DisconnectedDevicesCount;
                 deviceSummaryAgg.NotActivatedDevicesCount = deviceSummaryAgg.TotalDevicesCount - deviceSummaryAgg.ActivatedDevicesCount;
 
@@ -424,7 +412,7 @@ namespace MS.IoT.Repositories.Services
 
                 IEnumerable<IGrouping<string, DeviceTwinFlatModel>> topActivatedDevices = InMemoryLinqDeviceQueryHelper.GetGroupByString(devices, topActivatedGroupBy);
                 deviceSummaryAgg.DevicePerGroupActivated = topActivatedDevices
-                    .Select(p => new DevicePerGroupActivated() { GroupName = p.Key, PercentageActivated = 100 - (p.Where(x => x.ConnectionStatus == DeviceConnectionStatus.NotActivated).Count() * 100 / p.Count()) })
+                    .Select(p => new DevicePerGroupActivated() { GroupName = p.Key, PercentageActivated = 100 - (p.Where(x => x.ConnectionState == DeviceConnectionStatus.NotActivated).Count() * 100 / p.Count()) })
                     .OrderByDescending(p => p.PercentageActivated)
                     .Take(10)
                     .ToList();
@@ -483,7 +471,7 @@ namespace MS.IoT.Repositories.Services
             return await _DeviceTwinRepo.UpdateDeviceSync(deviceId, jsonDesired, jsonTags);
         }
 
-        public async Task<Device> ImportInitializeDeviceTwin(string deviceId, DeviceTwinTagsModel tags)
+        public async Task<Device> ImportInitializeDeviceTwin(string deviceId, DeviceTwinImportModel tags)
         {
             Device device = await _DeviceTwinRepo.ImportInitializeDeviceTwin(deviceId, tags);
 

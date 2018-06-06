@@ -1,213 +1,221 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using MS.IoT.Domain.Interface;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Rest;
+using Microsoft.Rest.Azure;
 using MS.IoT.Domain.Model;
+using MS.IoT.Repositories;
+using Xunit;
 
-namespace MS.IoT.Repositories.Tests
+public class ResourceManagerRepositoryTests : IAsyncLifetime
 {
-    [TestClass]
-    public class ResourceManagerRepositoryTests
+    public static readonly string tenantId = "72f43d57-b980-4152-b703-e2d8666a3ea9";
+    public static readonly string clientId = "fd17f56b-cdd7-467f-ad3a-6b8b7bc7bc72";
+    public static readonly string clientSecret = "ck30+q2nXvjfvAct8XC0ivWuZ3i6j/+n1SILJ4uGpGM=";
+    public static string managementAuthToken;
+    public static readonly string managementUrl = "https://management.azure.com/";
+    public static readonly string armTemplateUrl = "https://msiotsolutiondev.blob.core.windows.net/template/MSIoTProvisioningTemplate.json";
+    public static readonly string armTemplateStreamAnalyticsUrl = "https://msiotsolutiondev.blob.core.windows.net/template/streamAnalyticsAzuredeploy.json";
+    public static readonly string dataPacketDesignerUrl = "https://msiotsolutiondev.blob.core.windows.net/webpublish/MS.IoT.DataPacketDesigner.Web.zip";
+    public static readonly string deviceManagementPortalUrl = "https://msiotsolutiondev.blob.core.windows.net/webpublish/MS.IoT.DeviceManagementPortal.Web.zip";
+
+    public async Task InitializeAsync()
     {
-        public static readonly string tenantId = "72f43d57-b980-4152-b703-e2d8666a3ea9";
-        public static readonly string clientId = "fd17f56b-cdd7-467f-ad3a-6b8b7bc7bc72";
-        public static readonly string clientSecret = "ck30+q2nXvjfvAct8XC0ivWuZ3i6j/+n1SILJ4uGpGM=";
-        public static string managementAuthToken;
-        public static readonly string managementUrl = "https://management.azure.com/";
-        public static readonly string armTemplateUrl = "https://msiotsolutiondev.blob.core.windows.net/template/MSIoTProvisioningTemplate.json";
-        public static readonly string armTemplateStreamAnalyticsUrl = "https://msiotsolutiondev.blob.core.windows.net/template/streamAnalyticsAzuredeploy.json";
-        public static readonly string dataPacketDesignerUrl = "https://msiotsolutiondev.blob.core.windows.net/webpublish/MS.IoT.DataPacketDesigner.Web.zip";
-        public static readonly string deviceManagementPortalUrl = "https://msiotsolutiondev.blob.core.windows.net/webpublish/MS.IoT.DeviceManagementPortal.Web.zip";
+        string authContextURL = "https://login.microsoftonline.com/" + tenantId;
+        var authenticationContext = new AuthenticationContext(authContextURL);
+        var credential = new ClientCredential(clientId, clientSecret);
+        var result = await authenticationContext.AcquireTokenAsync(managementUrl, credential);
+        managementAuthToken = result.AccessToken;
+    }
 
-        [TestInitialize]
-        public async Task SetupAsync()
+    public Task DisposeAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    [Fact]
+    public async Task create_resource_group()
+    {
+        var repo = CreateRepository();
+        var subscriptions = await repo.GetSubscriptions();
+        Assert.NotNull(subscriptions);
+
+        var resourceGroup = await repo.CreateResoureGroup(subscriptions[0]
+                                                              .SubscriptionId,
+                                                          "eastus",
+                                                          "msiotunittest");
+        Assert.Equal("msiotunittest", resourceGroup.Name);
+        Assert.Equal("eastus", resourceGroup.Location);
+    }
+
+    [Fact]
+    public async Task create_resource_group_validation_exception()
+    {
+        var repo = CreateRepository();
+        var subscriptions = await repo.GetSubscriptions();
+        Assert.NotNull(subscriptions);
+
+        await Assert.ThrowsAsync<ValidationException>(async () => await repo.CreateResoureGroup(subscriptions[0].SubscriptionId,
+                                                                                                "eastus",
+                                                                                                "msiotu nittest"));
+    }
+
+    [Fact]
+    public async Task get_locations_not_null()
+    {
+        var repo = CreateRepository();
+        var subscriptions = await repo.GetSubscriptions();
+        Assert.NotNull(subscriptions);
+
+        var locations = await repo.GetLocations(subscriptions[0]
+                                                    .SubscriptionId);
+        Assert.NotNull(locations);
+    }
+
+    [Fact]
+    public async Task get_subscriptions_not_null()
+    {
+        var repo = CreateRepository();
+        var subscriptions = await repo.GetSubscriptions();
+        Assert.NotNull(subscriptions);
+    }
+
+    [Fact]
+    public async Task validate_4x4msiotsoultion_azureRM_template()
+    {
+        var repo = CreateRepository();
+        var subscriptions = await repo.GetSubscriptions();
+        Assert.NotNull(subscriptions);
+
+        var resourceGroup = await repo.CreateResoureGroup(subscriptions[0]
+                                                              .SubscriptionId,
+                                                          "eastus",
+                                                          "msiotunittest");
+        Assert.Equal("msiotunittest", resourceGroup.Name);
+        Assert.Equal("eastus", resourceGroup.Location);
+
+        DeploymentRequest deployReq = new DeploymentRequest
         {
-            string authContextURL = "https://login.microsoftonline.com/" + tenantId;
-            var authenticationContext = new AuthenticationContext(authContextURL);
-            var credential = new ClientCredential(clientId, clientSecret);
-            var result = await authenticationContext.AcquireTokenAsync(managementUrl, credential);
-            managementAuthToken = result.AccessToken;
-        }
+            ApplicationName = "msiotunittest",
+            ClientId = "1234",
+            ClientSecret = "12345",
+            SubscriptionId = subscriptions[0]
+                .SubscriptionId,
+            TenantId = "12345",
+            Location = "eastus",
+            DataPacketDesignerPackageWebZipUri = dataPacketDesignerUrl,
+            DeviceManagementPortalPackageWebZipUri = deviceManagementPortalUrl
+        };
 
-        [TestMethod]
-        public async Task get_subscriptions_not_null()
+        var deployment = await repo.Validate4x4MSIoTSolutionUsingAzureRMTemplate(deployReq);
+        Assert.Null(deployment.Error);
+        Assert.Equal("Succeeded", deployment.Properties.ProvisioningState);
+    }
+
+    [Fact]
+    public async Task validate_4x4msiotsoultion_azureRM_template_Exception()
+    {
+        var repo = CreateRepository();
+        var subscriptions = await repo.GetSubscriptions();
+        Assert.NotNull(subscriptions);
+
+        await Assert.ThrowsAsync<CloudException>(async () => await repo.CreateResoureGroup(subscriptions[0].SubscriptionId,
+                                                                                           "eas24455tus",
+                                                                                           "msiotunittest"));
+
+        var deployReq = new DeploymentRequest
         {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken);
-            Assert.IsNotNull(subscriptions.SubscriptionList);
-        }
+            ApplicationName = "msiotunittest",
+            ClientId = "1234",
+            ClientSecret = "12345",
+            SubscriptionId = subscriptions[0]
+                .SubscriptionId,
+            TenantId = "12345",
+            Location = "eastus",
+            DataPacketDesignerPackageWebZipUri = dataPacketDesignerUrl
+        };
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public async Task get_subscriptions_token_invalid_null()
+        var deployment = await repo.Validate4x4MSIoTSolutionUsingAzureRMTemplate(deployReq);
+        Assert.Null(deployment.Error);
+        Assert.Equal("Succeeded", deployment.Properties.ProvisioningState);
+    }
+
+    [Fact]
+    public async Task validate_streamAnalytics_azureRM_template()
+    {
+        var repo = CreateRepository();
+        var subscriptions = await repo.GetSubscriptions();
+        Assert.NotNull(subscriptions);
+
+        var resourceGroup = await repo.CreateResoureGroup(subscriptions[0].SubscriptionId,
+                                                          "eastus",
+                                                          "msiotunittest");
+        Assert.Equal("msiotunittest", resourceGroup.Name);
+        Assert.Equal("eastus", resourceGroup.Location);
+
+        StreamAnalyticsDeploymentRequest deployReq = new StreamAnalyticsDeploymentRequest
         {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken+"safsa");
-            Assert.IsNull(subscriptions.SubscriptionList);
-        }
+            IoTHubName = "iothubtestms4x4",
+            CosmosDBAccountName = "cosmostestms4x4",
+            CosmosDBName = "cosmostestdb",
+            CosmosDBMessageCollectionName = "testcollection",
+            SubscriptionId = subscriptions[0]
+                .SubscriptionId,
+            ResourceGroupName = "msiotunittest",
+            Location = "eastus"
+        };
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception), "Authentication failed. The 'Authorization' header is missing the access token.")]
-        public async Task get_subscriptions_token_null()
+        var deployment = await repo.Validate4x4StreamAnalyticsUsingAzureRMTemplate
+                             (deployReq);
+
+        Assert.Null(deployment.Error);
+        Assert.Equal("Succeeded", deployment.Properties.ProvisioningState);
+    }
+
+    [Fact]
+    public async Task validate_streamAnalytics_azureRM_template_Exception()
+    {
+        var repo = CreateRepository();
+        var subscriptions = await repo.GetSubscriptions();
+        Assert.NotNull(subscriptions);
+
+        await Assert.ThrowsAsync<CloudException>(async () => await repo.CreateResoureGroup(subscriptions[0]
+                                                                                               .SubscriptionId,
+                                                                                           "e4455astus",
+                                                                                           "msiotunittest"));
+
+        var deployReq = new StreamAnalyticsDeploymentRequest
         {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(null);
-            Assert.IsNull(subscriptions.SubscriptionList);
-        }
+            IoTHubName = "iothubtestms4x4",
+            CosmosDBAccountName = "cosmostestms4x4",
+            CosmosDBName = "cosmostestdb",
+            CosmosDBMessageCollectionName = "testcollection",
+            SubscriptionId = subscriptions[0]
+                .SubscriptionId,
+            ResourceGroupName = "msiotunittest",
+            Location = "eastus"
+        };
 
-        [TestMethod]
-        public async Task get_locations_not_null()
+        var deployment = await repo.Validate4x4StreamAnalyticsUsingAzureRMTemplate(deployReq);
+
+        Assert.Null(deployment.Error);
+        Assert.Equal("Succeeded", deployment.Properties.ProvisioningState);
+    }
+
+    ResourceManagerRepository CreateRepository()
+    {
+        var armClient = new ArmClientFactory(() => Task.FromResult(managementAuthToken), managementAuthToken);
+        var logger = new LoggerFactory().CreateLogger<ResourceManagerRepository>();
+        var opts = new ArmOptions
         {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken);
-            Assert.IsNotNull(subscriptions.SubscriptionList);
+            TemplateStreamAnalyticsUrl = armTemplateStreamAnalyticsUrl,
+            TemplateUrl = armTemplateUrl
+        };
 
-            var locations = await repo.GetLocations(subscriptions.SubscriptionList[0].SubscriptionId, managementAuthToken);
-            Assert.IsNotNull(locations.LocationList);
-        }
-
-        [TestMethod]
-        public async Task create_resource_group()
-        {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken);
-            Assert.IsNotNull(subscriptions.SubscriptionList);
-
-            var resourceGroup = await repo.CreateResoureGroup(subscriptions.SubscriptionList[0].SubscriptionId, "eastus", "msiotunittest", managementAuthToken);
-            Assert.AreEqual(resourceGroup.Name, "msiotunittest");
-            Assert.AreEqual(resourceGroup.Location, "eastus");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(Microsoft.Rest.ValidationException))]
-        public async Task create_resource_group_validation_exception()
-        {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken);
-            Assert.IsNotNull(subscriptions.SubscriptionList);
-
-            var resourceGroup = await repo.CreateResoureGroup(subscriptions.SubscriptionList[0].SubscriptionId, "eastus", "msiotu nittest", managementAuthToken);
-        }
-
-        [TestMethod]
-        public async Task validate_4x4msiotsoultion_azureRM_template()
-        {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken);
-            Assert.IsNotNull(subscriptions.SubscriptionList);
-
-            var resourceGroup = await repo.CreateResoureGroup(subscriptions.SubscriptionList[0].SubscriptionId, "eastus", "msiotunittest", managementAuthToken);
-            Assert.AreEqual(resourceGroup.Name, "msiotunittest");
-            Assert.AreEqual(resourceGroup.Location, "eastus");
-
-            DeploymentRequest deployReq = new DeploymentRequest()
-            {
-                ApplicationName = "msiotunittest",
-                ClientId = "1234",
-                ClientSecret = "12345",
-                SubscriptionId = subscriptions.SubscriptionList[0].SubscriptionId,
-                TenantId = "12345",
-                Location = "eastus",
-                DataPacketDesignerPackageWebZipUri=dataPacketDesignerUrl,
-                DeviceManagementPortalPackageWebZipUri=deviceManagementPortalUrl
-            };
-
-            var deployment=await repo.Validate4x4MSIoTSolutionUsingAzureRMTemplate(deployReq,managementAuthToken);
-            Assert.IsNull(deployment.Error);
-            Assert.AreEqual("Succeeded", deployment.Properties.ProvisioningState);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(Microsoft.Rest.Azure.CloudException))]
-        public async Task validate_4x4msiotsoultion_azureRM_template_Exception()
-        {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken);
-            Assert.IsNotNull(subscriptions.SubscriptionList);
-
-            var resourceGroup = await repo.CreateResoureGroup(subscriptions.SubscriptionList[0].SubscriptionId, "eastus", 
-                "msiotunittest", managementAuthToken+"123");
-            Assert.AreEqual(resourceGroup.Name, "msiotunittest");
-            Assert.AreEqual(resourceGroup.Location, "eastus");
-
-
-            DeploymentRequest deployReq = new DeploymentRequest()
-            {
-                ApplicationName = "msiotunittest",
-                ClientId = "1234",
-                ClientSecret = "12345",
-                SubscriptionId = subscriptions.SubscriptionList[0].SubscriptionId,
-                TenantId = "12345",
-                Location = "eastus",
-                DataPacketDesignerPackageWebZipUri = dataPacketDesignerUrl
-            };
-
-            var deployment = await repo.Validate4x4MSIoTSolutionUsingAzureRMTemplate(deployReq, managementAuthToken);
-            Assert.IsNull(deployment.Error);
-            Assert.AreEqual("Succeeded", deployment.Properties.ProvisioningState);
-        }
-
-        [TestMethod]
-        public async Task validate_streamAnalytics_azureRM_template()
-        {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken);
-            Assert.IsNotNull(subscriptions.SubscriptionList);
-
-            var resourceGroup = await repo.CreateResoureGroup(subscriptions.SubscriptionList[0].SubscriptionId, "eastus", 
-                "msiotunittest", managementAuthToken);
-            Assert.AreEqual(resourceGroup.Name, "msiotunittest");
-            Assert.AreEqual(resourceGroup.Location, "eastus");
-
-            StreamAnalyticsDeploymentRequest deployReq = new StreamAnalyticsDeploymentRequest()
-            {
-                IoTHubName = "iothubtestms4x4",
-                CosmosDBAccountName = "cosmostestms4x4",
-                CosmosDBName = "cosmostestdb",
-                CosmosDBMessageCollectionName = "testcollection",
-                SubscriptionId = subscriptions.SubscriptionList[0].SubscriptionId,
-                ResourceGroupName = "msiotunittest",
-                Location = "eastus"
-            };
-
-            var deployment = await repo.Validate4x4StreamAnalyticsUsingAzureRMTemplate
-                (deployReq, managementAuthToken);
-
-            Assert.IsNull(deployment.Error);
-            Assert.AreEqual("Succeeded", deployment.Properties.ProvisioningState);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(Microsoft.Rest.Azure.CloudException))]
-        public async Task validate_streamAnalytics_azureRM_template_Exception()
-        {
-            ResourceManagerRepository repo = new ResourceManagerRepository(managementUrl, armTemplateUrl, armTemplateStreamAnalyticsUrl);
-            var subscriptions = await repo.GetSubscriptions(managementAuthToken);
-            Assert.IsNotNull(subscriptions.SubscriptionList);
-
-            var resourceGroup = await repo.CreateResoureGroup(subscriptions.SubscriptionList[0].SubscriptionId, "eastus", 
-                "msiotunittest", managementAuthToken+"123");
-            Assert.AreEqual(resourceGroup.Name, "msiotunittest");
-            Assert.AreEqual(resourceGroup.Location, "eastus");
-
-            StreamAnalyticsDeploymentRequest deployReq = new StreamAnalyticsDeploymentRequest()
-            {
-                IoTHubName = "iothubtestms4x4",
-                CosmosDBAccountName = "cosmostestms4x4",
-                CosmosDBName = "cosmostestdb",
-                CosmosDBMessageCollectionName = "testcollection",
-                SubscriptionId = subscriptions.SubscriptionList[0].SubscriptionId,
-                ResourceGroupName = "msiotunittest",
-                Location = "eastus"
-            };
-
-            var deployment = await repo.Validate4x4StreamAnalyticsUsingAzureRMTemplate
-                (deployReq, managementAuthToken);
-
-            Assert.IsNull(deployment.Error);
-            Assert.AreEqual("Succeeded", deployment.Properties.ProvisioningState);
-        }
+        return new ResourceManagerRepository(Options.Create(opts), armClient, logger);
     }
 }
-

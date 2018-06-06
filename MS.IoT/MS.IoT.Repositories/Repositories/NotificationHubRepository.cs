@@ -1,22 +1,13 @@
-﻿using MS.IoT.Domain.Interface;
-using MS.IoT.Domain.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using RestSharp;
-using Newtonsoft.Json;
-using Microsoft.Azure.Devices;
-using Microsoft.Azure.Devices.Shared;
-using MS.IoT.Common;
 using Microsoft.Azure.NotificationHubs;
-using System.Web.Http;
-using System.Net;
-using Microsoft.Azure.NotificationHubs.Messaging;
-using System.Net.Http;
+using MS.IoT.Common;
+using MS.IoT.Domain.Interface;
+using MS.IoT.Domain.Model;
 
 namespace MS.IoT.Repositories
-{ 
+{
     public class NotificationHubRepository : INotificationHubRepository
     {
         private static string _notificationHubConnectionString;
@@ -53,7 +44,7 @@ namespace MS.IoT.Repositories
                     installation.Platform = NotificationPlatform.Gcm;
                     break;
                 default:
-                    throw new HttpResponseException(HttpStatusCode.BadRequest);
+                    throw new ArgumentException("Bad Request"); 
             }
             installation.Tags = new List<string>(deviceUpdate.Tags);
             try

@@ -1,34 +1,25 @@
-﻿using MS.IoT.DataPacketDesigner.Web.Helpers;
-using MS.IoT.Domain.Interface;
-using MS.IoT.Domain.Model;
-using System.Web.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MS.IoT.DataPacketDesigner.Web.Controllers
 {
-    /// <summary>
-    /// Home Controller
-    /// Main controller of the application. The navigation is done through Angular navigation
-    /// </summary>
+
     [Authorize]
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
-        /// <summary>
-        /// Main Controller
-        /// </summary>
-        /// <param name="templateRepo">Repository Template Service</param>
-        /// <param name="userProfile">User Profile Service</param>
-        public HomeController(ICosmosDBRepository<Template> templateRepo, UserProfileService userProfile)
-            : base(templateRepo, userProfile)
+        public IActionResult Index()
         {
+            return View();
         }
 
-        /// <summary>
-        /// Index
-        /// Angular single page endpoint
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
+        public IActionResult Error()
         {
+            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
             return View();
         }
     }

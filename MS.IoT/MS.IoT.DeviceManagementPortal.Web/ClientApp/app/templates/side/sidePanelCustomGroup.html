@@ -1,0 +1,120 @@
+﻿﻿<ng-form class="form-horizontal" name="formSideCustomGroupPanel">
+    <!--Header-->
+    <div class="modal-header">
+        <div class="row">
+            <div class="col-md-1">
+                <img class="cursorclick" ng-click="vm.cancel()" src="/images/icon-close.svg" />
+            </div>
+            <div class="col-md-6"><h5 class="modal-title">Custom Group Details</h5></div>
+            <div class="col-md-3 cancelbtn">
+                <span class="cursorclick" ng-show="vm.editMode" ng-click="vm.editCancel(formSideCustomGroupPanel)">Cancel</span>
+            </div>
+            <div class="col-md-2">
+                <span class="cursorclick" ng-show="!vm.editMode" ng-click="vm.editMode=true">
+                    <img src="/images/icon-edit.svg" class="iconspacer" /> Edit
+                </span>
+                <span class="cursorclick" ng-show="vm.editMode" ng-click="vm.saveCustomGroup(formSideCustomGroupPanel)">
+                    <img src="/images/icon-save.svg" class="iconspacer" /> Save
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!--panel body-->
+     <div class="modal-body">
+
+         <div class="row" ng-show="vm.isFormDirty">
+             <div class="col-md-7">
+                 <h5 class="errorText">Do you want to save changes ?</h5>
+             </div>
+             <div class="col-md-1">
+                 <button class="btn save" ng-click="vm.saveCustomGroup(formSideCustomGroupPanel)">Yes</button>
+             </div>
+             <div class="col-md-1">
+                 <button class="btn cancel" ng-click="vm.noSaveCancel(formSideCustomGroupPanel)">No</button>
+             </div>
+         </div>
+
+         <div class="row" ng-show="vm.hasFormErrors">
+             <div class="col-md-12">
+                 <h5 class="errorText">One or more required fields haven't been filled.</h5>
+             </div>
+         </div>
+
+         <div class="row">
+             <div class="col-md-12">
+                 <div class="row">
+                     <div class="col-md-12"><span class="side-panel-title">Group Id - {{vm.customGroup.id}}</span></div>
+                 </div>
+             </div>
+         </div>
+
+         <div class="row space"></div>
+         <div class="filter-separation"></div>
+         <div class="formSideCustomGroupPanel-properties">
+             <div class="row">
+                 <div class="col-md-2 prod-detail-title">
+                     Group Name
+                 </div>
+                 <div class="col-md-4">
+                     <div class="row filter-column-row">
+                         <div class="col-md-12 filter-column">
+                             <input ng-show="vm.editMode" ng-required="true" type="text" class="form-control" ng-model="vm.customGroup.name">
+                             <span ng-show="!vm.editMode" ng-bind="vm.customGroup.name"></span>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="filter-separation"></div>
+             <div class="row">
+                 <div class="col-md-2 prod-detail-title">
+                     Rules
+                 </div>
+                 <div class="col-md-10">
+                     <rule-group group="vm.customGroup.where" fields="vm.listFields" edit-mode="vm.editMode"></rule-group>
+                 </div>
+             </div>
+         </div>
+         <div class="filter-separation"></div>
+         <div class="formSideCustomGroupPanel-properties">
+             <div class="row">
+                 <div class="col-md-12 prod-detail-title">
+                     Preview
+                 </div>
+             </div>
+             <div class="row" style="margin-top:10px" ng-show="vm.listGroupDevices.length>0">
+                 <div class="col-md-12">
+                     <div class="row tableRow tableHeader">
+                         <div class="col-md-3">
+                             <strong class="tableheadercols">Product Name</strong>
+                         </div>
+                         <div class="col-md-3">
+                             <strong class="tableheadercols">Product Family</strong>
+                         </div>
+                         <div class="col-md-3">
+                             <strong class="tableheadercols">Retailer</strong>
+                         </div>
+                         <div class="col-md-3">
+                             <strong class="tableheadercols">Retailer Location</strong>
+                         </div>
+                     </div>
+                     <div ng-repeat="device in vm.listGroupDevices" class="row tableRow">
+                         <div class="col-md-3" ng-bind="device.productName"></div>
+                         <div class="col-md-3" ng-bind="device.productFamily"></div>
+                         <div class="col-md-3" ng-bind="device.retailerName"></div>
+                         <div class="col-md-3" ng-bind="device.retailerRegion"></div>
+                     </div>
+                 </div>
+             </div>
+             <div class="row">
+                 <div class="col-md-12 text-left">
+                     <ul ng-show="vm.listGroupDevicesItemCount > 0" uib-pagination total-items="vm.listGroupDevicesItemCount" ng-model="vm.listGroupDevicesIndex" ng-change="vm.pageChanged(vm.dbState.root)" max-size="10" items-per-page="10" class="pagination-sm" boundary-links="true" force-ellipses="true"></ul>
+                 </div>
+             </div>
+         </div>
+     </div>
+    <div class="modal-footer" style="text-align:center">
+        <button class="btn cancel" ng-show="vm.editMode" ng-click="vm.editCancel(formSideCustomGroupPanel)">Cancel</button>
+        <button class="btn save" ng-show="vm.editMode" ng-click="vm.saveCustomGroup(formSideCustomGroupPanel)">Save</button>
+    </div>
+</ng-form>

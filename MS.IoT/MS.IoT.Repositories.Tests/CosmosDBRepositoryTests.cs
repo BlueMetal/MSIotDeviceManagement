@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using MS.IoT.Domain.Interface;
 using System.Threading.Tasks;

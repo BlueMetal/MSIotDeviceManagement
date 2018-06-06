@@ -1,0 +1,30 @@
+﻿<div class="filter-separation"></div>
+<div class="row filter-column-row">
+    <div class="col-md-4 filter-column">
+        <ui-select ng-show="editMode" ng-model="entry.field" ng-required="true" theme="bootstrap" search-enabled="false">
+            <ui-select-match>{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="field.name as field in fields">
+                <div ng-bind="field.name"></div>
+            </ui-select-choices>
+        </ui-select>
+        <span ng-show="!editMode" ng-bind="entry.field"></span>
+    </div>
+    <div class="col-md-3 filter-column">
+        <ui-select ng-show="editMode" ng-model="entry.operator" ng-required="true" theme="bootstrap" search-enabled="false">
+            <ui-select-match>{{$select.selected.name | limitTo : 13}}{{$select.selected.name > 13 ? '...' : ''}}</ui-select-match>
+            <ui-select-choices repeat="operator.id as operator in operators[getFieldType(entry.field)]">
+                <div ng-bind="operator.name"></div>
+            </ui-select-choices>
+        </ui-select>
+        <span ng-show="!editMode" ng-bind="operatorsList[entry.operator].name"></span>
+    </div>
+    <div class="col-md-4 filter-column">
+        <input ng-show="editMode" type="text" class="form-control" ng-model="entry.value">
+        <span ng-show="!editMode" ng-bind="entry.value"></span>
+    </div>
+    <div class="col-md-1 filter-column">
+        <span ng-show="editMode" class="input-group-btn">
+            <span class="btn-listview" ng-click="removeRule()" uib-tooltip="Remove this rule from the group." tooltip-popup-delay="1000"><img src="/images/btn-remove.svg" /></span>
+        </span>
+    </div>
+</div>

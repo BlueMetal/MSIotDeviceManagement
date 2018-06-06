@@ -1,0 +1,30 @@
+﻿<img ng-show="!state.isLoaded && vm.dbState.isDatabaseLoaded" class="loading" src="/images/loader-48.gif" />
+
+<!-- Groups -->
+<uib-accordion ng-show="state.isLoaded" ng-repeat="group in state.groups" class="row" close-others="oneAtATime">
+    <div uib-accordion-group class="panel-default col-md-12" is-open="group.state.isOpened">
+        <uib-accordion-heading>
+            <div class="row">
+                <div class="col-md-1">
+                    <input type="checkbox" value="{{group.name}}" ng-checked="group.state.selectedItems.length == group.itemsIds.length"
+                           ng-click="$event.stopPropagation();toggleSelectionGroup({group:group})" style="margin-top:10px">
+                </div>
+                <div class="col-md-5">
+                    <h5>{{group.displayName}} - ({{group.state.selectedItems.length > 0 ? group.state.selectedItems.length + '/' : ''}}{{group.itemsCount}})</h5>
+                </div>
+            </div>
+        </uib-accordion-heading>
+        <datatable-row state="group.state" fields="fields" items-per-page="itemsPerPage" pagination-max-size="paginationMaxSize" open-modal="openModal({deviceId:deviceId,editMode:false})" page-changed="pageChanged({state:state})" toggle-selection-item="toggleSelectionItem({deviceId:deviceId})" toggle-selection-group="toggleSelectionGroup({group:group})"></datatable-row>
+        <ul ng-show="group.state.pageItemsCount > 0" uib-pagination total-items="group.state.pageItemsCount" ng-model="group.state.pageIndex" ng-change="pageChanged({state:group.state})" max-size="paginationMaxSize" items-per-page="itemsPerPage" class="pagination-sm" boundary-links="true" force-ellipses="true"></ul>
+    </div>
+</uib-accordion>
+
+
+<!-- Items -->
+<div ng-show="state.isLoaded" ng-repeat="item in state.items" class="row tableRow" ng-click="openModal({deviceId:item.deviceId,editMode:false})" style="cursor:pointer">
+    <div class="col-md-1" ng-repeat="n in range(state.depth)"></div>
+    <div class="{{state.depth == 0 ? 'col-md-1' : fields[state.depth - 1].class}}">
+        <input type="checkbox" name="selectedDevices[]" value="{{item.deviceId}}" ng-checked="state.selectedItems.indexOf(item.deviceId) > -1" ng-click="toggleSelectionItem({deviceId: item.deviceId}); $event.stopPropagation();">
+    </div>
+    <div ng-repeat="field in fields.slice(state.depth)" ng-bind-html="field.rendering == null ? item[field.name] : field.rendering(item)" class="{{field.class}}"></div>
+</div>

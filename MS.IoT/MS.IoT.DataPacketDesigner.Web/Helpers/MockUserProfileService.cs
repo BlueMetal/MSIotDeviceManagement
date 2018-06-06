@@ -12,7 +12,7 @@ namespace MS.IoT.DataPacketDesigner.Web.Helpers
         private string _appKey;
         private string _aadInstance;
         private string _graphResourceID;
-        private IUser _currentUser;
+       // private IUser _currentUser;
 
         public MockUserProfileService(string graphResourceID, string clientId, string appKey, string aadInstance)
         {
@@ -22,12 +22,12 @@ namespace MS.IoT.DataPacketDesigner.Web.Helpers
             _aadInstance = aadInstance;
         }
 
-        public async Task<IUser> GetCurrentUser()
+        public Task<IUser> GetCurrentUser()
         {
-            return new User() {
+            return Task.FromResult<IUser>(new User() {
                 UserPrincipalName = "JohnDoe@test.com",
                 DisplayName = "John Doe",
-            };
+            });
         }
     }
    

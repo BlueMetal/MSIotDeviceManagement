@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace MS.IoT.Repositories
 {
-    public class CosmosDBBaseRepository
+    public abstract class CosmosDBBaseRepository
     {
         protected static DocumentClient _client;
         protected string _databaseId;
         protected string _collectionId;
 
-        public CosmosDBBaseRepository(string endPoint, string authKey, string databaseId, string collectionId)
+        protected CosmosDBBaseRepository(string endPoint, string authKey, string databaseId, string collectionId)
         {
             _databaseId = databaseId;
             _collectionId = collectionId;

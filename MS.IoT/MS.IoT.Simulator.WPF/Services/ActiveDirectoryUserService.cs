@@ -38,7 +38,7 @@ namespace MS.IoT.Simulator.WPF.Services
             try
             {
                 OnConnectionStatusChanged(AzureConnectionStatus.NotConnected, string.Empty, null);
-                result = await authContext.AcquireTokenAsync(graphResourceId, clientId, redirectUri, new PlatformParameters(PromptBehavior.Always));
+                result = await authContext.AcquireTokenAsync(graphResourceId, clientId, redirectUri, new PlatformParameters(PromptBehavior.Auto));
                 currentUser = new User()
                 {
                     Id = result.UserInfo.DisplayableId,

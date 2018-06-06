@@ -1,0 +1,21 @@
+﻿<div ui-tree id="tree-root">
+    <ul ui-tree-nodes data-nodrop-enabled ng-model="templates">
+        <li ui-tree-node ng-repeat="template in templates">
+            <div data-nodrag ui-tree-handle class="tree-node tree-node-content">
+                <a class="btn btn-success btn-xs" ng-if="template.properties && template.properties.length > 0" data-nodrag ng-click="toggle(this)">
+                    <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span>
+                </a>
+                <span>
+                    <span ng-bind="template.name"></span>
+                </span>
+                <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="newSubItem(this)" style="margin-right: 8px;">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </div>
+            <ul ui-tree-nodes="" ng-model="template.properties" ng-class="{hidden: collapsed}">
+                <li ng-repeat="node in template.properties" ui-tree-node treeview-node>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

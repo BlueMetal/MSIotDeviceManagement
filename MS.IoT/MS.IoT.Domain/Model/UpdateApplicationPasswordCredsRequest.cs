@@ -23,7 +23,7 @@ namespace MS.IoT.Domain.Model
         public DateTime EndDate { get; set; }
 
         [JsonProperty(PropertyName = "keyId")]
-        public string KeyId { get; set; }
+        public Guid KeyId { get; set; }
 
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
