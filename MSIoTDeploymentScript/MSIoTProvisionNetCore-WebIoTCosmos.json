@@ -167,10 +167,7 @@
         "displayName": "Website"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms/', variables('webAppHostingPlanName'))]",
-        "[resourceId('Microsoft.Devices/Iothubs/', variables('iotHubName'))]",
-        "[resourceId('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosDbAccountName'))]",
-        "[resourceId('microsoft.insights/components/', variables('dataPacketAppInsights'))]"
+        "[resourceId('Microsoft.Web/serverfarms/', variables('webAppHostingPlanName'))]"     
       ],
       "properties": {
         "name": "[variables('dataPacketWebSiteName')]",
@@ -179,11 +176,14 @@
       "resources": [
         {
           "name": "MSDeploy",
-          "type": "extensions",
+          "type": "Extensions",
           "location": "[variables('location')]",
           "apiVersion": "2015-08-01",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', variables('dataPacketWebSiteName'))]"
+            "[concat('Microsoft.Web/Sites/', variables('dataPacketWebSiteName'))]",
+            "[resourceId('Microsoft.Devices/Iothubs/', variables('iotHubName'))]",
+            "[resourceId('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosDbAccountName'))]",
+            "[resourceId('microsoft.insights/components/', variables('dataPacketAppInsights'))]"
           ],
           "tags": {
             "displayName": "WebPackageDeploy"
@@ -198,12 +198,12 @@
           }
         },
         {
-          "apiVersion": "2015-08-01",
+          "apiVersion": "2016-03-01",
           "name": "Appsettings",
           "type": "config",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/Sites', variables('dataPacketWebSiteName'))]",
-            "[concat('Microsoft.Web/Sites/', variables('dataPacketWebSiteName'), '/Extensions/MSDeploy')]"
+            "[concat('Microsoft.Web/Sites/', variables('dataPacketWebSiteName'), '/Extensions/MSDeploy')]",
+            "[concat('Microsoft.Web/Sites/', variables('dataPacketWebSiteName'))]"
           ],
           "properties": {
             "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(concat('microsoft.insights/components/', variables('dataPacketAppInsights'))).InstrumentationKey]",
@@ -234,11 +234,7 @@
         "displayName": "Website"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms/', variables('webAppHostingPlanName'))]",
-        "[resourceId('Microsoft.Devices/Iothubs/', variables('iotHubName'))]",
-        "[resourceId('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosDbAccountName'))]",
-        "[resourceId('Microsoft.NotificationHubs/namespaces', variables('notificationHubNamespaceName'))]",
-        "[resourceId('microsoft.insights/components/', variables('deviceManagementAppInsights'))]"
+        "[resourceId('Microsoft.Web/serverfarms/', variables('webAppHostingPlanName'))]",      
       ],
       "properties": {
         "name": "[variables('deviceManagementPortalWebSiteName')]",
@@ -247,11 +243,15 @@
       "resources": [
         {
           "name": "MSDeploy",
-          "type": "extensions",
+          "type": "Extensions",
           "location": "[variables('location')]",
           "apiVersion": "2015-08-01",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', variables('deviceManagementPortalWebSiteName'))]"
+            "[concat('Microsoft.Web/Sites/', variables('deviceManagementPortalWebSiteName'))]",
+            "[resourceId('Microsoft.Devices/Iothubs/', variables('iotHubName'))]",
+            "[resourceId('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosDbAccountName'))]",
+            "[resourceId('Microsoft.NotificationHubs/namespaces', variables('notificationHubNamespaceName'))]",
+            "[resourceId('microsoft.insights/components/', variables('deviceManagementAppInsights'))]"
           ],
           "tags": {
             "displayName": "WebPackageDeploy"
@@ -266,12 +266,12 @@
           }
         },
         {
-          "apiVersion": "2015-08-01",
+          "apiVersion": "2016-03-01",
           "name": "Appsettings",
           "type": "config",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/Sites', variables('deviceManagementPortalWebSiteName'))]",
-            "[concat('Microsoft.Web/Sites/', variables('deviceManagementPortalWebSiteName'), '/Extensions/MSDeploy')]"
+            "[concat('Microsoft.Web/Sites/', variables('deviceManagementPortalWebSiteName'), '/Extensions/MSDeploy')]",
+            "[concat('Microsoft.Web/Sites/', variables('deviceManagementPortalWebSiteName'))]"
           ],
           "properties": {
             "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(concat('microsoft.insights/components/', variables('deviceManagementAppInsights'))).InstrumentationKey]",

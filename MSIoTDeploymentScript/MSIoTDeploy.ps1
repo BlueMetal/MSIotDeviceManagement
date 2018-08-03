@@ -62,6 +62,37 @@ function CreateClientSecret {
     return $ClientSecret
 }
 
+########################################
+# Set Windows Active directory signin permissions in AD application
+# params required- 
+    # tenant Id
+    # Azure AD APplication objectID
+########################################
+function SetAzureADApplicationResourceAccessPermissions {
+    param([string]$tenantId, $appObjId)
+    Write-Host "`nSetting Windows Active directory signin permissions on AD application" -ForegroundColor Green   
+    $authority="https://login.microsoftonline.com/$tenantId"
+
+    $clientId = "1950a258-227b-4e31-a9cf-717495945fc2"  # Set well-known client ID for AzurePowerShell
+    $redirectUri = "urn:ietf:wg:oauth:2.0:oob" # Set redirect URI for Azure PowerShell
+    $resourceAppIdURI = "https://graph.windows.net/" # resource we want to use
+    
+    # Create Authentication Context tied to Azure AD Tenant
+    $authContext = New-Object "Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext" -ArgumentList $authority
+    # Acquire graph token
+    $authResult = $authContext.AcquireToken($resourceAppIdURI, $clientId, $redirectUri, "Auto")
+    Write-Host "Access token is " $authResult.AccessToken -ForegroundColor Magenta
+
+    $authHeader = $authResult.CreateAuthorizationHeader()
+    $headers = @{"Authorization" = $authHeader; "Content-Type"="application/json"}    
+
+    $url = "https://graph.windows.net/$tenantId/applications/$($appObjId)?api-version=1.6"
+    $postData = "{`"requiredResourceAccess`":[{`"resourceAppId`":`"00000002-0000-0000-c000-000000000000`",
+    `"resourceAccess`":[{`"id`":`"311a71cc-e848-46a1-bdf8-97ff7156d8e6`",`"type`":`"Scope`"}]}]}";
+    $result = Invoke-RestMethod -Uri $url -Method "PATCH" -Headers $headers -Body $postData 
+    
+    Write-Host "`nWindows Active directory signin permissions on AD application set Successfully...!" -ForegroundColor Green 
+}
 
 ########################################
 # Get subscriptions list and select subscription
@@ -140,6 +171,8 @@ param([string]$apiBaseURL,[string]$accessToken)
 
     Write-Host "`nInitializing Cosmos DB..." -ForegroundColor Green
     $APIURL=[string]::Format("{0}/api/templates/generate",$apiBaseURL)
+    $APIURL=$APIURL.Replace('https','http')
+
     $result=Invoke-RestMethod -Uri $APIURL -Method Post -ContentType "application/json" -Headers @{ "Authorization" = "Bearer $accessToken" }
     if($result -eq "true")
     {
@@ -194,12 +227,7 @@ New-AzureRmADServicePrincipal -ApplicationId $azureAdApplication.ApplicationId
 # Assign Windows Azure AD permissions to sign in to the application
 # This enables all users in the tenant to login into application
 ###################################################################
-Connect-AzureAd
-$reqResource = New-Object -TypeName "Microsoft.Open.AzureAD.Model.RequiredResourceAccess"
-$windowsAzureADScope = New-Object -TypeName "Microsoft.Open.AzureAD.Model.ResourceAccess" -ArgumentList "311a71cc-e848-46a1-bdf8-97ff7156d8e6","Scope"
-$reqResource.ResourceAccess = $windowsAzureADScope
-$reqResource.ResourceAppId = "00000002-0000-0000-c000-000000000000"
-Set-AzureADApplication -ObjectId $azureAdApplication.ObjectId -RequiredResourceAccess $reqResource
+SetAzureADApplicationResourceAccessPermissions $tenantId $azureAdApplication.ObjectId
 
 #####################################################################
 # Get and select subscription
