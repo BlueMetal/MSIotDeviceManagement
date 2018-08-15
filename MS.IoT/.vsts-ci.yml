@@ -1,0 +1,51 @@
+trigger:
+- master
+- rel/*
+
+queue: Hosted VS2017
+variables: 
+  BuildConfiguration: Release
+  
+steps:
+- task: DotNetCoreCLI@2  
+  inputs:
+    command: custom
+    custom: tool
+    arguments: install --tool-path . nbgv
+  displayName: Install NBGV tool
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+
+- script: nbgv cloud
+  displayName: Set Version
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.1.400'
+
+- task: DotNetCoreCLI@2
+  displayName: Build and Publish DataPacketDesigner
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: MS.IoT.DataPacketDesigner.Web/MS.IoT.DataPacketDesigner.Web.csproj
+    arguments: '-c $(BuildConfiguration) --output $(build.artifactstagingdirectory)\DataPacketDesigner\'
+    zipAfterPublish: True
+
+- task: DotNetCoreCLI@2
+  displayName: Build and Publish DeviceManagementPortal
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: MS.IoT.DeviceManagementPortal.Web/MS.IoT.DeviceManagementPortal.Web.csproj
+    arguments: '-c $(BuildConfiguration) --output $(build.artifactstagingdirectory)\DeviceManagementPortal\'
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Package Artifacts
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactType: container
+    artifactName: Packages
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+  
