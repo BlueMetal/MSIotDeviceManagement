@@ -28,7 +28,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    projects: MS.IoT.DataPacketDesigner.Web/MS.IoT.DataPacketDesigner.Web.csproj
+    projects: MS.IoT/MS.IoT.DataPacketDesigner.Web/MS.IoT.DataPacketDesigner.Web.csproj
     arguments: '-c $(BuildConfiguration) --output $(build.artifactstagingdirectory)\DataPacketDesigner\'
     zipAfterPublish: True
 
@@ -37,7 +37,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    projects: MS.IoT.DeviceManagementPortal.Web/MS.IoT.DeviceManagementPortal.Web.csproj
+    projects: MS.IoT/MS.IoT.DeviceManagementPortal.Web/MS.IoT.DeviceManagementPortal.Web.csproj
     arguments: '-c $(BuildConfiguration) --output $(build.artifactstagingdirectory)\DeviceManagementPortal\'
     zipAfterPublish: True
 
