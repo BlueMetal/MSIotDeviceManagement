@@ -16,7 +16,7 @@ steps:
   displayName: Install NBGV tool
   condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
 
-- script: nbgv cloud
+- script: nbgv cloud -p MS.IoT
   displayName: Set Version
   condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
 
@@ -59,14 +59,6 @@ steps:
     arguments: '-c $(BuildConfiguration) --output $(build.artifactstagingdirectory)\DeviceManagementPortal\'
     zipAfterPublish: True
 
-- task: PublishBuildArtifacts@1
-  displayName: Publish Package Artifacts
-  inputs:
-    pathToPublish: $(Build.ArtifactStagingDirectory)
-    artifactType: container
-    artifactName: Packages
-  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
-  
 - task: MSBuild@1
   displayName: Build WPF Simulator
   inputs:
@@ -81,4 +73,28 @@ steps:
     archiveType: zip
     rootFolder: MS.IoT/MS.IoT.Simulator/MS.IoT.Simulator.WPF /bin/$(BuildConfiguration)
     archiveFile: $(Build.ArtifactStagingDirectory)\Simulator\Simulator.$(Build.BuildNumber).zip
-    includeRootFolder: false
+    includeRootFolder: false    
+    
+- task: PublishBuildArtifacts@1
+  displayName: Publish DataPacketDesigner Artifacts
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)\DataPacketDesigner
+    artifactType: container
+    artifactName: DataPacketDesigner
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+  
+- task: PublishBuildArtifacts@1
+  displayName: Publish DeviceManagementPortal Artifacts
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)\DeviceManagementPortal
+    artifactType: container
+    artifactName: DeviceManagementPortal
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Simulator Artifacts
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)\Simulator
+    artifactType: container
+    artifactName: Simulator
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))    
