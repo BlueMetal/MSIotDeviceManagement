@@ -24,6 +24,11 @@ steps:
   inputs:
     version: '2.1.400'
 
+- task: NodeTool@0
+  displayName: Use Node 8.x
+  inputs:
+    versionSpec: 8.x
+
 - task: DotNetCoreCLI@2
   displayName: Build and Publish DataPacketDesigner
   inputs:
