@@ -60,10 +60,17 @@ steps:
     zipAfterPublish: True
 
 - task: PublishBuildArtifacts@1
-  displayName: Publish Package Artifacts
+  displayName: Publish DataPacketDesigner Artifacts
   inputs:
-    pathToPublish: $(Build.ArtifactStagingDirectory)
+    pathToPublish: $(Build.ArtifactStagingDirectory)\DataPacketDesigner
     artifactType: container
-    artifactName: Packages
+    artifactName: DataPacketDesigner
   condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
   
+- task: PublishBuildArtifacts@1
+  displayName: Publish DeviceManagementPortal Artifacts
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)\DeviceManagementPortal
+    artifactType: container
+    artifactName: DeviceManagementPortal
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))  
