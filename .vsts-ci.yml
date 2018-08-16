@@ -29,6 +29,12 @@ steps:
   inputs:
     versionSpec: 8.x
 
+- task: Npm@1
+  displayName: npm install DataPacketDesigner
+  workingDir: MS.IoT/MS.IoT.DataPacketDesigner.Web
+  inputs:
+    verbose: false
+
 - task: DotNetCoreCLI@2
   displayName: Build and Publish DataPacketDesigner
   inputs:
@@ -38,6 +44,12 @@ steps:
     arguments: '-c $(BuildConfiguration) --output $(build.artifactstagingdirectory)\DataPacketDesigner\'
     zipAfterPublish: True
 
+- task: Npm@1
+  displayName: npm install DeviceManagementPortal
+  workingDir: MS.IoT/MS.IoT.DeviceManagementPortal.Web
+  inputs:
+    verbose: false
+    
 - task: DotNetCoreCLI@2
   displayName: Build and Publish DeviceManagementPortal
   inputs:
