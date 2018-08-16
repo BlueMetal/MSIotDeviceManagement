@@ -30,9 +30,9 @@ steps:
     versionSpec: 8.x
 
 - task: Npm@1
-  displayName: npm install DataPacketDesigner
-  workingDir: MS.IoT/MS.IoT.DataPacketDesigner.Web
+  displayName: npm install DataPacketDesigner  
   inputs:
+    workingDir: MS.IoT/MS.IoT.DataPacketDesigner.Web
     verbose: false
 
 - task: DotNetCoreCLI@2
@@ -45,9 +45,9 @@ steps:
     zipAfterPublish: True
 
 - task: Npm@1
-  displayName: npm install DeviceManagementPortal
-  workingDir: MS.IoT/MS.IoT.DeviceManagementPortal.Web
+  displayName: npm install DeviceManagementPortal  
   inputs:
+    workingDir: MS.IoT/MS.IoT.DeviceManagementPortal.Web
     verbose: false
     
 - task: DotNetCoreCLI@2
