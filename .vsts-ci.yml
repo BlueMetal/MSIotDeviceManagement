@@ -67,3 +67,18 @@ steps:
     artifactName: Packages
   condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
   
+- task: MSBuild@1
+  displayName: Build WPF Simulator
+  inputs:
+    solution: MS.IoT/MS.IoT.Simulator/MS.IoT.Simulator.WPF/MS.IoT.Simulator.WPF.csproj
+    msbuildArguments: /restore  
+    configuration: $(BuildConfiguration) 
+    maximumCpuCount: true
+    
+- task: ArchiveFiles@1
+  displayName: Zip Simulator files
+  inputs:
+    archiveType: zip
+    rootFolder: MS.IoT/MS.IoT.Simulator/MS.IoT.Simulator.WPF /bin/$(BuildConfiguration)
+    archiveFile: $(Build.ArtifactStagingDirectory)\Simulator\Simulator.$(Build.BuildNumber).zip
+    includeRootFolder: false
