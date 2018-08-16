@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MS.IoT.Common\MS.IoT.Common.csproj" />
+    <ProjectReference Include="..\MS.IoT.Domain\MS.IoT.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>    
+    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.17.1" />
+    <PackageReference Include="Microsoft.Azure.DocumentDB" Version="1.22.0" />
+    <PackageReference Include="RestSharp" Version="106.3.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.1" />
+  </ItemGroup>
+</Project>

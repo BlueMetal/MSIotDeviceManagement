@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{96F3229F-CE26-411B-A4A0-CE8423A7877A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MS.IoT.Simulator.WPF</RootNamespace>
+    <AssemblyName>MS.IoT.Simulator.WPF</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Helpers\AsyncAutoResetEvent.cs" />
+    <Compile Include="Helpers\Commands\AsyncCommand.cs" />
+    <Compile Include="Helpers\Commands\AsyncCommandBase.cs" />
+    <Compile Include="Helpers\AppConfig.cs" />
+    <Compile Include="Helpers\Commands\IAsyncCommand.cs" />
+    <Compile Include="Helpers\Commands\NotifyTaskCompletion.cs" />
+    <Compile Include="Helpers\NullToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Commands\RelayCommand.cs" />
+    <Compile Include="Helpers\TemplateInstanceHelper.cs" />
+    <Compile Include="Helpers\Events\UARTPacketEventArgs.cs" />
+    <Compile Include="Helpers\Events\RelayItemEventArgs.cs" />
+    <Compile Include="Models\AzureConnectionObject.cs" />
+    <Compile Include="Helpers\FourByFourConstants.cs" />
+    <Compile Include="Models\CosmosDBIoTHub.cs" />
+    <Compile Include="Models\CosmosDBMessage.cs" />
+    <Compile Include="Models\GroupedTemplate.cs" />
+    <Compile Include="Models\Packets\FourByFourCommand.cs" />
+    <Compile Include="Models\Packets\FourByFourReception.cs" />
+    <Compile Include="Models\Packets\GetConfigCommand.cs" />
+    <Compile Include="Models\Packets\GetConfigReception.cs" />
+    <Compile Include="Models\Packets\PokeIoTCommand.cs" />
+    <Compile Include="Models\Packets\SendTemplateCommand.cs" />
+    <Compile Include="Models\Packets\SetConfigCommand.cs" />
+    <Compile Include="Models\Packets\PokeAliveCommand.cs" />
+    <Compile Include="Models\Packets\StatusReception.cs" />
+    <Compile Include="Models\Packets\BooleanReception.cs" />
+    <Compile Include="Models\TemplatePacket.cs" />
+    <Compile Include="Models\COMDeviceInfo.cs" />
+    <Compile Include="Services\ActiveDirectoryUserService.cs" />
+    <Compile Include="Services\Interfaces\IFourByFourService.cs" />
+    <Compile Include="Services\FourByFourService.cs" />
+    <Compile Include="Services\Interfaces\IIoTHubService.cs" />
+    <Compile Include="Services\Interfaces\IUserService.cs" />
+    <Compile Include="Services\IoTHubService.cs" />
+    <Compile Include="Services\UARTService.cs" />
+    <Compile Include="Helpers\Arc.cs" />
+    <Compile Include="UserControls\JsonDataGrid.xaml.cs">
+      <DependentUpon>JsonDataGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ProgressToAngleConverter.cs" />
+    <Compile Include="ViewModels\Interfaces\IPreviewTemplateViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ISimulateTemplateViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IHomeViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ISelectTemplateViewModel.cs" />
+    <Compile Include="ViewModels\PreviewTemplateViewModel.cs" />
+    <Compile Include="ViewModels\SimulateTemplateViewModel.cs" />
+    <Compile Include="ViewModels\SelectTemplateViewModel.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\ObservableViewModel.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileCache.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\JsonDataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PreviewTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SimulateTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SelectTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Resource Include="Resources\fonts\OpenSans-Bold.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-BoldItalic.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-ExtraBold.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-ExtraBoldItalic.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-Italic.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-Light.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-LightItalic.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-SemiBold.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-SemiBoldItalic.ttf" />
+    <Resource Include="Resources\fonts\OpenSans-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\background.png" />
+    <Resource Include="Resources\logo.png" />
+    <Resource Include="Resources\4x4.png" />
+    <Resource Include="Resources\iot-logo.png" />
+    <Resource Include="Resources\transfer.png" />
+    <Resource Include="Resources\categories\air_conditioners.png" />
+    <Resource Include="Resources\categories\bulbs.png" />
+    <Resource Include="Resources\categories\cars.png" />
+    <Resource Include="Resources\categories\dishwashers.png" />
+    <Resource Include="Resources\categories\dryers.png" />
+    <Resource Include="Resources\categories\freezers.png" />
+    <Resource Include="Resources\categories\heating.png" />
+    <Resource Include="Resources\categories\kitchen.png" />
+    <Resource Include="Resources\categories\laundry.png" />
+    <Resource Include="Resources\categories\lighting.png" />
+    <Resource Include="Resources\categories\miscellaneous.png" />
+    <Resource Include="Resources\categories\ovens.png" />
+    <Resource Include="Resources\categories\refrigeration.png" />
+    <Resource Include="Resources\categories\refrigerators.png" />
+    <Resource Include="Resources\categories\stoves.png" />
+    <Resource Include="Resources\categories\washing_machines.png" />
+    <Resource Include="Resources\categories\watercooler.png" />
+    <Resource Include="Resources\fonts\LICENSE.txt" />
+    <Resource Include="Resources\refresh-icon.png" />
+    <Resource Include="Resources\loading-large.gif" />
+    <Resource Include="Resources\loading-small.gif" />
+    <Resource Include="Resources\refresh-icon-small.png" />
+    <Resource Include="Resources\back-button.png" />
+    <Resource Include="Resources\toggle-connected.png" />
+    <Resource Include="Resources\toggle-disconnected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MS.IoT.Common\MS.IoT.Common.csproj">
+      <Project>{9882c0f6-5e84-4f20-aba0-f5994f1c1aa7}</Project>
+      <Name>MS.IoT.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MS.IoT.Domain\MS.IoT.Domain.csproj">
+      <Project>{0050539a-9952-4a2b-97d0-1f2a6fd0e06c}</Project>
+      <Name>MS.IoT.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MS.IoT.Repositories\MS.IoT.Repositories.csproj">
+      <Project>{4eb33578-8425-439b-9014-99e07778bd75}</Project>
+      <Name>MS.IoT.Repositories</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
+      <Version>3.19.8</Version>
+    </PackageReference>
+    <PackageReference Include="System.Windows.Interactivity.WPF">
+      <Version>2.0.20525</Version>
+    </PackageReference>
+    <PackageReference Include="Unity">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="WpfAnimatedGif">
+      <Version>1.4.14</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
