@@ -71,7 +71,7 @@ steps:
   displayName: Zip Simulator files
   inputs:
     archiveType: zip
-    rootFolder: MS.IoT/MS.IoT.Simulator/MS.IoT.Simulator.WPF /bin/$(BuildConfiguration)
+    rootFolder: MS.IoT/MS.IoT.Simulator/MS.IoT.Simulator.WPF/bin/$(BuildConfiguration)
     archiveFile: $(Build.ArtifactStagingDirectory)\Simulator\Simulator.$(Build.BuildNumber).zip
     includeRootFolder: false    
     
