@@ -20,15 +20,14 @@ namespace MS.IoT.DeviceTwinSimulator
     class Program
     {
         static Random random = new Random();
-        public static readonly string iotHubConnectionString = "HostName=msiot-iothub-dev.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=yrvwTx3onmJW48e3iOy//JlfQzf79ZYVWqeAJVsWo6s=";
+        public static readonly string iotHubConnectionString = "HostName=iothub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XXXXXXXXXXXXXXXX";
 
         static string[] states = new string[] { "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois",
             "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
             "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah",
             "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming" };
         static string[] names = new string[] { "Smart {0}", "Super {0} Ultra", "New {0}", "{0} 2", "{0} MX", "{0} TX", "{0} GX" };
-        static string iotHubUri = "HostName=msiot-iothub-dev.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=yrvwTx3onmJW48e3iOy//JlfQzf79ZYVWqeAJVsWo6s=";
-        static RegistryManager registryManager = RegistryManager.CreateFromConnectionString(iotHubUri);
+        static RegistryManager registryManager = RegistryManager.CreateFromConnectionString(iotHubConnectionString);
         public static string deviceId = "";
 
         static async Task Main(string[] args)
@@ -286,7 +285,7 @@ namespace MS.IoT.DeviceTwinSimulator
                     {
                         ProductFamily = retailerFamily.ProductFamily.Name,
                         ManufacturedDate = manufacturedDate,
-                        ProductName = getRandomModel(productName),
+                        ProductName = GetRandomModel(productName),
                         RetailerName = retailer.Retailer.Name,
                         RetailerRegion = state.State.Name,
                         ShippedDate = shippedDate,
@@ -311,10 +310,10 @@ namespace MS.IoT.DeviceTwinSimulator
                     var reportedN = new DeviceTwinReportedModel()
                     {
                         StatusCode = 0,
-                        FirmwareVersion = 1.2,
+                        FirmwareVersion = "1.2",
                         Heartbeat = activated ? (DateTime?)activationDate : null,
                         ActivationDate = activated ? (DateTime?)(activationDate) : null,
-                        IpAddress = activated ? await getRandomUSIP(state.State.Name) : null,
+                        IpAddress = activated ? await GetRandomUSIP(state.State.Name) : null,
                         Features = new Dictionary<string, DeviceTwinReportedFeaturesModel>()
                             {
                                 {"feature1", new DeviceTwinReportedFeaturesModel
@@ -443,7 +442,7 @@ namespace MS.IoT.DeviceTwinSimulator
                         var reported = new DeviceTwinReportedModel()
                         {
                             StatusCode = 0,
-                            FirmwareVersion = 1.2,
+                            FirmwareVersion = "1.2",
                             Heartbeat = DateTime.UtcNow,
                             IpAddress = ipAddress ?? "208.59.148.106",
                             Features = new Dictionary<string, DeviceTwinReportedFeaturesModel>()
@@ -512,7 +511,7 @@ namespace MS.IoT.DeviceTwinSimulator
                             var reportedN = new DeviceTwinReportedModel()
                             {
                                 StatusCode = 0,
-                                FirmwareVersion = 1.2,
+                                FirmwareVersion = "1.2",
                                 Heartbeat = DateTime.Now,
                                 IpAddress = ipN,
                                 Features = new Dictionary<string, DeviceTwinReportedFeaturesModel>()
@@ -848,7 +847,7 @@ namespace MS.IoT.DeviceTwinSimulator
             var jsonString = JsonConvert.SerializeObject(patch2.properties.reported);
 
             var patch1 = JsonConvert.DeserializeObject<TwinCollection>(jsonString);
-            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubUri, deviceId);
+            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubConnectionString, deviceId);
             await deviceClient.UpdateReportedPropertiesAsync(patch1);
         }
 
@@ -872,7 +871,7 @@ namespace MS.IoT.DeviceTwinSimulator
             var jsonString = JsonConvert.SerializeObject(patch.properties.reported);
 
             var patch1 = JsonConvert.DeserializeObject<TwinCollection>(jsonString);
-            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubUri, deviceId);
+            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubConnectionString, deviceId);
             await deviceClient.UpdateReportedPropertiesAsync(patch1);
         }
 
@@ -891,7 +890,7 @@ namespace MS.IoT.DeviceTwinSimulator
             var jsonString = JsonConvert.SerializeObject(patch.properties.reported);
 
             var patch1 = JsonConvert.DeserializeObject<TwinCollection>(jsonString);
-            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubUri, deviceId);
+            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubConnectionString, deviceId);
             await deviceClient.UpdateReportedPropertiesAsync(patch1);
         }
 
@@ -911,7 +910,7 @@ namespace MS.IoT.DeviceTwinSimulator
             var jsonString = JsonConvert.SerializeObject(patch.properties.reported);
 
             var patch1 = JsonConvert.DeserializeObject<TwinCollection>(jsonString);
-            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubUri, deviceId);
+            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubConnectionString, deviceId);
             await deviceClient.UpdateReportedPropertiesAsync(patch1);
         }
 
@@ -932,7 +931,7 @@ namespace MS.IoT.DeviceTwinSimulator
 
         private static List<LocationAddress> _CacheAddresses = new List<LocationAddress>();
         private static int api_calls = 0;
-        private static async Task<string> getRandomUSIP(string retailerRegion)
+        private static async Task<string> GetRandomUSIP(string retailerRegion)
         {
             string country = string.Empty;
             string region = string.Empty;
@@ -988,7 +987,7 @@ namespace MS.IoT.DeviceTwinSimulator
             catch(Exception e)
             {
                 Console.WriteLine("getRandomUSIP crashed with error {0}. Trying again...", e.Message);
-                return await getRandomUSIP(retailerRegion);
+                return await GetRandomUSIP(retailerRegion);
             }
 
             return ipAddress;
@@ -1013,7 +1012,7 @@ namespace MS.IoT.DeviceTwinSimulator
             }
         }
 
-        private static string getRandomModel(string familyName)
+        private static string GetRandomModel(string familyName)
         {
             return string.Format(names[random.Next(0, names.Length)], familyName);
         }
