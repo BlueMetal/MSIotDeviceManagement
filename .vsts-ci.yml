@@ -1,0 +1,69 @@
+trigger:
+- master
+- rel/*
+
+queue: Hosted VS2017
+variables: 
+  BuildConfiguration: Release
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  
+steps:
+- task: DotNetCoreCLI@2  
+  inputs:
+    command: custom
+    custom: tool
+    arguments: install --tool-path . nbgv
+  displayName: Install NBGV tool
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+
+- script: nbgv cloud
+  displayName: Set Version
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.1.400'
+
+- task: NodeTool@0
+  displayName: Use Node 8.x
+  inputs:
+    versionSpec: 8.x
+
+- task: Npm@1
+  displayName: npm install DataPacketDesigner  
+  inputs:
+    workingDir: MS.IoT/MS.IoT.DataPacketDesigner.Web
+    verbose: false
+
+- task: DotNetCoreCLI@2
+  displayName: Build and Publish DataPacketDesigner
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: MS.IoT/MS.IoT.DataPacketDesigner.Web/MS.IoT.DataPacketDesigner.Web.csproj
+    arguments: '-c $(BuildConfiguration) --output $(build.artifactstagingdirectory)\DataPacketDesigner\'
+    zipAfterPublish: True
+
+- task: Npm@1
+  displayName: npm install DeviceManagementPortal  
+  inputs:
+    workingDir: MS.IoT/MS.IoT.DeviceManagementPortal.Web
+    verbose: false
+    
+- task: DotNetCoreCLI@2
+  displayName: Build and Publish DeviceManagementPortal
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: MS.IoT/MS.IoT.DeviceManagementPortal.Web/MS.IoT.DeviceManagementPortal.Web.csproj
+    arguments: '-c $(BuildConfiguration) --output $(build.artifactstagingdirectory)\DeviceManagementPortal\'
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Package Artifacts
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactType: container
+    artifactName: Packages
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+  
