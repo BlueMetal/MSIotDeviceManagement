@@ -251,7 +251,9 @@ When user chooses premium as solution type below azure resource will be deployed
 
 Go to **Resource Group** and Click on **IoT Hub**.
 
-![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S7.png)
+<p align="center">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S7.png">
+</p>
 
 Go to **Manual Failover(Preview)** from left side menu.
 
@@ -275,7 +277,9 @@ When failover process started, a pop up will be displayed on right top corner. O
 
 Go to **Resource Group** and click on primary **Stream Analytics job**.
 
-![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S8.png)
+<p align="center">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S8.png">
+</p>
 
 Stop the Stream analytics job by click on **Stop** and click on **Yes** for confirmation.
 
