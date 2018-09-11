@@ -417,7 +417,7 @@ To install TAP and enable SLIP Communication
 
 2. Download below zip file and extract it **Download** the **tap-windows-9.21.2.exe** file from below link and **Click** on **install tap-windows-9.21.2.exe**. 
 
-3. **url: https://projectiot.blob.core.windows.net/MSIotDeviceManagement/Documents/CustomerDropTP4.0.1.zip**
+3. **url: https://projectiot.blob.core.windows.net/whitegoods/Documents/CustomerDropTP4.0.1.zip**
 
 <p align="center">
   <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/t1.png">
@@ -523,7 +523,7 @@ The Visual Studio Tools Preview for Azure Sphere includes:
 
 1. Download below file and extract it, run **VS_Tools_Preview_for_Azure_Sphere.exe** it. 
 
-**Url: : https://projectiot.blob.core.windows.net/MSIotDeviceManagement/Documents/CustomerDropTP4.0.1.zip**
+**Url: : https://projectiot.blob.core.windows.net/whitegoods/Documents/CustomerDropTP4.0.1.zip**
 
 <p align="center">
   <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/v1.png">
@@ -579,7 +579,7 @@ dutil device sdkversion
 
 3. The number that follows the + should be 107652 or greater. If you see a smaller number, you must update the software by following the instructions from the below link.
 
-URL: **https://projectiot.blob.core.windows.net/MSIotDeviceManagement/Documents/DeviceUpdateToTP4.0.1.docx**
+URL: **https://projectiot.blob.core.windows.net/whitegoods/Documents/DeviceUpdateToTP4.0.1.docx**
  
 
 ### 5.5 Claim your Device
