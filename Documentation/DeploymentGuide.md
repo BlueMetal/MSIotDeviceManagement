@@ -63,7 +63,7 @@ Any application that wants to use the capabilities of Azure AD must first be reg
 
 2. In the left-hand navigation pane, **click** the **Azure Active Directory** service, click **App registrations** and click **New application registration**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/5.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/5.png)
 
 3. When the Create page appears, enter your application's registration information:
 
@@ -77,7 +77,7 @@ Any application that wants to use the capabilities of Azure AD must first be reg
 4. When finished, click **Create**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/6.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/6.png">
 </p>
 
 #### 2.1.2 To add application credentials, or permissions to access web APIs
@@ -88,15 +88,15 @@ Any application that wants to use the capabilities of Azure AD must first be reg
 
 3. **Click** the **Keys** section on the **Settings** page.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/7.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/7.png)
 
 4. Add a description for your key and Select duration then click **Save**. 
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/8.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/8.png)
 
 5. The right-most column will contain the key value, after you save the configuration changes. **Be sure to copy the key** for use in your client application code, as it is not accessible once you leave this page.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/9.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/9.png)
 
 #### 2.1.3 To get Tenant ID
 
@@ -106,20 +106,20 @@ Any application that wants to use the capabilities of Azure AD must first be reg
 
 3. **Note down** the Copied **Directory ID** which is highlighted in the below figure, this will be used while deploying the **ARM template**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/10.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/10.png)
 
 #### 2.1.4 To get application ID and authentication key
 
 1. From **App registrations** in Azure Active Directory, **select** your **application**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/11.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/11.png)
 
 2. **Copy** the **Application ID** and **object ID**. The application ID value is referred as the **client ID**.
 
 3. **Note down** the Copied **Application ID** and **object ID** which is highlighted in the below figure, this will be used while deploying the ARM template.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/12.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/12.png">
 </p>
 
 #### 2.1.5 Creating session ID
@@ -129,7 +129,7 @@ Any application that wants to use the capabilities of Azure AD must first be reg
     **https://www.guidgenerator.com/**
     
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/13.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/13.png">
 </p>
 
 2. Click **Generate some GUIDs!** This will generate GUID in Results box. 
@@ -137,7 +137,7 @@ Any application that wants to use the capabilities of Azure AD must first be reg
 3. **Copy** and **Note down** the generated **GUID** which is highlighted in the below figure, this will be used while deploying the ARM template.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/14.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/14.png">
 </p>
 
 ## 3 ARM Template Input Parameters
@@ -147,7 +147,7 @@ In the parameters section of the template, specify the values as inputs when dep
 | **Parameter Name**  | **Description**     | **Allowed Values**    | **Default Values**                                                                                                               
 | -------------        | -------------      | -----------------    | ------------ 
 | **Solution Type**          | choose your solution type to deploy.     | Basic, Standard, Premium    | 
-| **geo-paired-region**   | For Basic solution select the geopaired region as deployment region. If solution type is chosen as standard and premium, enter location for geo-paired-region,for more information about the geo-paired-region navigate to section 5 in the Readme.md(https://github.com/sysgain/whitegoods/blob/master/README.md) | EastUS2, CentralUS,WestUS2, WestCentralUS, CanadaCentral, CanadaEast, AustraliaEast, AustraliaSouthEast, CentralIndia, SouthIndia, EastAsia, SouthEastAsia,JapanWest, JapanEast, KoreaCentral, KoreaSouth, UKSouth, UKWest  | 
+| **geo-paired-region**   | For Basic solution select the geopaired region as deployment region. If solution type is chosen as standard and premium, enter location for geo-paired-region,for more information about the geo-paired-region navigate to section 4 in the Readme.md(https://github.com/sysgain/MSIotDeviceManagement/blob/master/README.md) | EastUS2, CentralUS,WestUS2, WestCentralUS, CanadaCentral, CanadaEast, AustraliaEast, AustraliaSouthEast, CentralIndia, SouthIndia, EastAsia, SouthEastAsia,JapanWest, JapanEast, KoreaCentral, KoreaSouth, UKSouth, UKWest  | 
 | **omsWorkspaceRegion**   | Choose location for OMS Log Analytics to deploy. For more information, see https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-overview.   | australiasoutheast, canadacentral, centralindia, eastus, japaneast, southeastasia, uksouth, westeurope    | eastus
 | **appInsightsLocation**   | specify the region for application insights.  | eastus, northeurope, southcentralus, southeastasia, westeurope,westus2    | eastus
 | **appInsightsLocationDr**    | If solution type is chosen as premium, enter location for application insights for disaster recovery. | eastus, northeurope, southcentralus, southeastasia, westeurope, westus2    | westus2
@@ -157,7 +157,7 @@ In the parameters section of the template, specify the values as inputs when dep
 | **clientSecret**  | clientSecret of the created Azure active directory application.For instructions, see https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal#get-application-id-and-authentication-key in the Microsoft documentation.  |   | 
 | **azureAccountName**   | azure portal login username.       |    | 
 | **azurePassword** | azure portal login password.       |  | 
-| **sessionId** | Refer 1.1.5 section for getting the session ID.  |   |  
+| **sessionId** | Provide the guid prefix for the runbook job to be created. Generate using https://www.guidgenerator.com/online-guid-generator.aspx)  |   |  
   
 ## 4 Getting started
 
@@ -178,19 +178,19 @@ Resource manager provides the following feature:
 
 1. **Click** the below **Git hub repo URL**.
 
-**https://github.com/sysgain/whitegoods/tree/master**
+**https://github.com/sysgain/MSIotDeviceManagement/tree/master**
 
 2. Select **main-template.json** from **master** branch as shown in the following figure.
  
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/15.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/15.png)
 
 3. Select **Raw** from the top right corner.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/16.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/16.png)
 
 4. **Copy** the raw template and **paste** in your azure portal for template deployment.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/17.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/17.png)
 
 To deploy a template for Azure Resource Manager, follow the below steps.
 
@@ -201,22 +201,22 @@ To deploy a template for Azure Resource Manager, follow the below steps.
 3.	Click **Create** button and click **Build your own Template in the editor** as shown in the following figure.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/18.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/18.png">
 </p>
 
 4.	The **Edit template** page is displayed as shown in the following figure. 
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/19.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/19.png)
 
 5.	**Replace / paste** the template and click **Save** button.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/20.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/20.png)
 
 6.	The **Custom deployment** page is displayed as shown in the following.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p1.png">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p2.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p1.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p2.png">
 </p>
 
 #### 4.1.1 Inputs
@@ -230,7 +230,7 @@ These parameter values enable you to customize the deployment by providing value
 **Note:** For **basic solution**, select the geo-paired region for your template deployment and choose the values of **OMS Workspace Region, App Insights Location** or keep the default values as it is. It is not necessary to choose **High availability region** of **App Insights Location Dr**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/23.jpg">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/23.jpg">
 </p>
 
 **Parameters for Standard Solution:**
@@ -240,7 +240,7 @@ These parameter values enable you to customize the deployment by providing value
 **Note:** For **standard solution**, select the geo-paired region for your template deployment and choose the values of **OMS Workspace Region, App Insights Location** and **High availability region** of **App Insights Location Dr** or keep the default values as it is.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/24.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/24.png">
 </p>
 
 **Parameters for Premium solution:**
@@ -250,7 +250,7 @@ These parameter values enable you to customize the deployment by providing value
 **Note**: For **Premium solution**, select the geo-paired region for your template deployment and choose the values of **OMS Workspace Region, App Insights Location** and **High availability region** of **App Insights Location Dr** or keep the default values as it is.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/25.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/25.png">
 </p>
 
 10. Once all the parameters are entered, select the **terms and conditions** check box and click **Purchase**.
@@ -274,22 +274,22 @@ The above resources deployed for **Basic Solution**.
 
 13. Once the solution is deployed successfully, navigate to the resource group to view the list of resources that are created as shown below.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/26.png)
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/27.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/26.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/27.png)
 
 #### 4.1.2 Outputs
 
 14. Go to **Resource group** -> click **deployments**. 
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/28.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/28.png)
 
 15. Click **Microsoft Template**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/29.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/29.png)
 
 16. Click **outputs**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/30.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/30.png)
 
 ### 4.2 ARM Template Deployment Using Azure CLI
 
@@ -311,20 +311,20 @@ Deployment can proceed within the Azure Portal via Windows PowerShell. 
 3. It shows the device login URL and code to authenticate the device login after running the command.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/i1.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/i1.png">
 </p>
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/32.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/32.png)
 
 4. Past the code and click **Continue**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/33.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/33.png)
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/34.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/34.png)
 
 5. Download the **main-template.parameters.json** in your local system from the below  URL, paste it in  an editor , update the values and save it.
 
-**https://github.com/sysgain/whitegoods/blob/master/main-template.parameters.json**
+**https://github.com/sysgain/MSIotDeviceManagement/blob/master/main-template.parameters.json**
 
 6. Update the following parameters in **main-template.parameters.json** file 
 
@@ -354,8 +354,8 @@ az group create -n < resource group name> -l < location >
 ```
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/q1.png">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/36.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/q1.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/36.png">
 </p>
 
 #### 4.2.2 Execute the template deployment 
@@ -366,23 +366,23 @@ Use the **az group deployment create** command to deploy the ARM template.
 
 **main-template.json** – contains the resource & its dependency resources to be provisioned from the ARM template.
 
-**main-template.parameters.json** –contains the input values that are required to provision respective SKU & Others details, for more details on the input parameter values navigate to Section 2 of this document. 
+**main-template.parameters.json** –contains the input values that are required to provision respective SKU & Others details, for more details on the input parameter values navigate to Section 3 of this document. 
 
 **Syntax**
 
 ```
-az group deployment create --template-file './<main-template.json filename>' --parameters '@./<main-template.parameters.json filename>' -g < provide resource group name that created in the section 6.2.2> -n deploy >> <provide the outputs filename> 
+az group deployment create --template-file './<main-template.json filename>' --parameters '@./<main-template.parameters.json filename>' -g < provide resource group name> -n deploy >> <provide the outputs filename> 
 ```
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/i2.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/i2.png)
 
 Deployment may take between 15-20 minutes depending on deployment size. 
 
 After successful deployment you can see the deployment outputs as follows.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/39.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/39.png)
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/40.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/40.png)
 
 ## 5 Post Deployment steps: Getting started with Azure Sphere
 
@@ -403,8 +403,8 @@ The first time you plug in the board, the drivers should be automatically downlo
 **Click** on **search Device Manager** in Windows Search Box to verify installation, open Device Manager and look for three COM ports:
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/41.png">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/42.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/41.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/42.png">
 </p>
 
 #### 5.1.2 Install the TAP Driver
@@ -420,33 +420,33 @@ To install TAP and enable SLIP Communication
 3. **url: https://projectiot.blob.core.windows.net/whitegoods/Documents/CustomerDropTP4.0.1.zip**
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/t1.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/t1.png">
 </p>
 
 4. Click **Next**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p3.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p3.png">
 </p>
 
 5. Click **I Agree**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/45.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/45.png">
 </p>
 
 6. Choose **TAP Virtual Ethernet Adapter** and **TAP Utilities**, but not TAP SDK and click **Next**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/46.png">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/47.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/46.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/47.png">
 </p>
 
 7.	If you are asked to authorize installation of the driver, select **Install**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/48.png">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/49.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/48.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/49.png">
 </p>
 
 #### 5.1.3 Configure TAP Networking
@@ -456,47 +456,47 @@ To install TAP and enable SLIP Communication
 2.	Go to **Control Panel**, search **View Network Connections** in the search box.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/t2.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/t2.png">
 </p>
 
 3. Click to open the **View Network Connections**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p4.png"
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p4.png"
 </p>
 
 4. Find the TAP-Windows Adapter V9.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p5.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p5.png">
 </p>
 
 5. Select **TAP-Windows Adapter v9** and rename it to **sl0** (lower case S, lower case L, the number zero):
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p6.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p6.png">
 </p>
 
 6. **Open Properties** for **sl0** and disable all services except **Internet Protocol Version 4 (TCP/IPv4)**:
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/54.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/54.png">
 </p>
 
 7.	Select Properties for TCP/IPv4 and configure it to use the **IP address 192.168.35.1**, **subnet mask 255.255.255.0** and **click OK**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/56.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/56.png">
 </p>
 
 <p align="center">
- <img src="https://github.com/sysgain/whitegoods/raw/master/Images/55.png">
+ <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/55.png">
 </p>
 
 8.	Now you can see the **sl0** is **enabled**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p7.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p7.png">
 </p>
 
 ### 5.2 Install Visual Studio 
@@ -526,14 +526,15 @@ The Visual Studio Tools Preview for Azure Sphere includes:
 **Url: : https://projectiot.blob.core.windows.net/whitegoods/Documents/CustomerDropTP4.0.1.zip**
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/v1.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/v1.png">
 </p>
 
 2. To install the developer tools. **Agree** to the license terms and **select Install**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p8.png">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p9.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p8.png">
+
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p9.png">
 </p>
 
 3. If you have just installed Visual Studio for the first time, you might see the message, "No product to install SDK on." If this occurs, restart your PC and return to this step.
@@ -545,13 +546,13 @@ The Visual Studio Tools Preview for Azure Sphere includes:
 6. After installation starts, find the VSIX Installer window and bring it to the front. The installation process displays two installation windows: The Visual Studio Tools Preview for Azure Sphere window and the VSIX Installer window. The former reports progress and errors from the overall installation, and the latter reports information about the Visual Studio extension only. If the VSIX window becomes obscured during installation, you might not see error reports or requests for action.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/61.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/61.png">
 </p>
 
 7. When setup completes, select **Close** in both the VSIX Installer window and the Visual Studio Tools Preview for Azure Sphere setup window.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/62.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/62.png">
 </p>
 
 8. If the installer returns errors, try uninstalling and then reinstalling the tools. To uninstall the tools, use **Add and Remove Programs in Control Panel**.
@@ -563,7 +564,7 @@ The Visual Studio Tools Preview for Azure Sphere includes:
 1. Open an **Azure Sphere Developer Command Prompt**. To find the **Azure Sphere Developer Command Prompt**, click the Windows Start button and search Azure Sphere Developer Command Prompt Preview.  
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/a1.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/a1.png">
 </p>
 
 2. Issue the following command: 
@@ -573,7 +574,7 @@ dutil device sdkversion
 ```
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/63.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/63.png">
 </p>
 
 3. The number that follows the + should be 107652 or greater. If you see a smaller number, you must update the software by following the instructions from the below link.
@@ -620,7 +621,7 @@ Cutil device setdg –attached –devicegroupid  63bbe6ea-14be-4d1a-a6e7-03591d8
 ```
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/64.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/64.png">
 </p>
 
 ### 5.7 Configure Wi-Fi
@@ -641,7 +642,7 @@ dutil wifi add –s <xxxxxxx> -k <XXXXXXXXX>
 4. You should see:
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/65.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/65.png">
 </p>
 
 ### 5.8 Connect to IoT Hub
@@ -660,48 +661,50 @@ Download **Mt3620AzureIoTHub4.zip** and extract it.
 
 Click on open **Mt3620AzureIoTHub4.sln** in your local system.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/66.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/66.png)
 
 In Solution Explorer, **right-click References** and then select **Add Connected Service**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/67.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/67.png)
 
 After the Connected Services window appears, **click** on **find more services**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/68.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/68.png)
 
 In the search box at right side menu, search for **Azure IoT Hub Sample of Device Simulation** and click on **Download** and **Install**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/69.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/69.png)
 
 Close the Visual Studio to start the Installation of **Azure IoT Hub sample of Device Simulation**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/70.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/70.png">
 </p>
 
 After you see the below screen with **Modifications Complete**, click on **Close**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/71.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/71.png">
 </p>
 
 Re-open the Visual Studio and open the Blink application downloaded earlier. 
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/72.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/72.png)
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/73.png)
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/74.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/73.png)
+
+
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/74.png)
 
 Select **Azure IoT Hub (Azure Sphere)** from the list of **connected services**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/75.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/75.png)
 
 **Log in** to Microsoft Azure.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p10.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p10.png">
 </p>
 
 Enter the user credentials.
@@ -709,29 +712,31 @@ Enter the user credentials.
 **Note:** You must have a Microsoft Azure subscription. If your organization does not already have them, follow these instructions to set up a free trial subscription to Microsoft Azure. After you set up the subscription. Log into the Azure Portal and follow these instructions to login.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/77.png">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p11.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/77.png">
+
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p11.png">
 </p>
+
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/q.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/q.png">
 </p>
 
 Select **Hardcode shared access key** in application's code, and then **click Next**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/p12.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p12.png">
 </p>
 
 In the list of hubs, select deployed IoT Hub from your resource group.
 
 click **Next**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/82.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/82.png)
 
 Open the **New Device tab**, in the Device ID field type device name that need to be created and click on **Create**. 
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/83.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/83.png)
 
 **Copy** the **device primary connection string**, which we will use later while running the Blink Application and click on **cancel**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/p13.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p13.png)
