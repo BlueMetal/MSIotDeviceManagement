@@ -82,7 +82,7 @@ Below Diagram explains the Core architecture for White Goods solution
   <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/Aa1.png">
 </p>
 
-Core Architecture components:
+Core Architecture components:   
 
 * 4x4 Device
 * IoT Hub
