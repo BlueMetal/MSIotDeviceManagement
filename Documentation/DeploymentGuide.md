@@ -157,7 +157,7 @@ In the parameters section of the template, specify the values as inputs when dep
 | **clientSecret**  | clientSecret of the created Azure active directory application.For instructions, see https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal#get-application-id-and-authentication-key in the Microsoft documentation.  |   | 
 | **azureAccountName**   | azure portal login username.       |    | 
 | **azurePassword** | azure portal login password.       |  | 
-| **sessionId** | Refer 1.1.5 section for getting the session ID.  |   |  
+| **sessionId** | Refer 2.1.5 section for getting the session ID.  |   |  
   
 ## 4 Getting started
 
