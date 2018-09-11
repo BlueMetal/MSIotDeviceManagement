@@ -1,0 +1,132 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "streamAnalytics": {
+            "type": "object"
+        },
+        "documentDbSettings": {
+            "type": "object"
+        },
+        "iotHubSettings": {
+            "type": "object"
+        },
+        "omsSettings": {
+            "type": "object"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2016-03-01",
+            "type": "Microsoft.StreamAnalytics/streamingjobs",
+            "name": "[parameters('streamAnalytics').streamAnalyticsjobnameDr]",
+            "location": "[parameters('streamAnalytics').locationDr]",
+            "tags": {
+                "IotSuiteType": "[parameters('streamAnalytics').suiteType]"
+            },
+            "properties": {
+                "sku": {
+                    "name": "[parameters('streamAnalytics').sku]"
+                },
+                "eventsOutOfOrderPolicy": "Adjust",
+                "outputStartMode": "JobStartTime",
+                "eventsOutOfOrderMaxDelayInSeconds": 10,
+                "inputs": [
+                    {
+                        "name": "IoTHubStream",
+                        "properties": {
+                            "DataSource": {
+                                "properties": {
+                                    "iotHubNamespace": "[parameters('iotHubSettings').iotHubName]",
+                                    "sharedAccessPolicyKey": "[listkeys(resourceId('Microsoft.Devices/IotHubs/IotHubKeys',parameters('iotHubSettings').iotHubName,'iothubowner'),'2016-02-03').primaryKey]",
+                                    "sharedAccessPolicyName": "[parameters('iotHubSettings').keyName]",
+                                    "endpoint":"messages/events"
+                                },
+                                "Type": "Microsoft.Devices/IotHubs"
+                            },
+                            "serialization": {
+                                "properties": {
+                                    "encoding": "UTF8"
+                                },
+                                "type": "Json"
+                            },
+                            "type": "Stream"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "CosmosDBOutput",
+                        "properties": {
+                            "DataSource": {
+                                "properties": {
+                                    "accountId": "[parameters('documentDbSettings').cosmosDbAccountName]",
+                                    "accountKey": "[listkeys(resourceId('Microsoft.DocumentDb/databaseAccounts', parameters('documentDbSettings').cosmosDbAccountName), '2015-04-08').primaryMasterKey]",
+                                    "database": "[parameters('documentDbSettings').cosmosDbName]",
+                                    "collectionNamePattern": "[parameters('documentDbSettings').cosmosDbColMessagesName]"
+                                },
+                                "Type": "Microsoft.Storage/DocumentDB"
+                            }
+                        }
+                    }
+                ],
+                "transformation": {
+                    "name": "AllToCosmosDB",
+                    "properties": {
+                        "query": "\r\n    SELECT\r\n        *\r\n INTO [CosmosDBOutput] \r\n  FROM [IoTHubStream]",
+                        "streamingUnits": 1
+                    }
+                }
+            },
+            "resources": [
+                {
+                    "name": "Microsoft.Insights/service",
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "2015-07-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.StreamAnalytics/StreamingJobs/', parameters('streamAnalytics').streamAnalyticsjobnameDr)]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                        "logs": [
+                            {
+                                "category": "Execution",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "Authoring",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": false,
+                                    "days": 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "streamAnalyticsName": {
+            "type": "string",
+            "value": "[parameters('streamAnalytics').streamAnalyticsjobnameDr]"
+        }
+    }
+}

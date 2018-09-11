@@ -1,0 +1,90 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "documentDbSettings": {
+            "type": "object"
+        },
+        "omsSettings": {
+            "type": "object"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('documentDbSettings').cosmosDbAccountName]",
+            "apiVersion": "2015-04-08",
+            "kind": "GlobalDocumentDB",
+            "type": "Microsoft.DocumentDb/databaseAccounts",
+            "location": "[parameters('documentDbSettings').location]",
+            "properties": {
+                "databaseAccountOfferType": "[parameters('documentDbSettings').databaseAccountOfferType]",
+                "locations": [
+                    {
+                        "locationName": "[parameters('documentDbSettings').location]",
+                        "failoverPriority": 0
+                    }
+                ]
+            },
+            "resources": [
+                {
+                    "name": "Microsoft.Insights/service",
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "2015-07-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.DocumentDb/databaseAccounts/', parameters('documentDbSettings').cosmosDbAccountName)]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                        "logs": [
+                            {
+                                "category": "DataPlaneRequests",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "MongoRequests",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": false,
+                                    "days": 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ],    
+            "tags": {
+                "defaultExperience": "DocumentDB"
+            }
+        }   
+    ],
+    "outputs": {
+        "cosmosDBAccountName": {
+            "type": "string",
+            "value": "[parameters('documentDbSettings').cosmosDbAccountName]"
+        },
+        "cosmosDBAccountEndPoint": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.DocumentDb/databaseAccounts', parameters('documentDbSettings').cosmosDbAccountName)).documentEndpoint]"
+        },
+        "cosmosDBAccountKey": {
+            "type": "string",
+            "value": "[listkeys(resourceId('Microsoft.DocumentDb/databaseAccounts', parameters('documentDbSettings').cosmosDbAccountName), '2015-04-08').primaryMasterKey]"
+        }
+    }
+}
