@@ -533,6 +533,7 @@ The Visual Studio Tools Preview for Azure Sphere includes:
 
 <p align="center">
   <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p8.png">
+
   <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p9.png">
 </p>
 
@@ -690,7 +691,9 @@ Re-open the Visual Studio and open the Blink application downloaded earlier.
 
 ![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/72.png)
 
+
 ![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/73.png)
+
 
 ![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/74.png)
 
@@ -710,8 +713,10 @@ Enter the user credentials.
 
 <p align="center">
   <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/77.png">
+
   <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/p11.png">
 </p>
+
 <p align="center">
   <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/q.png">
 </p>
