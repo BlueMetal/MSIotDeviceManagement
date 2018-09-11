@@ -67,7 +67,7 @@ When Primary region is down, and user needs to redeploy azure resources to new r
 Go to **Resource Group** -> Click on **IoT Hub**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/142.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/142.png">
 </p>
 
 Go to **Manual Failover (Preview)** from left side menu.
@@ -75,13 +75,13 @@ Go to **Manual Failover (Preview)** from left side menu.
 Click on **Initiate failover** to initiate manual failover of IoT Hub.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/143.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/143.png">
 </p>
 
 When failover process started, a pop up will be displayed on right top corner. 
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/144.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/144.png">
 </p>
 
 Once Manual Failover process completed, Primary Location and secondary location will interchange.
@@ -93,13 +93,13 @@ Once Manual Failover process completed, Primary Location and secondary location 
 Go to **Resource Group** and click on primary **Stream Analytics job**
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/S1.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S1.png">
 </p>
 
 Stop the Stream analytics job by click on **Stop** and click on **Yes** for confirmation.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/S2.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S2.png">
 </p>
 
 #### 2.1.3 Accessing Traffic manager 
@@ -107,13 +107,13 @@ Stop the Stream analytics job by click on **Stop** and click on **Yes** for conf
 Go to **Resource Group** and click on **Traffic manager** resource.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/S3.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S3.png">
 </p>
 
 Now you can see the web app as the endpoint of the traffic manager.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/148.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/148.png">
 </p>
 
 #### 2.1.4 Stopping the Web App
@@ -123,19 +123,19 @@ Navigate to the **Web App** from resource group.
 click on **Stop** then click on **Yes** to stop the Web App.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/149.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/149.png">
 </p>
 
 The Web App in the primary region has been stopped as failover.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/150.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/150.png">
 </p>
 
 Verify the same in traffic manager.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/S4.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S4.png">
 </p>
 
 #### 2.1.5 Redeploy the Region 2 ARM Template
@@ -143,26 +143,26 @@ Verify the same in traffic manager.
 Go to **Github** and select **re-deploy.json** file from the **master** branch.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/152.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/152.png">
 </p>
 
 Click on **Raw**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/153.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/153.png">
 </p>
 
  Copy the **re-deploy.json** template.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/154.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/154.png">
 </p>
 
 Click on **Add** in existing resource group and re-deploy the ARM template.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/155.png">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/156.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/155.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/156.png">
 </p>
 
 #### 2.1.6 Configure Region 2 web app to Traffic Manager
@@ -170,7 +170,7 @@ Click on **Add** in existing resource group and re-deploy the ARM template.
 Go to **Resource Group** -> **Traffic manager profile** -> **Endpoints**, click on **add**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/157.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/157.png">
 </p>
 
 **Enter** the name for the **second End point** of traffic manager and select the second web app as the target resource.
@@ -178,13 +178,13 @@ Go to **Resource Group** -> **Traffic manager profile** -> **Endpoints**, click 
 Click on **Ok**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/158.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/158.png">
 </p>
 
 You can see the second region web app with online status under endpoint of traffic manager and **Copy** the **DNS Name**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/S5.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S5.png">
 </p>
 
 #### 2.1.7 Cosmos DB Geo replication
@@ -192,38 +192,38 @@ You can see the second region web app with online status under endpoint of traff
 Go to **Resource Group** -> click **Cosmos DB**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/S6.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S6.png">
 </p>
 
 Navigate to **Replicate data globally** under Settings section then click **Manual failover**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/161.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/161.png">
 </p>
 
 **Select** the **Read Region** to become the **new write region**, check in the check box and click **ok**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/162.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/162.png">
 </p>
 
 #### 2.1.8 Accessing Web App
 
 Go to **Resource Group** -> **Settings** -> **Deployments**, select **Microsoft Template**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/163.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/163.png)
 
 Select **output** and **copy** the **devicemanagement_trafficmanager** url.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/164.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/164.png)
 
 **paste** the copied URL in new browser to access the Web App using your credentials.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/165.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/165.png)
 
 You can see the **Device summary** as shown below.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/166.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/166.png)
 
 ### 2.2 Premium Solution Type
 
@@ -251,100 +251,100 @@ When user chooses premium as solution type below azure resource will be deployed
 
 Go to **Resource Group** and Click on **IoT Hub**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/S7.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S7.png)
 
 Go to **Manual Failover(Preview)** from left side menu.
 
 Click on **Initiate failover** to initiate manual failover of IoT Hub.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/168.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/168.png)
 
 You can check the status of the failover.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/169.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/169.png)
 
 When failover process started, a pop up will be displayed on right top corner. Once Manual Failover process completed, Primary Location and secondary location will interchange.
 
 **Note**: This process will take around 15 mins. To initial failover again, user needs wait for 1 hour to run failover again.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/170.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/170.png">
 </p>
 
 #### 2.2.2 Stop Stream Analytics Job in Primary Region
 
 Go to **Resource Group** and click on primary **Stream Analytics job**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/S8.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/S8.png)
 
 Stop the Stream analytics job by click on **Stop** and click on **Yes** for confirmation.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/172.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/172.png)
 
 You can see the stream analytics job has been stopped.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/173.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/173.png)
 
 #### 2.2.3 Accessing the Traffic manager 
 
 Go to **Resource Group** and click on **Traffic manager** resource.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/174.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/174.png)
 
 Now you can see the web app as the endpoint of the traffic manager.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/175.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/175.png)
 
 #### 2.2.4 Stopping the Web App
 
 Navigate to the **Web App** from the resource group.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/176.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/176.png)
 
 Select the **primary Web App** click on **Stop** then click on **Yes** to stop the Web App.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/177.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/177.png)
 
 The Web App in the primary region has been stopped as failover.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/178.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/178.png)
 
 Verify the Status of primary web app in traffic manager.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/179.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/179.png)
 
 #### 2.2.5 Cosmos DB Geo replication
 
 Go to **Resource Group** -> click **Cosmos DB**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/180.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/180.png)
 
 Navigate to **Replicate data globally** under Settings section then click **Manual failover**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/181.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/181.png">
 </p>
 
 **Select** the **Read Region** to become the **new write region**, check in the check box and click **ok**.
 
 <p align="center">
-  <img src="https://github.com/sysgain/whitegoods/raw/master/Images/182.png">
+  <img src="https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/182.png">
 </p>
 
 #### 2.2.6 Accessing Web App
 
 Go to **Resource Group** -> **Settings** -> **Deployments**, select **Microsoft Template**.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/183.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/183.png)
 
 Select **output** and **copy** the **devicemanagement_trafficmanager** url.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/184.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/184.png)
 
 **paste** the copied URL in new browser to access the Web App using your credentials.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/185.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/185.png)
 
 You can see the **Device summary** as shown below.
 
-![alt text](https://github.com/sysgain/whitegoods/raw/master/Images/186.png)
+![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/186.png)
