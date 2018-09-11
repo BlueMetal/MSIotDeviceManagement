@@ -157,7 +157,7 @@ In the parameters section of the template, specify the values as inputs when dep
 | **clientSecret**  | clientSecret of the created Azure active directory application.For instructions, see https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal#get-application-id-and-authentication-key in the Microsoft documentation.  |   | 
 | **azureAccountName**   | azure portal login username.       |    | 
 | **azurePassword** | azure portal login password.       |  | 
-| **sessionId** | Refer 2.1.5 section for getting the session ID.  |   |  
+| **sessionId** | Provide the guid prefix for the runbook job to be created. Generate using https://www.guidgenerator.com/online-guid-generator.aspx)  |   |  
   
 ## 4 Getting started
 
@@ -366,12 +366,12 @@ Use the **az group deployment create** command to deploy the ARM template.
 
 **main-template.json** – contains the resource & its dependency resources to be provisioned from the ARM template.
 
-**main-template.parameters.json** –contains the input values that are required to provision respective SKU & Others details, for more details on the input parameter values navigate to Section 2 of this document. 
+**main-template.parameters.json** –contains the input values that are required to provision respective SKU & Others details, for more details on the input parameter values navigate to Section 3 of this document. 
 
 **Syntax**
 
 ```
-az group deployment create --template-file './<main-template.json filename>' --parameters '@./<main-template.parameters.json filename>' -g < provide resource group name that created in the section 6.2.2> -n deploy >> <provide the outputs filename> 
+az group deployment create --template-file './<main-template.json filename>' --parameters '@./<main-template.parameters.json filename>' -g < provide resource group name> -n deploy >> <provide the outputs filename> 
 ```
 
 ![alt text](https://github.com/sysgain/MSIotDeviceManagement/raw/master/Images/i2.png)
