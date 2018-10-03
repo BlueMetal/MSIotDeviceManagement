@@ -9,7 +9,7 @@ using MS.IoT.Repositories;
 
 public class DeviceTwinRepositoryTests
     {
-        public static readonly string iotHubConnectionString = "HostName=msiot-iothub-dev.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=yrvwTx3onmJW48e3iOy//JlfQzf79ZYVWqeAJVsWo6s=";       
+        public static readonly string iotHubConnectionString = "<iothubconnectionString>";       
 
         [Fact]
         public async Task create_iotHub_device()
@@ -213,18 +213,6 @@ public class DeviceTwinRepositoryTests
             Assert.Null(getDevice3);
         }
 
-        //[Fact]
-        //public async Task direct_method_iotHub_test()
-        //{
-        //    DeviceTwinRepository repo = new DeviceTwinRepository(iotHubConnectionString);
-        //    repo.up
-        //    //await repo.UpdateDevicesStatus();
-        //    // Assert.Equal("coffeemaker1", device.Id);
-
-        //    // get device twin
-        //    //var aggResult = await repo.GetDevicesSummaryAggregationsAsync();
-        //    // Assert.NotNull(deviceTwin);
-        //}
 
         [Fact(Skip = "Skipped")]
         public async Task get_iotHub_update_device_twin()
