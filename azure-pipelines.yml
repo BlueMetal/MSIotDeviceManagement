@@ -2,10 +2,11 @@ trigger:
 - master
 - rel/*
 
-queue: Hosted VS2017
+pool:
+  vmImage: vs2017-win2016
+
 variables: 
   BuildConfiguration: Release
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   
 steps:
 - task: DotNetCoreCLI@2  
@@ -19,10 +20,6 @@ steps:
 - script: nbgv cloud -p MS.IoT
   displayName: Set Version
   condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
-
-- task: DotNetCoreInstaller@0
-  inputs:
-    version: '2.1.400'
 
 - task: NodeTool@0
   displayName: Use Node 8.x
