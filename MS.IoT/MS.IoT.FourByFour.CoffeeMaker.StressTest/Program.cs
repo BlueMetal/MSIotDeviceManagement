@@ -103,10 +103,10 @@ namespace MS.IoT.FourByFour.CoffeeMaker.StressTest
             }
         }
 
-        public static readonly string tenantId = "72f43d57-b980-4152-b703-e2d8666a3ea9";
-        public static readonly string clientId = "e8b29c1b-5f3f-4fe7-93da-e147ae3ab60d";
-        public static readonly string clientSecret = "aK2C3ss/9inQFjw9FjCKm0VPKb73bm2vA5D9OVgsGaM=";
-        public static readonly string resource = "https://miteshpatekarbluemetal.onmicrosoft.com/MSIoT.DeviceManagementPortal.Web";
+        public static readonly string tenantId = "<tenantid>";
+        public static readonly string clientId = "<clientid>";
+        public static readonly string clientSecret = "<clientsecret>";
+        public static readonly string resource = "<AADapplicationURL>";
         private async static Task<AuthenticationResult> GetAccessToken()
         {
             string authority = "https://login.microsoftonline.com/" + tenantId;

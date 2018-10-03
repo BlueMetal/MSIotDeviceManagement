@@ -13,9 +13,9 @@ using Xunit;
 
 public class ServicePrincipalRepositoryTests : IAsyncLifetime
 {
-    public static readonly string tenantId = "72f43d57-b980-4152-b703-e2d8666a3ea9";
-    public static readonly string clientId = "fd17f56b-cdd7-467f-ad3a-6b8b7bc7bc72";
-    public static readonly string clientSecret = "ck30+q2nXvjfvAct8XC0ivWuZ3i6j/+n1SILJ4uGpGM=";
+    public static readonly string tenantId = "<tenantId>";
+    public static readonly string clientId = "<clientId>";
+    public static readonly string clientSecret = "<clienrSecret>";
     public static string graphAuthToken;
     public static readonly string graphUrl = "https://graph.windows.net";
 

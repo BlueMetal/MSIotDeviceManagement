@@ -8,7 +8,7 @@ using MS.IoT.Repositories;
 
 public class NotificationHubRepositoryTests
     {
-        public static readonly string notificationHubConString = "Endpoint=sb://msiot-notificationhub-dev.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=8xqIZQFAhSWRy27dEaKliaejZ8kDWuR4lgZO9um44Bo=";
+        public static readonly string notificationHubConString = "<notificationHubConnectionString>";
 
 
         [Fact]
