@@ -1,0 +1,152 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webSiteSettings": {
+            "type": "object"
+        },
+        "iotHubSettings": {
+            "type": "object"
+        },
+        "documentDbSettings": {
+            "type": "object"
+        },
+        "notificationHub": {
+            "type": "object"
+        },
+        "omsSettings": {
+            "type": "object"
+        },
+        "appInsights": {
+            "type": "object"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2015-08-01",
+            "name": "[parameters('webSiteSettings').webAppHostingPlanName]",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[parameters('webSiteSettings').location]",
+            "tags": {
+                "displayName": "HostingPlan"
+            },
+            "sku": {
+                "name": "[parameters('webSiteSettings').webAppSkuName1]",
+                "capacity": "1"
+            },
+            "properties": {
+                "name": "[parameters('webSiteSettings').webAppHostingPlanName]"
+            }
+        },
+       {
+            "apiVersion": "2015-08-01",
+            "name": "[parameters('webSiteSettings').deviceManagementPortalWebSiteName]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('webSiteSettings').location]",
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('webSiteSettings').webAppHostingPlanName)]": "Resource",
+                "displayName": "Website"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms/', parameters('webSiteSettings').webAppHostingPlanName)]"
+            ],
+            "properties": {
+                "name": "[parameters('webSiteSettings').deviceManagementPortalWebSiteName]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('webSiteSettings').webAppHostingPlanName)]"
+            },
+            "resources": [
+                {
+                    "apiVersion": "2015-08-01",
+                    "name": "web",
+                    "type": "config",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteName)]"
+                    ],
+                    "tags": {
+                        "displayName": "WebAppConfig"
+                    },
+                    "properties": {
+                        "phpVersion": "5.6",
+                        "netFrameworkVersion": "v4.6",
+                        "use32BitWorkerProcess": false,
+                        "webSocketsEnabled": true,
+                        "alwaysOn": true,
+                        "remoteDebuggingEnabled": true,
+                        "remoteDebuggingVersion": "VS2015"
+                    }
+                },
+                {
+                    "name": "MSDeploy",
+                    "type": "extensions",
+                    "location": "[parameters('webSiteSettings').location]",
+                    "apiVersion": "2015-08-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', parameters('webSiteSettings').deviceManagementPortalWebSiteName)]",
+                        "[concat('Microsoft.Web/Sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteName, '/config/web')]"
+                    ],
+                    "tags": {
+                        "displayName": "WebPackageDeploy"
+                    },
+                    "properties": {
+                        "packageUri": "[parameters('webSiteSettings').deviceManagementPortalPackageuriWm]"
+                    }
+                },
+                {
+                    "apiVersion": "2015-08-01",
+                    "name": "appsettings",
+                    "type": "config",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', parameters('webSiteSettings').deviceManagementPortalWebSiteName)]",
+                        "[concat('Microsoft.Web/Sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteName, '/config/web')]",
+                        "[concat('Microsoft.Web/Sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteName, '/Extensions/MSDeploy')]"
+                    ],
+                    "properties": {
+                        "ApplicationInsights:InstrumentationKey": "[reference(resourceId('Microsoft.Insights/components', parameters('appInsights').appInsightResourceName), '2014-04-01').InstrumentationKey]",
+                        "AzureAd:ClientId": "[parameters('webSiteSettings').clientId]",
+                        "AzureAd:ClientSecret": "[parameters('webSiteSettings').clientSecret]",
+                        "AzureAd:TenantId": "[parameters('webSiteSettings').tenantId]",
+                        "AzureAd:CallbackPath": "/signin-oidc",
+                        "IotHub:HostName": "[concat(parameters('iotHubSettings').iotHubName,'.azure-devices.net')]",
+                        "IotHub:ConnectionString":"[concat('HostName=', parameters('iotHubSettings').iotHubName,'.azure-devices.net;SharedAccessKeyName=', parameters('iotHubSettings').keyName, ';SharedAccessKey=', listkeys(resourceId('Microsoft.Devices/IotHubs/IotHubKeys',parameters('iotHubSettings').iotHubName,'iothubowner'),'2016-02-03').primaryKey)]",
+                        "IotHub:CacheRefreshMinutes": "1",
+                        "CosmosDb:Endpoint":"[concat('https://',parameters('documentDbSettings').cosmosDbAccountName,'.documents.azure.com:443/')]",
+                        "CosmosDb:AuthKey":"[listkeys(resourceId('Microsoft.DocumentDb/databaseAccounts', parameters('documentDbSettings').cosmosDbAccountName), '2015-04-08').primaryMasterKey]",
+                        "CosmosDb:Database": "[parameters('documentDbSettings').cosmosDbName]",
+                        "NotificationHub:ConnectionString": "[listKeys(resourceId('Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules', parameters('notificationHub').notificationHubNamespaceName, parameters('notificationHub').notificationHubName, 'DefaultFullSharedAccessSignature'), providers('Microsoft.NotificationHubs', 'namespaces/notificationHubs').apiVersions[0]).primaryConnectionString]"
+                    }
+                },
+                {
+                    "name": "Microsoft.Insights/service",
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "2015-07-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteName)]",
+                        "[concat('Microsoft.Web/Sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteName, '/config/web')]",
+                        "[concat('Microsoft.Web/sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteName, '/config/appsettings')]",
+                        "[concat('Microsoft.Web/sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteName, '/extensions/MSDeploy')]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                        "metrics": [
+                            {
+                                "timeGrain": "PT1M",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": false,
+                                    "days": 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "deviceManagementPortalUrl": {
+            "type": "string",
+            "value": "[concat('https://', parameters('webSiteSettings').deviceManagementPortalWebSiteName,'.azurewebsites.net')]"
+        }
+    }
+}

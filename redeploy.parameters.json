@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "geo-paired-region": {
+            "value":"EastUS2"
+        },
+        "appInsightsLocationDr": {
+            "value": "westus2"
+        },
+        "tenantId": {
+            "value": "xxxxxxx-xxxa-4xxx-xxxe-xxxxcxd3xxxx8"
+        },
+        "clientId": {
+            "value": "4xxxxxxa-xxxx-xxxx-xxxx-xxxxxxxf7xxe"
+        },
+        "clientSecret": {
+            "value": "Txxx/xxxxxfyxxxxxxTYxxxxx2M+xxxxx6gxxxxxXM="
+        }
+    }
+}

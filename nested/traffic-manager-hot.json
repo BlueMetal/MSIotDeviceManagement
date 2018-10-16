@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "trafficManagerSettings": {
+            "type": "object"
+        },
+        "webSiteSettings": {
+            "type": "object"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2017-05-01",
+            "type": "Microsoft.Network/trafficmanagerprofiles",
+            "name": "[parameters('trafficManagerSettings').trafficManagerName]",
+            "location": "global",
+            "properties": {
+                "trafficRoutingMethod": "[parameters('trafficManagerSettings').trafficRoutingMethod]",
+                "dnsConfig": {
+                    "relativeName": "[parameters('trafficManagerSettings').trafficManagerName]",
+                    "ttl": "100"
+                },
+                "monitorConfig": {
+                    "protocol": "tcp",
+                    "port": "80",
+                    "path": null
+                },
+                "endpoints": [
+                    {
+                        "name": "[parameters('webSiteSettings').deviceManagementPortalWebSiteName]",
+                        "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+                        "properties": {
+                            "endpointStatus": "Enabled",
+                            "targetResourceId": "[resourceId('Microsoft.Web/sites', parameters('webSiteSettings').deviceManagementPortalWebSiteName)]",
+                            "weight": 1,
+                            "priority": 1,
+                            "endpointLocation": "[parameters('webSiteSettings').location]"
+                        }
+                    },
+                    {
+                        "name": "[parameters('webSiteSettings').deviceManagementPortalWebSiteNameDr]",
+                        "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+                        "properties": {
+                            "endpointStatus": "Enabled",
+                            "targetResourceId": "[resourceId('Microsoft.Web/sites', parameters('webSiteSettings').deviceManagementPortalWebSiteNameDr)]",
+                            "weight": 1,
+                            "priority": 2,
+                            "endpointLocation": "[parameters('webSiteSettings').locationDr]"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
