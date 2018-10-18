@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "solution type": {
+            "value": "Basic"
+        },
+        "geo-paired-region": {
+            "value":  "EastUS2"
+        },
+        "omsWorkspaceRegion": {
+            "value": "canadacentral"
+        },
+        "appInsightsLocation": {
+            "value": "eastus"
+        },
+        "appInsightsLocationDr": {
+            "value": "westus2"
+        },
+        "tenantId": {
+            "value": "xxxxxxx-xxxa-4xxx-xxxe-xxxxcxd3xxxx8"
+        },
+        "clientId": {
+            "value": "4xxxxxxa-xxxx-xxxx-xxxx-xxxxxxxf7xxe"
+        },
+        "objectId": {
+            "value": "xxxxbxxx-bxxx-xx1e-8xxa-e2d203a42921"
+        },
+        "clientSecret": {
+            "value": "Txxx/xxxxxfyxxxxxxTYxxxxx2M+xxxxx6gxxxxxXM="
+        },
+        "azureAccountName": {
+            "value": "user@noreply.com"
+        },
+        "azurePassword": {
+            "value": "XXXXXXXXX"
+        },
+        "sessionId": {
+            "value": "6d5a5d09-c30c-481d-8bf6-0b7a27061996"
+        }
+    }
+}

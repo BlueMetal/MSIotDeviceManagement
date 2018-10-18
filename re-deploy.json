@@ -1,0 +1,269 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "geo-paired-region": {
+            "type": "string",
+            "defaultValue": "",
+            "allowedValues": [
+                "EastUS2",
+                "CentralUS",
+                "WestUS2",
+                "WestCentralUS",
+                "CanadaCentral",
+                "CanadaEast",
+                "AustraliaEast",
+                "AustraliaSouthEast",
+                "CentralIndia",
+                "SouthIndia",
+                "EastAsia",
+                "SouthEastAsia",
+                "JapanWest",
+                "JapanEast",
+                "KoreaCentral",
+                "KoreaSouth",
+                "UKSouth",
+                "UKWest"
+            ],
+            "metadata": {
+                "description": "Choose location for geo-paired-region, for more information about the geo-paired-region navigate to section 6 in the Readme.md(https://github.com/sysgain/Oil-Gas/blob/costing-models/README.md)"
+            }
+        },
+        "appInsightsLocationDr": {
+            "type": "string",
+            "defaultValue": "westus2",
+            "allowedValues": [
+                "eastus",
+                "northeurope",
+                "southcentralus",
+                "southeastasia",
+                "westeurope",
+                "westus2"
+            ],
+            "metadata": {
+                "description": "If solution type is choosen as premium, enter location for application insights for disaster recovery"
+            }
+        },
+        "tenantId": {
+            "type": "string",
+            "metadata": {
+                "description": "TenantId of the created Azure active directory application. For instructions, see  https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-howto-tenant in the Microsoft documentation"
+            }
+        },
+        "clientId": {
+            "type": "string",
+            "metadata": {
+                "description": "ApplicationID of the created Azure active directory application. For information, see https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-integrating-applications in the Microsoft documentation."
+            }
+        },
+        "clientSecret": {
+            "type": "securestring",
+            "metadata": {
+                "description": "clientSecret of the created Azure active directory application.For instructions, see https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal#get-application-id-and-authentication-key in the Microsoft documentation."
+            }
+        }
+    },
+    "variables": {
+        "omsSettings": {
+            "omsWorkspaceName": "[concat('omsworkspace', variables('suffix'))]",
+            "dataRetention": 7
+        },
+        "iotHubSettings": {
+            "location": "[parameters('geo-paired-region')]",
+            "iotHubName": "[concat('IoTHub',variables('suffix'))]",
+            "keyName": "iothubowner",
+            "skuName": "S1",
+            "capacityUnits": 1,
+            "d2cMessageRetentionInDaysPeriod": 1,
+            "d2cPartitionCount": 2,
+            "consumerGroupName": "$Default",
+            "d2cConsumerGroupName": "consumergrp_"
+        },
+        "documentDbSettings": {
+            "location": "[parameters('geo-paired-region')]",
+            "cosmosDbAccountName": "[concat('cosmosdb',variables('suffix'))]",
+            "cosmosDbName": "MSIoT",
+            "databaseAccountOfferType": "Standard",
+            "readRegionLocation": "[variables('readRegionLocation')]",
+            "cosmosDbColTemplateName": "Templates",
+            "cosmosDbColMessagesName": "Messages",
+            "cosmosDbColGroupsName": "Groups"
+        },
+        "notificationHub": {
+            "locationDr": "[variables('locationDr')]",
+            "skuName": "free",
+            "namespaceType": "NotificationHub",
+            "notificationHubNamespaceNameDr": "[concat('NotificationHubNSDr', variables('suffix'))]",
+            "notificationHubNameDr": "[concat('NotificationHubDr', variables('suffix'))]"
+        },
+        "appInsights": {
+            "locationDr": "[parameters('appInsightsLocationDr')]",
+            "appInsightResourceNameDr": "[concat('AppInsightsDr', uniquestring(resourceGroup().id))]"
+        },
+        "trafficManagerSettings": {
+            "trafficManagerName": "[concat('devicemanagetm', variables('suffix'))]",
+            "trafficRoutingMethod": "Priority"
+        },
+        "streamAnalytics": {
+            "locationDr": "[variables('locationDr')]",
+            "streamAnalyticsjobnameDr": "[concat('RecoveryStreamAnalytics', variables('suffix'))]",
+            "sku": "Standard",
+            "suiteType": "RemoteMonitoring",
+            "telemetryCGName": "telemetrycg"
+        },
+        "webSiteSettings": {
+            "locationDr": "[variables('locationDr')]",
+            "tenantId": "[parameters('tenantId')]",
+            "clientId": "[parameters('clientId')]",
+            "clientSecret": "[parameters('clientSecret')]",
+            "deviceManagementPortalPackageuriWm": "https://github.com/ooha-m/MSIotDeviceManagement/raw/master/code/builds/DeviceManagementPortalAI.zip",
+            "webAppHostingPlanNameDr": "[concat('AppPlanWGDr', variables('suffix'))]",
+            "webAppSkuName2": "S1",
+            "deviceManagementPortalWebSiteName": "[concat('devicemanagement', variables('suffix'))]",
+            "deviceManagementPortalWebSiteNameDr": "[concat('recoverydeviceManagement', variables('suffix'))]"
+        },
+        "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
+        "baseUrl": "https://raw.githubusercontent.com/ooha-m/MSIotDeviceManagement/master/",
+        "EastUS2": "CentralUS",
+        "CentralUS": "EastUS2",
+        "WestUS2": "West Central US",
+        "WestCentralUS": "WestUS2",
+        "CanadaCentral": "CanadaEast",
+        "CanadaEast": "CanadaCentral",
+        "AustraliaEast": "AustraliaSouthEast",
+        "AustraliaSouthEast": "AustraliaEast",
+        "CentralIndia": "SouthIndia",
+        "SouthIndia": "CentralIndia",
+        "EastAsia": "SouthEastAsia",
+        "SouthEastAsia": "EastAsia",
+        "JapanWest": "JapanEast",
+        "JapanEast": "JapanWest",
+        "KoreaCentral": "KoreaSouth",
+        "KoreaSouth": "KoreaCentral",
+        "UKSouth": "UKWest",
+        "UKWest": "UKSouth",
+        "locationDr": "[variables(parameters('geo-paired-region'))]",
+        "readRegionLocation": "[variables('locationDr')]"
+    },
+    "resources": [
+        {
+            "name": "NotificationHubR2",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'), 'nested/notificationhub-r2.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "notificationHub": {
+                        "value": "[variables('notificationHub')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "StreamAnalyticsR2",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'), 'nested/streamanalytics-r2.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "streamAnalytics": {
+                        "value": "[variables('streamAnalytics')]"
+                    },
+                    "iotHubSettings": {
+                        "value": "[variables('iotHubSettings')]"
+                    },
+                    "documentDbSettings": {
+                        "value": "[variables('documentDbSettings')]"
+                    },
+                    "omsSettings": {
+                        "value": "[variables('omsSettings')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "WebAppR2",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "dependsOn": [
+                "NotificationHubR2"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'), 'nested/appcomponents-r2.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "webSiteSettings": {
+                        "value": "[variables('webSiteSettings')]"
+                    },
+                    "iotHubSettings": {
+                        "value": "[variables('iotHubSettings')]"
+                    },
+                    "documentDbSettings": {
+                        "value": "[variables('documentDbSettings')]"
+                    },
+                    "notificationHub": {
+                        "value": "[variables('notificationHub')]"
+                    },
+                    "omsSettings": {
+                        "value": "[variables('omsSettings')]"
+                    },
+                    "appInsights": {
+                        "value": "[variables('appInsights')]"
+                    },
+                    "trafficManagerSettings": {
+                        "value": "[variables('trafficManagerSettings')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "AppInsightsR2",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'), 'nested/app-insights-r2.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsights": {
+                        "value": "[variables('appInsights')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "deviceManagementPortalUrl": {
+            "type": "string",
+            "value": "[concat('https://', variables('webSiteSettings').deviceManagementPortalWebSiteName,'.azurewebsites.net')]"
+        },
+        "RecoverydeviceManagementPortalUrl": {
+            "type": "string",
+            "value": "[concat('https://', variables('webSiteSettings').deviceManagementPortalWebSiteNameDr,'.azurewebsites.net')]"
+        },
+        "deviceManagement_trafficmanagerUrl": {
+            "type": "string",
+            "value": "[concat('http://', variables('trafficManagerSettings').trafficManagerName,'.trafficmanager.net')]"
+        },
+        "iothubHostName": {
+            "type": "string",
+            "value": "[concat(variables('iotHubSettings').iotHubName,'.azure-devices.net')]"
+        }
+    }
+}
