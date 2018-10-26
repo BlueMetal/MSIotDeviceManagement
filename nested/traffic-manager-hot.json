@@ -16,6 +16,9 @@
             "type": "Microsoft.Network/trafficmanagerprofiles",
             "name": "[parameters('trafficManagerSettings').trafficManagerName]",
             "location": "global",
+            "tags": {
+                "IotSuiteType": "[parameters('trafficManagerSettings').solutionType]"
+            },
             "properties": {
                 "trafficRoutingMethod": "[parameters('trafficManagerSettings').trafficRoutingMethod]",
                 "dnsConfig": {
