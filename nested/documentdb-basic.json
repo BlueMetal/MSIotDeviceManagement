@@ -17,6 +17,9 @@
             "kind": "GlobalDocumentDB",
             "type": "Microsoft.DocumentDb/databaseAccounts",
             "location": "[parameters('documentDbSettings').location]",
+            "tags": {
+                "IotSuiteType": "[parameters('documentDbSettings').solutionType]"
+            },
             "properties": {
                 "databaseAccountOfferType": "[parameters('documentDbSettings').databaseAccountOfferType]",
                 "locations": [
@@ -69,7 +72,7 @@
                 }
             ],    
             "tags": {
-                "defaultExperience": "DocumentDB"
+                "IotSuiteType": "[parameters('documentDbSettings').solutionType]"
             }
         }   
     ],
