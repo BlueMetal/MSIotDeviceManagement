@@ -23,7 +23,7 @@
             "name": "[parameters('streamAnalytics').streamAnalyticsjobnameDr]",
             "location": "[parameters('streamAnalytics').locationDr]",
             "tags": {
-                "IotSuiteType": "[parameters('streamAnalytics').suiteType]"
+                "IotSuiteType": "[parameters('streamAnalytics').solutionType]"
             },
             "properties": {
                 "sku": {
