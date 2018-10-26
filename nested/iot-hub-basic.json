@@ -16,6 +16,9 @@
             "type": "Microsoft.Devices/IotHubs",
             "location": "[parameters('iotHubSettings').location]",
             "name": "[parameters('iotHubSettings').iotHubName]",
+            "tags": {
+                "IotSuiteType": "[parameters('iotHubSettings').solutionType]"
+            },
             "sku": {
                 "name": "[parameters('iotHubSettings').skuName1]",
                 "capacity": "[parameters('iotHubSettings').capacityUnits]"
