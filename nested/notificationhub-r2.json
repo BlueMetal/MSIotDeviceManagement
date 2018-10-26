@@ -33,12 +33,12 @@
                         "name": "[parameters('notificationHub').notificationHubNameDr]"
                     },
                     "tags": {
-                        "displayName": "NotificationHub"
+                        "IotSuiteType": "[parameters('notificationHub').solutionType]"
                     }
                 }
             ],
             "tags": {
-                "displayName": "NotificationHubNamespace"
+                "IotSuiteType": "[parameters('notificationHub').solutionType]"
             }
         }
     ],
