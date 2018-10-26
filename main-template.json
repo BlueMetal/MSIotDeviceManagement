@@ -11,7 +11,7 @@
                 "Premium"
             ],
             "metadata": {
-                "description": "choose your solution type to deploy"
+                "description": "choose your deployment type to deploy"
             }
         },
         "geo-paired-region": {
