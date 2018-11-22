@@ -5,6 +5,9 @@
         "geo-paired-region": {
             "value":"EastUS2"
         },
+        "solutionType": {
+            "value":"DeviceManagement"
+        },
         "appInsightsLocationDr": {
             "value": "westus2"
         },
