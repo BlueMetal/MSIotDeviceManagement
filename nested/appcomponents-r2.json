@@ -32,7 +32,7 @@
             "type": "Microsoft.Web/serverfarms",
             "location": "[parameters('webSiteSettings').locationDr]",
             "tags": {
-                "displayName": "HostingPlan"
+                "IotSuiteType": "[parameters('webSiteSettings').solutionType]"
             },
             "sku": {
                 "name": "[parameters('webSiteSettings').webAppSkuName2]",
@@ -48,8 +48,7 @@
             "type": "Microsoft.Web/sites",
             "location": "[parameters('webSiteSettings').locationDr]",
             "tags": {
-                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('webSiteSettings').webAppHostingPlanNameDr)]": "Resource",
-                "displayName": "Website"
+                "IotSuiteType": "[parameters('webSiteSettings').solutionType]"
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms/', parameters('webSiteSettings').webAppHostingPlanNameDr)]"
@@ -66,9 +65,6 @@
                     "dependsOn": [
                         "[concat('Microsoft.Web/sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteNameDr)]"
                     ],
-                    "tags": {
-                        "displayName": "WebAppConfig"
-                    },
                     "properties": {
                         "phpVersion": "5.6",
                         "netFrameworkVersion": "v4.6",
@@ -88,9 +84,6 @@
                         "[resourceId('Microsoft.Web/sites', parameters('webSiteSettings').deviceManagementPortalWebSiteNameDr)]",
                         "[concat('Microsoft.Web/Sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteNameDr, '/config/web')]"
                     ],
-                    "tags": {
-                        "displayName": "WebPackageDeploy"
-                    },
                     "properties": {
                         "packageUri": "[parameters('webSiteSettings').deviceManagementPortalPackageuriWm]"
                     }
@@ -122,7 +115,7 @@
                 {
                     "name": "Microsoft.Insights/service",
                     "type": "providers/diagnosticSettings",
-                    "apiVersion": "2016-09-01",
+                    "apiVersion": "2015-07-01",
                     "dependsOn": [
                         "[concat('Microsoft.Web/sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteNameDr)]",
                         "[concat('Microsoft.Web/Sites/', parameters('webSiteSettings').deviceManagementPortalWebSiteNameDr, '/config/web')]",

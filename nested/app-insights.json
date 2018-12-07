@@ -15,7 +15,7 @@
             "location": "[parameters('appInsights').location]",
             "dependsOn": [],
             "tags": {
-                "displayName": "AppInsightsComponent"
+                "IotSuiteType": "[parameters('appInsights').solutionType]"
             },
             "properties": {
                 "ApplicationId": "[parameters('appInsights').appInsightResourceName]"

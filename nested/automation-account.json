@@ -5,7 +5,7 @@
         "automationSettings": {
             "type": "object"
         },
-        "deviceManagementUri":{
+        "deviceManagementUri": {
             "type": "string"
         },
         "documentDbSettings": {
@@ -17,8 +17,11 @@
         {
             "name": "[parameters('automationSettings').automationAccountName]",
             "type": "Microsoft.Automation/automationAccounts",
-            "apiVersion":"2015-10-31",
+            "apiVersion": "2015-10-31",
             "location": "[parameters('automationSettings').automationLocation]",
+            "tags": {
+                "IotSuiteType": "[parameters('automationSettings').solutionType]"
+            },
             "properties": {
                 "sku": {
                     "name": "[parameters('automationSettings').automationSku]"
@@ -28,11 +31,14 @@
                 {
                     "name": "[parameters('automationSettings').runbookName]",
                     "type": "runbooks",
-                    "apiVersion":"2015-10-31",
+                    "apiVersion": "2015-10-31",
                     "location": "[parameters('automationSettings').automationLocation]",
                     "dependsOn": [
                         "[concat('Microsoft.Automation/automationAccounts/', parameters('automationSettings').automationAccountName)]"
                     ],
+                    "tags": {
+                        "IotSuiteType": "[parameters('automationSettings').solutionType]"
+                    },
                     "properties": {
                         "runbookType": "Script",
                         "logProgress": "false",
@@ -50,7 +56,7 @@
                     "apiVersion": "2015-10-31",
                     "scale": null,
                     "properties": {
-                        "contentLink": { 
+                        "contentLink": {
                             "uri": "[parameters('automationSettings').cosmosdbModuleUri]"
                         }
                     },
@@ -65,7 +71,7 @@
                     "apiVersion": "2015-10-31",
                     "scale": null,
                     "properties": {
-                        "contentLink": { 
+                        "contentLink": {
                             "uri": "[parameters('automationSettings').azureAdPreviewModuleUri]"
                         }
                     },
@@ -78,7 +84,7 @@
                 {
                     "name": "[concat(parameters('automationSettings').automationAccountName, '/', parameters('automationSettings').sessionId)]",
                     "type": "Microsoft.Automation/automationAccounts/jobs",
-                    "apiVersion":"2015-10-31",
+                    "apiVersion": "2015-10-31",
                     "location": "[parameters('automationSettings').automationLocation]",
                     "properties": {
                         "runbook": {

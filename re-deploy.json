@@ -29,6 +29,13 @@
                 "description": "Choose location for geo-paired-region, for more information about the geo-paired-region navigate to section 6 in the Readme.md(https://github.com/sysgain/Oil-Gas/blob/costing-models/README.md)"
             }
         },
+        "solutionType": {
+            "type": "string",
+            "defaultValue": "DeviceManagement",
+            "metadata": {
+                "description": "The type of the solution"
+            }
+        },
         "appInsightsLocationDr": {
             "type": "string",
             "defaultValue": "westus2",
@@ -66,7 +73,8 @@
     "variables": {
         "omsSettings": {
             "omsWorkspaceName": "[concat('omsworkspace', variables('suffix'))]",
-            "dataRetention": 7
+            "dataRetention": 7,
+            "solutionType": "[parameters('solutionType')]"
         },
         "iotHubSettings": {
             "location": "[parameters('geo-paired-region')]",
@@ -77,7 +85,8 @@
             "d2cMessageRetentionInDaysPeriod": 1,
             "d2cPartitionCount": 2,
             "consumerGroupName": "$Default",
-            "d2cConsumerGroupName": "consumergrp_"
+            "d2cConsumerGroupName": "consumergrp_",
+            "solutionType": "[parameters('solutionType')]"
         },
         "documentDbSettings": {
             "location": "[parameters('geo-paired-region')]",
@@ -87,29 +96,34 @@
             "readRegionLocation": "[variables('readRegionLocation')]",
             "cosmosDbColTemplateName": "Templates",
             "cosmosDbColMessagesName": "Messages",
-            "cosmosDbColGroupsName": "Groups"
+            "cosmosDbColGroupsName": "Groups",
+            "solutionType": "[parameters('solutionType')]"
         },
         "notificationHub": {
             "locationDr": "[variables('locationDr')]",
             "skuName": "free",
             "namespaceType": "NotificationHub",
             "notificationHubNamespaceNameDr": "[concat('NotificationHubNSDr', variables('suffix'))]",
-            "notificationHubNameDr": "[concat('NotificationHubDr', variables('suffix'))]"
+            "notificationHubNameDr": "[concat('NotificationHubDr', variables('suffix'))]",
+            "solutionType": "[parameters('solutionType')]"
         },
         "appInsights": {
             "locationDr": "[parameters('appInsightsLocationDr')]",
-            "appInsightResourceNameDr": "[concat('AppInsightsDr', uniquestring(resourceGroup().id))]"
+            "appInsightResourceNameDr": "[concat('AppInsightsDr', uniquestring(resourceGroup().id))]",
+            "solutionType": "[parameters('solutionType')]"
         },
         "trafficManagerSettings": {
             "trafficManagerName": "[concat('devicemanagetm', variables('suffix'))]",
-            "trafficRoutingMethod": "Priority"
+            "trafficRoutingMethod": "Priority",
+            "solutionType": "[parameters('solutionType')]"
         },
         "streamAnalytics": {
             "locationDr": "[variables('locationDr')]",
             "streamAnalyticsjobnameDr": "[concat('RecoveryStreamAnalytics', variables('suffix'))]",
             "sku": "Standard",
             "suiteType": "RemoteMonitoring",
-            "telemetryCGName": "telemetrycg"
+            "telemetryCGName": "telemetrycg",
+            "solutionType": "[parameters('solutionType')]"
         },
         "webSiteSettings": {
             "locationDr": "[variables('locationDr')]",
@@ -120,7 +134,8 @@
             "webAppHostingPlanNameDr": "[concat('AppPlanWGDr', variables('suffix'))]",
             "webAppSkuName2": "S1",
             "deviceManagementPortalWebSiteName": "[concat('devicemanagement', variables('suffix'))]",
-            "deviceManagementPortalWebSiteNameDr": "[concat('recoverydeviceManagement', variables('suffix'))]"
+            "deviceManagementPortalWebSiteNameDr": "[concat('recoverydeviceManagement', variables('suffix'))]",
+            "solutionType": "[parameters('solutionType')]"
         },
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
         "baseUrl": "https://raw.githubusercontent.com/ooha-m/MSIotDeviceManagement/master/",

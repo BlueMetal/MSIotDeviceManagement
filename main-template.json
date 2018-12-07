@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "solution type": {
+        "deployment type": {
             "type": "string",
             "defaultValue": "",
             "allowedValues": [
@@ -11,7 +11,7 @@
                 "Premium"
             ],
             "metadata": {
-                "description": "choose your solution type to deploy"
+                "description": "choose your deployment type to deploy"
             }
         },
         "geo-paired-region": {
@@ -39,6 +39,13 @@
             ],
             "metadata": {
                 "description": "For Basic solution select the geopaired region as deployment region.If solution type is choosen as standard and premium, enter location for geo-paired-region, for more information about the geo-paired-region navigate to section 4 in the Getting Started Document(https://projectiot.blob.core.windows.net/whitegoods/Documents/GettingStartedDocumentV1.docx)"
+            }
+        },
+          "solutionType": {
+            "type": "string",
+            "defaultValue": "DeviceManagement",
+            "metadata": {
+                "description": "The type of the solution"
             }
         },
         "omsWorkspaceRegion": {
@@ -160,7 +167,8 @@
             "omsWorkspaceName": "[concat('omsworkspace', variables('suffix'))]",
             "omsWorkspaceRegion": "[parameters('omsWorkspaceRegion')]",
             "omsLogAnalyticsSku": "standalone",
-            "dataRetention": 7
+            "dataRetention": 7,
+            "solutionType": "[parameters('solutionType')]"
         },
         "iotHubSettings": {
             "location": "[parameters('geo-paired-region')]",
@@ -171,7 +179,8 @@
             "d2cMessageRetentionInDaysPeriod": 1,
             "d2cPartitionCount": 2,
             "consumerGroupName": "$Default",
-            "d2cConsumerGroupName": "consumergrp_"
+            "d2cConsumerGroupName": "consumergrp_",
+            "solutionType": "[parameters('solutionType')]"
         },
         "documentDbSettings": {
             "location": "[parameters('geo-paired-region')]",
@@ -181,7 +190,8 @@
             "readRegionLocation": "[variables('readRegionLocation')]",
             "cosmosDbColTemplateName": "Templates",
             "cosmosDbColMessagesName": "Messages",
-            "cosmosDbColGroupsName": "Groups"
+            "cosmosDbColGroupsName": "Groups",
+            "solutionType": "[parameters('solutionType')]"
         },
         "notificationHub": {
             "location": "[parameters('geo-paired-region')]",
@@ -191,13 +201,15 @@
             "notificationHubNamespaceName": "[concat('NotificationHubNS', variables('suffix'))]",
             "notificationHubName": "[concat('NotificationHub', variables('suffix'))]",
             "notificationHubNamespaceNameDr": "[concat('RecoveryNotificationHubNS', variables('suffix'))]",
-            "notificationHubNameDr": "[concat('RecoveryNotificationHub', variables('suffix'))]"
+            "notificationHubNameDr": "[concat('RecoveryNotificationHub', variables('suffix'))]",
+            "solutionType": "[parameters('solutionType')]"
         },
         "appInsights": {
             "location": "[parameters('appInsightsLocation')]",
             "appInsightResourceName": "[concat('AppInsights', uniquestring(resourceGroup().id))]",
             "locationDr": "[parameters('appInsightsLocationDr')]",
-            "appInsightResourceNameDr": "[concat('RecoveryAppInsights', uniquestring(resourceGroup().id))]"
+            "appInsightResourceNameDr": "[concat('RecoveryAppInsights', uniquestring(resourceGroup().id))]",
+            "solutionType": "[parameters('solutionType')]"
         },
         "automationSettings": {
             "automationAccountName": "[concat('AutomationAcc', variables('suffix'))]",
@@ -215,11 +227,13 @@
             "clientSecret": "[parameters('clientSecret')]",
             "objectId": "[parameters('objectId')]",
             "azureAccountName": "[parameters('azureAccountName')]",
-            "azurePassword": "[parameters('azurePassword')]"
+            "azurePassword": "[parameters('azurePassword')]",
+            "solutionType": "[parameters('solutionType')]"
         },
         "trafficManagerSettings": {
             "trafficManagerName": "[concat('devicemanagetm', variables('suffix'))]",
-            "trafficRoutingMethod": "Priority"
+            "trafficRoutingMethod": "Priority",
+            "solutionType": "[parameters('solutionType')]"
         },
         "streamAnalytics": {
             "location": "[parameters('geo-paired-region')]",
@@ -228,7 +242,8 @@
             "streamAnalyticsjobnameDr": "[concat('RecoveryStreamAnalytics', variables('suffix'))]",
             "sku": "Standard",
             "suiteType": "RemoteMonitoring",
-            "telemetryCGName": "telemetrycg"
+            "telemetryCGName": "telemetrycg",
+            "solutionType": "[parameters('solutionType')]"
         },
         "webSiteSettings": {
             "location": "[parameters('geo-paired-region')]",
@@ -242,7 +257,8 @@
             "webAppSkuName1": "B1",
             "webAppSkuName2": "S1",
             "deviceManagementPortalWebSiteName": "[concat('devicemanagement', variables('suffix'))]",
-            "deviceManagementPortalWebSiteNameDr": "[concat('recoverydeviceManagement', variables('suffix'))]"
+            "deviceManagementPortalWebSiteNameDr": "[concat('recoverydeviceManagement', variables('suffix'))]",
+            "solutionType": "[parameters('solutionType')]"
         },
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
         "baseUrl": "https://raw.githubusercontent.com/ooha-m/MSIotDeviceManagement/master/",
@@ -288,7 +304,7 @@
         {
             "name": "IotHubBasic",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[equals(parameters('solution Type'),'Basic')]",
+            "condition": "[equals(parameters('deployment Type'),'Basic')]",
             "apiVersion": "2016-02-01",
             "dependsOn": [
                 "OMSWorkSpace"
@@ -312,7 +328,7 @@
         {
             "name": "IotHubR1",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[or(equals(parameters('solution Type'),'Standard'), equals(parameters('solution Type'),'Premium'))]",
+            "condition": "[or(equals(parameters('deployment Type'),'Standard'), equals(parameters('deployment Type'),'Premium'))]",
             "apiVersion": "2016-02-01",
             "dependsOn": [
                 "OMSWorkSpace"
@@ -336,7 +352,7 @@
         {
             "name": "DocumentDBBasic",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[equals(parameters('solution Type'),'Basic')]",
+            "condition": "[equals(parameters('deployment Type'),'Basic')]",
             "apiVersion": "2016-02-01",
             "dependsOn": [
                 "OMSWorkSpace"
@@ -361,7 +377,7 @@
             "name": "DocumentDBR1",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[or(equals(parameters('solution Type'),'Standard'), equals(parameters('solution Type'),'Premium'))]",
+            "condition": "[or(equals(parameters('deployment Type'),'Standard'), equals(parameters('deployment Type'),'Premium'))]",
             "dependsOn": [
                 "OmsWorkSpace"
             ],
@@ -384,7 +400,7 @@
         {
             "name": "NotificationHubBasic",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[equals(parameters('solution Type'),'Basic')]",
+            "condition": "[equals(parameters('deployment Type'),'Basic')]",
             "apiVersion": "2016-02-01",
             "dependsOn": [],
             "properties": {
@@ -404,7 +420,7 @@
             "name": "NotificationHubR1",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[or(equals(parameters('solution Type'),'Standard'), equals(parameters('solution Type'),'Premium'))]",
+            "condition": "[or(equals(parameters('deployment Type'),'Standard'), equals(parameters('deployment Type'),'Premium'))]",
             "dependsOn": [],
             "properties": {
                 "mode": "Incremental",
@@ -423,7 +439,7 @@
             "name": "NotificationHubR2",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Premium')]",
+            "condition": "[equals(parameters('deployment Type'),'Premium')]",
             "dependsOn": [],
             "properties": {
                 "mode": "Incremental",
@@ -459,7 +475,7 @@
         {
             "name": "AppInsightsR2",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[equals(parameters('solution Type'),'Premium')]",
+            "condition": "[equals(parameters('deployment Type'),'Premium')]",
             "apiVersion": "2016-02-01",
             "dependsOn": [],
             "properties": {
@@ -478,7 +494,7 @@
         {
             "name": "AutomationAccountBasic",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[equals(parameters('solution Type'),'Basic')]",
+            "condition": "[equals(parameters('deployment Type'),'Basic')]",
             "apiVersion": "2016-02-01",
             "dependsOn": [
                 "WebAppBasic"
@@ -506,7 +522,7 @@
             "name": "AutomationAccountR1",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Standard')]",
+            "condition": "[equals(parameters('deployment Type'),'Standard')]",
             "dependsOn": [
                 "TrafficManagerCold"
             ],
@@ -533,7 +549,7 @@
             "name": "AutomationAccountR2",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Premium')]",
+            "condition": "[equals(parameters('deployment Type'),'Premium')]",
             "dependsOn": [
                 "TrafficManagerHot"
             ],
@@ -559,7 +575,7 @@
         {
             "name": "StreamAnalyticsBasic",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[equals(parameters('solution Type'),'Basic')]",
+            "condition": "[equals(parameters('deployment Type'),'Basic')]",
             "apiVersion": "2016-02-01",
             "dependsOn": [
                 "IotHubBasic",
@@ -593,7 +609,7 @@
             "name": "StreamAnalyticsCold",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Standard')]",
+            "condition": "[equals(parameters('deployment Type'),'Standard')]",
             "dependsOn": [
                 "DocumentDBR1",
                 "AutomationAccountR1",
@@ -625,7 +641,7 @@
             "name": "StreamAnalyticsHot",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Premium')]",
+            "condition": "[equals(parameters('deployment Type'),'Premium')]",
             "dependsOn": [
                 "DocumentDBR1",
                 "AutomationAccountR2",
@@ -657,7 +673,7 @@
             "name": "StreamAnalyticsR2Hot",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Premium')]",
+            "condition": "[equals(parameters('deployment Type'),'Premium')]",
             "dependsOn": [
                 "OmsWorkSpace",
                 "IotHubR1",
@@ -688,7 +704,7 @@
         {
             "name": "WebAppBasic",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[equals(parameters('solution Type'),'Basic')]",
+            "condition": "[equals(parameters('deployment Type'),'Basic')]",
             "apiVersion": "2016-02-01",
             "dependsOn": [
                 "IotHubBasic",
@@ -729,7 +745,7 @@
             "name": "WebAppR1",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[or(equals(parameters('solution Type'),'Standard'), equals(parameters('solution Type'),'Premium'))]",
+            "condition": "[or(equals(parameters('deployment Type'),'Standard'), equals(parameters('deployment Type'),'Premium'))]",
             "dependsOn": [
                 "IotHubR1",
                 "DocumentDBR1",
@@ -772,7 +788,7 @@
             "name": "WebAppHot",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Premium')]",
+            "condition": "[equals(parameters('deployment Type'),'Premium')]",
             "dependsOn": [
                 "IotHubR1",
                 "DocumentDBR1",
@@ -815,7 +831,7 @@
             "name": "TrafficManagerCold",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Standard')]",
+            "condition": "[equals(parameters('deployment Type'),'Standard')]",
             "dependsOn": [
                 "WebAppR1"
             ],
@@ -839,7 +855,7 @@
             "name": "TrafficManagerHot",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "condition": "[equals(parameters('solution Type'),'Premium')]",
+            "condition": "[equals(parameters('deployment Type'),'Premium')]",
             "dependsOn": [
                 "WebAppR1",
                 "WebAppHot"

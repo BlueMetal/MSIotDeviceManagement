@@ -2,11 +2,14 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "solution type": {
+        "deployment type": {
             "value": "Basic"
         },
         "geo-paired-region": {
             "value":  "EastUS2"
+        },
+        "solutionType": {
+            "value": "solutionType"
         },
         "omsWorkspaceRegion": {
             "value": "canadacentral"
@@ -37,6 +40,15 @@
         },
         "sessionId": {
             "value": "6d5a5d09-c30c-481d-8bf6-0b7a27061996"
+        },
+        "cosmosdbModuleUri": {
+            "value": "https://github.com/ooha-m/MSIotDeviceManagement/raw/master/code/builds/cosmos.zip"
+        },
+        "azureAdPreviewModuleUri": {
+            "value": "https://github.com/ooha-m/MSIotDeviceManagement/raw/master/code/builds/AzureADPreview.zip"
+        },
+        "deviceManagementUriWm": {
+            "value": "https://github.com/ooha-m/MSIotDeviceManagement/raw/master/code/builds/DeviceManagementPortalAI.zip"
         }
     }
 }
